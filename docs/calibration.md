@@ -1,9 +1,6 @@
 # Calibration
 
-> Status: stub. Owned by Phase 1 (ABC) for workflow definition; Phase 8 (NTH)
-> for refinement.
->
-> Defines what must be calibrated, how often, and the user-facing procedures.
+Defines what must be calibrated, how often, and the user-facing procedures.
 
 ## Calibration targets
 

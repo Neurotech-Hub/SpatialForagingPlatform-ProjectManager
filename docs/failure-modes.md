@@ -1,9 +1,7 @@
 # Failure Modes
 
-> Status: stub. Drafted in Phase 0 (NTH), expanded in Phase 4 (ABC).
->
-> Catalog of how the platform can fail, how each failure is detected, and how
-> it is reported to the user.
+Catalog of how the platform can fail, how each failure is detected, and how
+it is reported to the user.
 
 ## Failure mode catalog
 

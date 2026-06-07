@@ -27,9 +27,6 @@ we on budget?" at a glance.
 
 > Lab abbreviations are defined in the [main README — Abbreviations](../README.md#abbreviations).
 
-> Update **Committed**, **Spent**, and **Remaining** as POs are placed and
-> invoices clear. Keep the totals row in sync.
-
 ## Canonical BOMs
 
 The engineering BOMs themselves (per-component part numbers, vendors,
@@ -44,9 +41,9 @@ here once those repos exist.
 
 ## Unit economics
 
-Once production-intent BOMs are finalized in Phase 6, summarize per-module
-and per-base-station cost here so we can confirm the n=9 + n=9 build fits
-the budget.
+Per-module and per-base-station unit economics are summarized here once the
+production-intent BOMs are finalized in Phase 6, confirming that the
+n=9 + n=9 build fits the budget.
 
 | Item                | Estimated cost | Quantity | Subtotal |
 | ------------------- | -------------- | -------- | -------- |

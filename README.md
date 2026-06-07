@@ -19,7 +19,6 @@ for the funded proposal.
 | Field           | Value                                |
 | --------------- | ------------------------------------ |
 | Phase           | Phase 0 — NTH Architectural Engineering |
-| Gate            | Pre-G0                               |
 | Hardware status | Pre-alpha                            |
 | Software status | Pre-alpha                            |
 | Week            | Week 0 (anchored 2026-06-08; see [`PROJECT.md`](PROJECT.md)) |

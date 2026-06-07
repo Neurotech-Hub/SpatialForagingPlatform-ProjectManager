@@ -1,9 +1,7 @@
 # Maintenance
 
-> Status: stub. Owned by Phase 4 (ABC) with NTH support.
->
-> Defines cleaning, access, service, and replacement assumptions for the
-> platform.
+Defines cleaning, access, service, and replacement assumptions for the
+platform.
 
 ## Maintenance intervals
 

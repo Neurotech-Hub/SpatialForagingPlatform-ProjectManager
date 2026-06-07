@@ -1,10 +1,7 @@
 # Validation Plan
 
-> Status: stub. Owned by Phases 5 (HLAB MVP) and 7 (ABC + HLAB field tests),
-> with results feeding the manuscript in Phase 10.
->
-> Defines what "validated" means for the Spatial Foraging Platform and how we
-> demonstrate it.
+Defines what "validated" means for the Spatial Foraging Platform and how we
+demonstrate it.
 
 ## Validation goals
 

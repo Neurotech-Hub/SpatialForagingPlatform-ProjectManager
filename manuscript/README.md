@@ -1,12 +1,9 @@
 # Manuscript
 
-> Status: placeholder. Active work begins in **Phase 10 — Manuscript
-> Development** (Weeks 30–36). See
-> [`../PROJECT.md#phase-10--manuscript-development`](../PROJECT.md#phase-10--manuscript-development).
-
-This folder will hold the methods/resource manuscript describing the Spatial
+This folder holds the methods/resource manuscript describing the Spatial
 Foraging Platform: engineering, behavioral validation, electrophysiology /
-sync validation, and analysis examples.
+sync validation, and analysis examples. Active drafting begins in
+[Phase 10](../PROJECT.md#phase-10--manuscript-development).
 
 ## Source material
 

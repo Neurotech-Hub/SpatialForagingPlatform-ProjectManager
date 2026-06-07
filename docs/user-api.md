@@ -1,9 +1,7 @@
 # User API
 
-> Status: stub. Owned by Phase 2 (HLAB) with NTH support.
->
-> Defines how specialized experiments are authored, executed, synchronized,
-> and analyzed.
+Defines how specialized experiments are authored, executed, synchronized,
+and analyzed.
 
 ## Experiment language / API
 

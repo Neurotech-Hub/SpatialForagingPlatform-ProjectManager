@@ -1,9 +1,7 @@
 # Function Checks
 
-> Status: stub. Drafted in Phase 0 (NTH).
->
-> Per-module and system-level procedures to confirm the platform is healthy
-> before an experiment.
+Per-module and system-level procedures to confirm the platform is healthy
+before an experiment.
 
 ## Module function check
 

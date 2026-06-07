@@ -1,9 +1,7 @@
 # Synchronization and Recording
 
-> Status: stub. Owned by Phase 0 (NTH), refined in Phases 2 and 5 (HLAB).
->
-> Capture how the platform synchronizes with external recording systems
-> (electrophysiology, video) and how timestamps flow through the system.
+Captures how the platform synchronizes with external recording systems
+(electrophysiology, video) and how timestamps flow through the system.
 
 ## Sync ownership
 

@@ -1,10 +1,8 @@
 # Architecture
 
-> Status: stub. Owned by Phase 0 (NTH).
->
-> Capture the system architecture decisions made during Phase 0 here. Reference
-> ADRs in [`../decisions/`](../decisions/) for individual decisions; this file
-> is the integrated description.
+Captures the integrated system architecture for the platform. Individual
+decisions are recorded as ADRs in [`../decisions/`](../decisions/); this file
+is the consolidated description.
 
 ## System overview
 

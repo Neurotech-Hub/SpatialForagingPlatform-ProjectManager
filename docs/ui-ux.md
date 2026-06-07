@@ -1,10 +1,7 @@
 # UI / UX
 
-> Status: stub. Owned by Phase 1 (ABC), refined in Phase 4 (ABC) and Phase 8
-> (NTH).
->
-> Captures how non-engineering users configure, calibrate, run, monitor, and
-> maintain the system.
+Captures how non-engineering users configure, calibrate, run, monitor, and
+maintain the system.
 
 ## Primary interface
 
