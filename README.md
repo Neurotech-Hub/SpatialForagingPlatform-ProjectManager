@@ -22,7 +22,7 @@ for the funded proposal.
 | Gate            | Pre-G0                               |
 | Hardware status | Pre-alpha                            |
 | Software status | Pre-alpha                            |
-| Week            | TBD (Week 0 not yet anchored — set in [`PROJECT.md`](PROJECT.md)) |
+| Week            | Week 0 (anchored 2026-06-08; see [`PROJECT.md`](PROJECT.md)) |
 
 ## Quick links
 

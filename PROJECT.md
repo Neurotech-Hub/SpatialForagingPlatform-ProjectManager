@@ -19,7 +19,7 @@ manuscript.
 Set `Week 0 = YYYY-MM-DD` once the project officially kicks off. All week
 ranges below derive from this date.
 
-> **Week 0**: TBD
+> **Week 0**: 2026-06-08
 
 ## Current status
 
