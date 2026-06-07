@@ -1,0 +1,39 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Cursor
+.cursor/
+.specstory/
+
+# Office / temp lock files
+~$*
+.~lock.*
+
+# OS / shell
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Build / cache (none expected, but defensive)
+node_modules/
+dist/
+build/
+.cache/
+.tmp/
+
+# Local environment
+.env
+.env.local
