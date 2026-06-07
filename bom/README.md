@@ -15,15 +15,17 @@ we on budget?" at a glance.
 
 ## Budget allocation
 
-| Recipient                  | Category                                                      | Awarded   | Committed | Spent | Remaining |
-| -------------------------- | ------------------------------------------------------------- | --------- | --------- | ----- | --------- |
-| Neurotech Hub (NTH)        | Engineering salary (electronics, firmware, UI, integration)   | $15,000   | $0        | $0    | $15,000   |
-| Neurotech Hub (NTH)        | Fabrication & prototyping equipment                           | $5,000    | $0        | $0    | $5,000    |
-| Animal Behavior Core (ABC) | Benchmarking module array (n=9)                               | $3,000    | $0        | $0    | $3,000    |
-| Animal Behavior Core (ABC) | Behavioral testing, animals, technician effort                | $7,000    | $0        | $0    | $7,000    |
-| Hengen Lab (HLAB)          | Validation module array (n=9)                                 | $3,000    | $0        | $0    | $3,000    |
-| Hengen Lab (HLAB)          | Electrophysiology validation, animals, recording support      | $7,000    | $0        | $0    | $7,000    |
-| **Total**                  |                                                               | **$40,000** | **$0**  | **$0** | **$40,000** |
+| Recipient | Category                                                      | Awarded   | Committed | Spent | Remaining |
+| --------- | ------------------------------------------------------------- | --------- | --------- | ----- | --------- |
+| NTH       | Engineering salary (electronics, firmware, UI, integration)   | $15,000   | $0        | $0    | $15,000   |
+| NTH       | Fabrication & prototyping equipment                           | $5,000    | $0        | $0    | $5,000    |
+| ABC       | Benchmarking module array (n=9)                               | $3,000    | $0        | $0    | $3,000    |
+| ABC       | Behavioral testing, animals, technician effort                | $7,000    | $0        | $0    | $7,000    |
+| HLAB      | Validation module array (n=9)                                 | $3,000    | $0        | $0    | $3,000    |
+| HLAB      | Electrophysiology validation, animals, recording support      | $7,000    | $0        | $0    | $7,000    |
+| **Total** |                                                               | **$40,000** | **$0**  | **$0** | **$40,000** |
+
+> Lab abbreviations are defined in the [main README — Abbreviations](../README.md#abbreviations).
 
 > Update **Committed**, **Spent**, and **Remaining** as POs are placed and
 > invoices clear. Keep the totals row in sync.

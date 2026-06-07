@@ -69,6 +69,55 @@ If you are new here, read in this order:
 3. [`docs/architecture.md`](docs/architecture.md) — system architecture once it exists.
 4. The relevant `docs/*.md` for your role (e.g. ABC: `ui-ux.md`, `maintenance.md`; HLAB: `user-api.md`, `sync-and-recording.md`).
 
+## Abbreviations
+
+Abbreviations used throughout this repository.
+
+### Collaborators
+
+| Abbreviation | Expansion            |
+| ------------ | -------------------- |
+| ABC          | Animal Behavior Core |
+| HLAB         | Hengen Lab           |
+| NTH          | Neurotech Hub        |
+
+### Project / process
+
+| Abbreviation | Expansion                                                                                |
+| ------------ | ---------------------------------------------------------------------------------------- |
+| ADR          | Architecture Decision Record (see [`decisions/`](decisions/))                            |
+| BOM          | Bill of Materials                                                                        |
+| HW           | Hardware (status field)                                                                  |
+| MVP          | Minimum Viable Product                                                                   |
+| SW           | Software (status field)                                                                  |
+
+### Hardware / electronics
+
+| Abbreviation | Expansion                                                                                |
+| ------------ | ---------------------------------------------------------------------------------------- |
+| CAD          | Computer-Aided Design                                                                    |
+| CAN          | Controller Area Network (bus)                                                            |
+| LED          | Light-Emitting Diode                                                                     |
+| MCU          | Microcontroller Unit                                                                     |
+| PCB          | Printed Circuit Board                                                                    |
+| PCBA         | Printed Circuit Board Assembly                                                           |
+| TTL          | Transistor-Transistor Logic (digital sync signal level)                                  |
+
+### Software / interfaces
+
+| Abbreviation | Expansion                                                                                |
+| ------------ | ---------------------------------------------------------------------------------------- |
+| API          | Application Programming Interface                                                        |
+| CLI          | Command-Line Interface                                                                   |
+| UI           | User Interface                                                                           |
+| UX           | User Experience                                                                          |
+
+### External references
+
+| Abbreviation | Expansion                                                                                |
+| ------------ | ---------------------------------------------------------------------------------------- |
+| FED3         | Feeding Experimentation Device 3 (open-source rodent feeder, Kravitz lab)                |
+
 ## License
 
 Documentation, plans, and manuscript content in this repository are released

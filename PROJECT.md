@@ -64,7 +64,7 @@ flowchart TB
 
 ## Phase 0 — NTH Architectural Engineering
 
-**Weeks 0–1.** Lead: Neurotech Hub.
+**Weeks 0–1.** Lead: NTH.
 
 **Milestone:** Architecture selected and alpha prototype sent to fab.
 
@@ -102,7 +102,7 @@ architecture before user-facing design begins.
 
 ## Phase 1 — ABC UI/UX Kickoff
 
-**Weeks 2–4.** Lead: Animal Behavior Core. Support: NTH.
+**Weeks 2–4.** Lead: ABC. Support: NTH.
 
 **Milestone:** User workflow requirements defined.
 
@@ -134,7 +134,7 @@ maintains the system.
 
 ## Phase 2 — HLAB User Implementation Kickoff
 
-**Weeks 2–4.** Lead: Hengen Lab. Support: NTH.
+**Weeks 2–4.** Lead: HLAB. Support: NTH.
 
 **Milestone:** Custom experiment interface defined.
 
@@ -166,7 +166,7 @@ analyzed.
 
 ## Phase 3 — NTH Engineering Sprint
 
-**Weeks 5–7.** Lead: Neurotech Hub.
+**Weeks 5–7.** Lead: NTH.
 
 **Milestone:** Mockup, firmware skeleton, and alpha bench-test plan ready.
 
@@ -199,7 +199,7 @@ Convert kickoff requirements into a usable prototype stack.
 
 ## Phase 4 — ABC UI/UX Feedback + Maintainability
 
-**Weeks 8–10.** Lead: Animal Behavior Core. Support: NTH.
+**Weeks 8–10.** Lead: ABC. Support: NTH.
 
 **Milestone:** Maintainability and user feedback captured.
 
@@ -233,7 +233,7 @@ and replacement issues.
 
 ## Phase 5 — HLAB Custom Experiment MVP
 
-**Weeks 8–10.** Lead: Hengen Lab. Support: NTH.
+**Weeks 8–10.** Lead: HLAB. Support: NTH.
 
 **Milestone:** One custom experiment runs end-to-end.
 
@@ -267,7 +267,7 @@ with external recording systems.
 
 ## Phase 6 — NTH Final Engineering Assessment for PCBA
 
-**Weeks 10–12.** Lead: Neurotech Hub.
+**Weeks 10–12.** Lead: NTH.
 
 **Milestone:** Final PCBAs submitted.
 
@@ -337,7 +337,7 @@ usability, output quality, and analysis readiness.
 
 ## Phase 8 — NTH UI/UX Refinement
 
-**Weeks 16–20.** Lead: Neurotech Hub.
+**Weeks 16–20.** Lead: NTH.
 
 **Milestone:** Pre-release software complete.
 
@@ -443,7 +443,7 @@ methods/resource manuscript.
 ### Objective
 
 Submit the manuscript and launch the platform as an open-source, supported
-Neurotech Hub resource.
+NTH resource.
 
 ### Goals
 
