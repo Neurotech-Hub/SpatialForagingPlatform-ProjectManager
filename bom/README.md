@@ -42,7 +42,7 @@ here once those repos exist.
 ## Unit economics
 
 Per-module and per-base-station unit economics are summarized here once the
-production-intent BOMs are finalized in Phase 6, confirming that the
+production-intent BOMs are finalized in Phase 4, confirming that the
 n=9 + n=9 build fits the budget.
 
 | Item                | Estimated cost | Quantity | Subtotal |

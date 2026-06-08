@@ -6,7 +6,7 @@ options considered, the choice made, and the consequences.
 
 ADRs are intentionally lightweight. The intent is not to slow decisions down,
 but to make them recoverable later — both for new collaborators joining
-mid-project and for the manuscript's Methods section in Phase 10.
+mid-project and for the manuscript's Methods section in Phase 8.
 
 ## When to write an ADR
 

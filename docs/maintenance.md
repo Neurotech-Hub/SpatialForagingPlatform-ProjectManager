@@ -17,7 +17,7 @@ re-assembly checks._
 ## Physical access
 
 _Notes on what needs to be reachable in-cage and how the form factor
-supports that. Identify pain points found by ABC during Phase 4 review._
+supports that. Identify pain points found by ABC during Phase 3A review._
 
 ## Replaceable components
 

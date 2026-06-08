@@ -31,7 +31,7 @@ for the funded proposal.
 - [`meetings/`](meetings/) — meeting notes
 - [`bom/`](bom/) — budget tracking against the $40k grant
 - [`references/`](references/) — grant proposal and source planning documents
-- [`manuscript/`](manuscript/) — manuscript drafting (Phase 10+)
+- [`manuscript/`](manuscript/) — manuscript drafting (Phase 8+)
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) — how to contribute
 
 ## Collaborators

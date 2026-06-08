@@ -15,11 +15,11 @@ Three pillars, mirroring the grant proposal:
    recovery of canonical signals (e.g. hippocampal spatial tuning,
    striatal/ACC decision-variable encoding).
 
-## MVP validation (Phase 5)
+## MVP validation (Phase 3B)
 
 _One custom experiment running end-to-end with at least one animal._
 
-## Field-test validation (Phase 7)
+## Field-test validation (Phase 5)
 
 _n=9 module open-field arrangement, longitudinal behavior test._
 

@@ -30,7 +30,7 @@ should appear in the support-tool BOM._
 
 ## Minimum viable custom experiment
 
-_Description of the MVP experiment HLAB will implement in Phase 5._
+_Description of the MVP experiment HLAB will implement in Phase 3B._
 
 ## Output format
 

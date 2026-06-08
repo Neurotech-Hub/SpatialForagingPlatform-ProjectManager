@@ -35,7 +35,7 @@ avoid._
 ## Minimum viable UI mockup
 
 _Link to mockup file or screenshot. Should be enough for ABC to give
-go/no-go feedback in Phase 4._
+go/no-go feedback in Phase 3A._
 
 ## User stories
 
