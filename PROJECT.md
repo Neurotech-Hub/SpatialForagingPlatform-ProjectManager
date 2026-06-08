@@ -39,7 +39,7 @@ firmware, software, docs, examples) under an open-source license.
 ## Phase timeline
 
 ```mermaid
-%%{init: {'theme': 'forest'} }%%
+%%{init: {'theme': 'dark', 'themeVariables': {'textColor': '#ffffff', 'titleColor': '#ffffff', 'taskTextColor': '#ffffff', 'taskTextLightColor': '#ffffff', 'taskTextDarkColor': '#0d1117', 'taskTextOutsideColor': '#ffffff'}} }%%
 gantt
   title Spatial Foraging Platform Phase Timeline
   dateFormat YYYY-MM-DD
