@@ -10,13 +10,10 @@ every call. Full transcripts are not required.
    `YYYY-MM-DD-short-topic.md` (lowercase kebab-case for the topic).
    Example: `2026-06-14-architecture-kickoff.md`.
 2. Fill in attendees, agenda, decisions, and action items.
-3. If the meeting produced a decision that will be hard to revisit, also open
-   an ADR in [`../decisions/`](../decisions/) and link it from the meeting
-   note.
-4. Add the note to the index below.
+3. Add the note to the index below.
 
 ## Index
 
-| Date | Topic | Attendees | Notes |
-| ---- | ----- | --------- | ----- |
-| _none yet_ | | | |
+| Date       | Topic | Attendees | Notes |
+| ---------- | ----- | --------- | ----- |
+| _none yet_ |       |           |       |

@@ -1,8 +1,6 @@
 # Architecture
 
-Captures the integrated system architecture for the platform. Individual
-decisions are recorded as ADRs in [`../decisions/`](../decisions/); this file
-is the consolidated description.
+Captures the integrated system architecture for the platform.
 
 ## System overview
 

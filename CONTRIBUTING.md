@@ -9,7 +9,6 @@ separate repositories linked from the [README](README.md#related-repositories).
 
 - The master plan: [`PROJECT.md`](PROJECT.md).
 - Live design documents: [`docs/`](docs/).
-- Architecture Decision Records: [`decisions/`](decisions/).
 - Meeting notes: [`meetings/`](meetings/).
 - Budget tracking and BOM summaries: [`bom/`](bom/).
 - Source/reference PDFs: [`references/`](references/).
@@ -54,15 +53,6 @@ README.
   an ADR.
 - When a phase or gate is crossed, update the **Current status** table in both
   [`README.md`](README.md) and [`PROJECT.md`](PROJECT.md).
-
-## Recording decisions
-
-When a decision is made that will be hard to revisit later (architecture,
-sync strategy, communication protocol, connector standards, API surface,
-etc.), record it as an ADR in [`decisions/`](decisions/). Use
-[`decisions/0000-template.md`](decisions/0000-template.md) as a starting
-point. ADRs become the seed material for the manuscript's Methods section in
-Phase 8.
 
 ## Recording meetings
 

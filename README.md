@@ -16,18 +16,17 @@ for the funded proposal.
 
 ## Current status
 
-| Field           | Value                                |
-| --------------- | ------------------------------------ |
-| Phase           | Phase 0 — NTH Architectural Engineering |
-| Hardware status | Pre-alpha                            |
-| Software status | Pre-alpha                            |
+| Field           | Value                                                        |
+| --------------- | ------------------------------------------------------------ |
+| Phase           | Phase 0 — NTH Architectural Engineering                      |
+| Hardware status | Pre-alpha                                                    |
+| Software status | Pre-alpha                                                    |
 | Week            | Week 0 (anchored 2026-06-08; see [`PROJECT.md`](PROJECT.md)) |
 
 ## Quick links
 
 - [`PROJECT.md`](PROJECT.md) — master roadmap: phases, milestones, exit criteria, checkbox tasks
 - [`docs/`](docs/) — design + requirements documents (architecture, sync, UI/UX, calibration, etc.)
-- [`decisions/`](decisions/) — Architecture Decision Records (ADRs)
 - [`meetings/`](meetings/) — meeting notes
 - [`bom/`](bom/) — budget tracking against the $40k grant
 - [`references/`](references/) — grant proposal and source planning documents
@@ -36,25 +35,25 @@ for the funded proposal.
 
 ## Collaborators
 
-| Lab                                  | Role                                                                                       | Lead          | GitHub  |
-| ------------------------------------ | ------------------------------------------------------------------------------------------ | ------------- | ------- |
-| Neurotech Hub (NTH)                  | Engineering lead — electronics, firmware, host UI, fabrication, integration, dissemination | Matt Gaidica  | TBD     |
-| Animal Behavior Core (ABC)           | UI/UX feedback, common task structures, behavioral benchmarking, animal metrics report     | TBD           | TBD     |
-| Hengen Lab (HLAB)                    | Custom experiment authoring, in vivo electrophysiology validation, recording sync          | Keith Hengen  | TBD     |
+| Lab                        | Role                                                                                       | Lead         | GitHub |
+| -------------------------- | ------------------------------------------------------------------------------------------ | ------------ | ------ |
+| Neurotech Hub (NTH)        | Engineering lead — electronics, firmware, host UI, fabrication, integration, dissemination | Matt Gaidica | TBD    |
+| Animal Behavior Core (ABC) | UI/UX feedback, common task structures, behavioral benchmarking, animal metrics report     | TBD          | TBD    |
+| Hengen Lab (HLAB)          | Custom experiment authoring, in vivo electrophysiology validation, recording sync          | Keith Hengen | TBD    |
 
 ## Related repositories
 
 The repositories below hold the actual artifacts produced by this project. This
 planning repo links to them; it does not contain their source.
 
-| Domain                  | Repository                | Owner | Status |
-| ----------------------- | ------------------------- | ----- | ------ |
-| Mechanical / CAD        | TBD                       | NTH   | TBD    |
-| Electronics / PCB       | TBD                       | NTH   | TBD    |
-| Module firmware         | TBD                       | NTH   | TBD    |
-| Base station / host UI  | TBD                       | NTH   | TBD    |
-| Experiment API examples | TBD                       | HLAB  | TBD    |
-| Analysis examples       | TBD                       | NTH / HLAB | TBD |
+| Domain                  | Repository | Owner      | Status |
+| ----------------------- | ---------- | ---------- | ------ |
+| Mechanical / CAD        | TBD        | NTH        | TBD    |
+| Electronics / PCB       | TBD        | NTH        | TBD    |
+| Module firmware         | TBD        | NTH        | TBD    |
+| Base station / host UI  | TBD        | NTH        | TBD    |
+| Experiment API examples | TBD        | HLAB       | TBD    |
+| Analysis examples       | TBD        | NTH / HLAB | TBD    |
 
 When a sub-repo comes online, replace `TBD` with the URL and update the status
 column.
@@ -82,40 +81,39 @@ Abbreviations used throughout this repository.
 
 ### Project / process
 
-| Abbreviation | Expansion                                                                                |
-| ------------ | ---------------------------------------------------------------------------------------- |
-| ADR          | Architecture Decision Record (see [`decisions/`](decisions/))                            |
-| BOM          | Bill of Materials                                                                        |
-| HW           | Hardware (status field)                                                                  |
-| MVP          | Minimum Viable Product                                                                   |
-| SW           | Software (status field)                                                                  |
+| Abbreviation | Expansion               |
+| ------------ | ----------------------- |
+| BOM          | Bill of Materials       |
+| HW           | Hardware (status field) |
+| MVP          | Minimum Viable Product  |
+| SW           | Software (status field) |
 
 ### Hardware / electronics
 
-| Abbreviation | Expansion                                                                                |
-| ------------ | ---------------------------------------------------------------------------------------- |
-| CAD          | Computer-Aided Design                                                                    |
-| CAN          | Controller Area Network (bus)                                                            |
-| LED          | Light-Emitting Diode                                                                     |
-| MCU          | Microcontroller Unit                                                                     |
-| PCB          | Printed Circuit Board                                                                    |
-| PCBA         | Printed Circuit Board Assembly                                                           |
-| TTL          | Transistor-Transistor Logic (digital sync signal level)                                  |
+| Abbreviation | Expansion                                               |
+| ------------ | ------------------------------------------------------- |
+| CAD          | Computer-Aided Design                                   |
+| CAN          | Controller Area Network (bus)                           |
+| LED          | Light-Emitting Diode                                    |
+| MCU          | Microcontroller Unit                                    |
+| PCB          | Printed Circuit Board                                   |
+| PCBA         | Printed Circuit Board Assembly                          |
+| TTL          | Transistor-Transistor Logic (digital sync signal level) |
 
 ### Software / interfaces
 
-| Abbreviation | Expansion                                                                                |
-| ------------ | ---------------------------------------------------------------------------------------- |
-| API          | Application Programming Interface                                                        |
-| CLI          | Command-Line Interface                                                                   |
-| UI           | User Interface                                                                           |
-| UX           | User Experience                                                                          |
+| Abbreviation | Expansion                         |
+| ------------ | --------------------------------- |
+| API          | Application Programming Interface |
+| CLI          | Command-Line Interface            |
+| UI           | User Interface                    |
+| UX           | User Experience                   |
 
 ### External references
 
-| Abbreviation | Expansion                                                                                |
-| ------------ | ---------------------------------------------------------------------------------------- |
-| FED3         | Feeding Experimentation Device 3 (open-source rodent feeder, Kravitz lab)                |
+| Abbreviation | Expansion                                                                 |
+| ------------ | ------------------------------------------------------------------------- |
+| FED3         | Feeding Experimentation Device 3 (open-source rodent feeder, Kravitz lab) |
 
 ## License
 

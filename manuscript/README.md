@@ -10,8 +10,7 @@ sync validation, and analysis examples. Active drafting begins in
 By the time Phase 8 starts, most of the manuscript content already exists
 elsewhere in this repo:
 
-- **Methods** — synthesized from [`../decisions/`](../decisions/) (ADRs) and
-  [`../docs/`](../docs/) (architecture, sync, calibration, maintenance,
+- **Methods** — synthesized from [`../docs/`](../docs/) (architecture, sync, calibration, maintenance,
   user API).
 - **Behavioral validation** — from the field test in Phase 5
   (see [`../docs/validation-plan.md`](../docs/validation-plan.md)).

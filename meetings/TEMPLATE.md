@@ -18,8 +18,7 @@ not required._
 
 ## Decisions
 
-- _Decision 1. If significant enough to be hard to revisit, open an ADR in
-  [`../decisions/`](../decisions/) and link it here._
+- _Decision 1. Description.
 
 ## Action items
 
