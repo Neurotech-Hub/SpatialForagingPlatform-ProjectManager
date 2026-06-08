@@ -10,17 +10,17 @@ methods/resource manuscript.
 ## Strategic goals
 
 - Converge on a modular home-cage hardware, firmware, and synchronization
-  architecture suitable for chronic neural-recording experiments.
+architecture suitable for chronic neural-recording experiments.
 - Demonstrate a working MVP custom experiment end-to-end with sync to external
-  recording hardware.
+recording hardware.
 - Validate the platform in an n=9 module field test and refine UI/UX,
-  maintenance, and analysis paths based on real use.
+maintenance, and analysis paths based on real use.
 - Deliver production-intent PCBAs and a locked BOM that fits within the
-  McDonnell NRP budget.
+McDonnell NRP budget.
 - Hand off operation to non-engineering users (ABC and HLAB) operating from
-  documentation alone.
+documentation alone.
 - Publish a methods/resource manuscript and release the full platform (CAD,
-  firmware, software, docs, examples) under an open-source license.
+firmware, software, docs, examples) under an open-source license.
 
 ## Timeline anchor
 
@@ -28,57 +28,43 @@ methods/resource manuscript.
 
 ## Current status
 
-| Field           | Value                                       |
-| --------------- | ------------------------------------------- |
-| Phase           | Phase 0 — NTH Architectural Engineering     |
-| Hardware status | Pre-alpha                                   |
-| Software status | Pre-alpha                                   |
+
+| Field           | Value                                   |
+| --------------- | --------------------------------------- |
+| Phase           | Phase 0 — NTH Architectural Engineering |
+| Hardware status | Pre-alpha                               |
+| Software status | Pre-alpha                               |
+
 
 ## Phase timeline
 
-<!--
-The image below is a Gantt rendered server-side by mermaid.ink from the
-Mermaid source kept here in this comment. To update the diagram:
-
-  1. Edit the Mermaid source between the `gantt-source` markers.
-  2. Re-encode it: `base64 -i source.txt | tr -d '\n'`.
-  3. Replace the encoded fragment after `https://mermaid.ink/img/` below.
-
-Phases that run in parallel across labs share a number with an A/B suffix
-(e.g. Phase 1A is the ABC track and Phase 1B is the HLAB track of the same
-phase, both running weeks 2-4).
-
------ gantt-source -----
+```mermaid
 gantt
-    title Spatial Foraging Platform Phase Timeline
-    dateFormat YYYY-MM-DD
-    axisFormat %b %Y
-    section NTH
-    Phase 0 Architecture :p0, 2026-06-08, 14d
-    Phase 2 Engineering Sprint :p2, 2026-07-13, 21d
-    Phase 4 Final PCBA :p4, 2026-08-17, 21d
-    Phase 6 UI/UX Refinement :p6, 2026-09-28, 35d
-    Phase 8 Manuscript :p8, 2027-01-04, 49d
-    Phase 9 Release :p9, 2027-02-15, 28d
-    section ABC
-    Phase 1A UI/UX Kickoff :p1a, 2026-06-22, 21d
-    Phase 3A Maintainability :p3a, 2026-08-03, 21d
-    section HLAB
-    Phase 1B Experiment Kickoff :p1b, 2026-06-22, 21d
-    Phase 3B Custom MVP :p3b, 2026-08-03, 21d
-    section Joint
-    Phase 5 Field Tests :p5, 2026-08-31, 35d
-    Phase 7 User Independence :p7, 2026-10-26, 77d
------ /gantt-source -----
--->
+  title Spatial Foraging Platform Phase Timeline
+  dateFormat YYYY-MM-DD
+  axisFormat %b %Y
 
-![Spatial Foraging Platform Phase Timeline](https://mermaid.ink/img/Z2FudHQKICAgIHRpdGxlIFNwYXRpYWwgRm9yYWdpbmcgUGxhdGZvcm0gUGhhc2UgVGltZWxpbmUKICAgIGRhdGVGb3JtYXQgWVlZWS1NTS1ERAogICAgYXhpc0Zvcm1hdCAlYiAlWQogICAgc2VjdGlvbiBOVEgKICAgIFBoYXNlIDAgQXJjaGl0ZWN0dXJlIDpwMCwgMjAyNi0wNi0wOCwgMTRkCiAgICBQaGFzZSAyIEVuZ2luZWVyaW5nIFNwcmludCA6cDIsIDIwMjYtMDctMTMsIDIxZAogICAgUGhhc2UgNCBGaW5hbCBQQ0JBIDpwNCwgMjAyNi0wOC0xNywgMjFkCiAgICBQaGFzZSA2IFVJL1VYIFJlZmluZW1lbnQgOnA2LCAyMDI2LTA5LTI4LCAzNWQKICAgIFBoYXNlIDggTWFudXNjcmlwdCA6cDgsIDIwMjctMDEtMDQsIDQ5ZAogICAgUGhhc2UgOSBSZWxlYXNlIDpwOSwgMjAyNy0wMi0xNSwgMjhkCiAgICBzZWN0aW9uIEFCQwogICAgUGhhc2UgMUEgVUkvVVggS2lja29mZiA6cDFhLCAyMDI2LTA2LTIyLCAyMWQKICAgIFBoYXNlIDNBIE1haW50YWluYWJpbGl0eSA6cDNhLCAyMDI2LTA4LTAzLCAyMWQKICAgIHNlY3Rpb24gSExBQgogICAgUGhhc2UgMUIgRXhwZXJpbWVudCBLaWNrb2ZmIDpwMWIsIDIwMjYtMDYtMjIsIDIxZAogICAgUGhhc2UgM0IgQ3VzdG9tIE1WUCA6cDNiLCAyMDI2LTA4LTAzLCAyMWQKICAgIHNlY3Rpb24gSm9pbnQKICAgIFBoYXNlIDUgRmllbGQgVGVzdHMgOnA1LCAyMDI2LTA4LTMxLCAzNWQKICAgIFBoYXNlIDcgVXNlciBJbmRlcGVuZGVuY2UgOnA3LCAyMDI2LTEwLTI2LCA3N2QK)
+  section NTH
+  Phase 0 Architecture        :active, p0, 2026-06-08, 7d
+  Phase 2 Engineering Sprint  :p2, 2026-07-13, 14d
+  Phase 4 Final PCBA          :p4, 2026-08-17, 14d
+  Phase 6 UI/UX Refinement    :p6, 2026-09-28, 28d
+  Phase 8 Manuscript          :p8, 2027-01-04, 42d
+  Phase 9 Release             :p9, 2027-02-15, 21d
 
-Bars are anchored to Week 0 = 2026-06-08. Phase 9 is open-ended ("Weeks 36+");
-the 4-week bar is illustrative. Phases 1A/1B and 3A/3B are parallel ABC and
-HLAB tracks of the same phase. The chart is rendered by
-[mermaid.ink](https://mermaid.ink/) from the Mermaid source kept in the HTML
-comment above this image.
+  section ABC
+  Phase 1A UI/UX Kickoff      :p1a, 2026-06-22, 14d
+  Phase 3A Maintainability    :p3a, 2026-08-03, 14d
+
+  section HLAB
+  Phase 1B Experiment Kickoff :p1b, 2026-06-22, 14d
+  Phase 3B Custom MVP         :p3b, 2026-08-03, 14d
+
+  section Joint
+  Phase 5 Field Tests         :p5, 2026-08-31, 28d
+  Phase 7 User Independence   :p7, 2026-10-26, 70d
+```
+
 
 ## Phase 0 — NTH Architectural Engineering
 
@@ -86,7 +72,7 @@ comment above this image.
 
 Converge on the hardware, communication, synchronization, and diagnostic
 architecture before user-facing design begins. Architecture decisions are
-captured in [`docs/`](docs/), an initial BOM is committed, and an alpha
+captured in `[docs/](docs/)`, an initial BOM is committed, and an alpha
 prototype (n=3 modules plus a base station) is sent to fab.
 
 ## Phase 1A — ABC UI/UX Kickoff
