@@ -267,8 +267,8 @@ Scaling to 16 modules remains within the same supply rating at this per-module b
 
 ```mermaid
 flowchart TD
-    subgraph external [External Recording System (optional)]
-        EXT
+    subgraph external ["External Recording System (optional)"]
+        EXT[External System]
     end
 
     subgraph basestation [Base Station]
@@ -288,7 +288,7 @@ flowchart TD
         PSU["12 V / 8 A Supply"]
     end
 
-    subgraph module1 [Module 1]
+    subgraph M1 [Module 1]
         M1ESP[ESP32S3]
         M1CAN[CAN XCVR]
         M1STEP[2x Stepper]
@@ -297,24 +297,24 @@ flowchart TD
         M1LED[3x LED]
     end
 
-    subgraph module2 [Module 2]
+    subgraph M2 [Module 2]
         M2ESP[ESP32S3 ...]
     end
 
-    subgraph moduleN ["Module N (last node)"]
+    subgraph MN ["Module N (last node)"]
         MNESP[ESP32S3 ...]
-        MNTERM[120Ω CAN termination]
+        MNTERM["120 ohm CAN termination"]
     end
 
     EXT -->|TTL| BNC1
     EXT -->|TTL| BNC2
     BNCOUT -->|TTL| EXT
 
-    CANHAT -->|RJ45 CAN + AEO/AEI| module1
-    module1 -->|RJ45 CAN + AEO/AEI| module2
-    module2 -->|RJ45 CAN + AEO/AEI| moduleN
+    CANHAT -->|RJ45 CAN + AEO/AEI| M1
+    M1 -->|RJ45 CAN + AEO/AEI| M2
+    M2 -->|RJ45 CAN + AEO/AEI| MN
 
-    PSU -->|12 V daisy-chain| module1
-    PSU -->|12 V daisy-chain| module2
-    PSU -->|12 V daisy-chain| moduleN
+    PSU -->|12 V daisy-chain| M1
+    PSU -->|12 V daisy-chain| M2
+    PSU -->|12 V daisy-chain| MN
 ```
