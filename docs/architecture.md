@@ -59,18 +59,20 @@ flowchart LR
     BNC_OUT -->|TTL/BNC| ExtSys
 ```
 
+
+
 ## Communication protocol
 
 CAN bus was selected as the module network protocol for the following reasons:
 
 - **Noise immunity** — differential signalling is robust over the cable lengths
-  typical in a home-cage arena.
+typical in a home-cage arena.
 - **Bus topology** — all nodes share a single cable run; individual node wiring is
-  minimised.
+minimised.
 - **Built-in error handling** — CAN hardware provides automatic retransmission, error
-  frames, and bus-off detection without requiring application-layer redundancy.
+frames, and bus-off detection without requiring application-layer redundancy.
 - **Peer-to-peer broadcasting** — any node can broadcast events to all other nodes and
-  to the base station simultaneously.
+to the base station simultaneously.
 
 ## CAN bus topology
 
@@ -84,10 +86,12 @@ station through every module.
 
 CAN requires a 120 Ω termination resistor at each end of the bus.
 
-| End | Termination method |
-| --- | ------------------ |
+
+| End          | Termination method                  |
+| ------------ | ----------------------------------- |
 | Base station | Fixed 120 Ω resistor on the CAN HAT |
-| Last node | Automatic via hardware logic |
+| Last node    | Automatic via hardware logic        |
+
 
 The automatic termination on the last node works as follows: when the node's CAN-out
 RJ45 port is **unplugged**, hardware logic (a physical switch or pull) asserts the
@@ -105,7 +109,7 @@ Discovery uses a daisy-chain Address Enable signal. Each module has:
 
 - **AEO** — Address Enable Out (drives the next node's AEI).
 - **AEI** — Address Enable In (gates whether the node participates in the current
-  discovery step).
+discovery step).
 
 #### First boot — all nodes have empty NVS
 
@@ -177,55 +181,88 @@ After discovery, the user maps logical Node IDs to physical positions (arena lay
 Both the base station registry and each node's NVS stay in sync; a node that loses its
 NVS falls back to first-boot behaviour on the next power cycle.
 
+### CAN identifier layout
+
+VFM uses **11-bit standard CAN identifiers** (`0x000`–`0x7FF`, 2048 IDs) with software
+filtering. The identifier carries **message class and target node** only; opcodes, event
+types, and payload (dispense state, pellet counts, etc.) live in the separate 0–8 byte
+data field.
+
+Operational messages use `identifier = BASE + nodeId`. The **low 8 bits** are `nodeId`
+(0–255); the **upper bits** select message class (`0x1xx` commands, `0x2xx` heartbeat,
+`0x3xx` events). Node IDs are 1-based; `nodeId == 0` on commands means broadcast
+(`0x100`).
+
+
+| Region           | Range           | Role                                                                     |
+| ---------------- | --------------- | ------------------------------------------------------------------------ |
+| Discovery        | `0x080`–`0x083` | Boot-time ANNOUNCE, ASSIGN, ACK, REJOIN (node identified by MAC in data) |
+| Commands         | `0x100`–`0x1FF` | Base → node (`0x100` = all nodes)                                        |
+| Heartbeat/status | `0x200`–`0x2FF` | Node → base periodic status                                              |
+| Events           | `0x300`–`0x3FF` | Node → base immediate events                                             |
+| Reserved         | everything else | Unused in v1 (~1276 IDs, including `0x400`–`0x7FF`)                      |
+
+
+Each assigned node consumes **3 operational IDs** — command, heartbeat, and event. With
+N nodes: **3×N + 4 discovery + 1 broadcast** (e.g. node 4 → `0x104`, `0x204`, `0x304`).
+Maximum **255 nodes** (`nodeId` 1…255). About **772 IDs** are allocated by design; the
+rest of the 11-bit space is free for future message types.
+
 ## Module hardware
 
-| Component | Detail |
-| --------- | ------ |
-| MCU | ESP32S3 |
-| CAN interface | On-board CAN transceiver |
-| Connectivity | RJ45 in + RJ45 out (daisy-chain); carries CAN_H, CAN_L, 12 V, GND, AEO, AEI |
-| Termination | Automated hardware logic — resistor switches in when CAN-out is unplugged |
-| Actuation | 2 × stepper motor + driver (pellet dispensing) |
-| Dispensing verification | 3 × beam-break sensor |
-| Presence sensing | 1 × capacitive touch sensor (presence prediction) |
-| Status LED | 1 × upward-facing LED (node status visibility from above) |
-| General-purpose LEDs | 2 × on-board LEDs (user configurable) |
-| User GPIOs | 2 × general-purpose GPIO pins |
-| Power input | 12 V from daisy-chain supply |
+
+| Component               | Detail                                                                      |
+| ----------------------- | --------------------------------------------------------------------------- |
+| MCU                     | ESP32S3-Mini-1 N8                                                           |
+| CAN interface           | On-board CAN transceiver                                                    |
+| Connectivity            | RJ45 in + RJ45 out (daisy-chain); carries CAN_H, CAN_L, 12 V, GND, AEO, AEI |
+| Termination             | Automated hardware logic — resistor switches in when CAN-out is unplugged   |
+| Actuation               | 2 × stepper motor + driver (pellet dispensing)                              |
+| Dispensing verification | 3 × beam-break sensor                                                       |
+| Presence sensing        | 1 × capacitive touch sensor (presence prediction)                           |
+| Status LED              | 1 × upward-facing LED (node status visibility from above)                   |
+| General-purpose LEDs    | 2 × on-board LEDs (user configurable)                                       |
+| User GPIOs              | 2 × general-purpose GPIO pins                                               |
+| Power input             | 12 V from daisy-chain supply                                                |
+
 
 LED colors available: **red**, **green**, **yellow**. Specific state assignments
 (boot, fault, active, reward, etc.) are defined in
-[`failure-modes.md`](failure-modes.md).
+`[failure-modes.md](failure-modes.md)`.
 
 ## Base station hardware
 
-| Component | Detail |
-| --------- | ------ |
-| Compute | Raspberry Pi 5 |
-| CAN interface | Custom CAN HAT |
-| Power | USB-C |
-| CAN output | Connects to Module 1 (first node) via RJ45 |
-| Sync inputs | 2 × BNC — external system to base station |
-| Sync output | 1 × BNC — base station to external system |
-| BNC isolation | 5 V isolated rail for noise immunity |
-| Status LEDs | 2 × user-configurable LEDs |
-| BNC indicator LEDs | 3 × LEDs (one per BNC channel) |
+
+| Component          | Detail                                     |
+| ------------------ | ------------------------------------------ |
+| Compute            | Raspberry Pi 5                             |
+| CAN interface      | Custom CAN HAT                             |
+| Power              | USB-C                                      |
+| CAN output         | Connects to Module 1 (first node) via RJ45 |
+| Sync inputs        | 2 × BNC — external system to base station  |
+| Sync output        | 1 × BNC — base station to external system  |
+| BNC isolation      | 5 V isolated rail for noise immunity       |
+| Status LEDs        | 2 × user-configurable LEDs                 |
+| BNC indicator LEDs | 3 × LEDs (one per BNC channel)             |
+
 
 ## Synchronization strategy
 
 Synchronization is owned by the base station. The three BNC connectors handle all
 timing I/O between the platform and external recording systems:
 
-| Connector | Direction | Purpose |
-| --------- | --------- | ------- |
-| BNC In 1 | External → Base station | External trigger or clock input |
-| BNC In 2 | External → Base station | Secondary external input |
-| BNC Out | Base station → External | Platform event or trigger output |
+
+| Connector | Direction               | Purpose                          |
+| --------- | ----------------------- | -------------------------------- |
+| BNC In 1  | External → Base station | External trigger or clock input  |
+| BNC In 2  | External → Base station | Secondary external input         |
+| BNC Out   | Base station → External | Platform event or trigger output |
+
 
 BNC signals run on an isolated 5 V rail to minimise ground loops and noise coupling to
 electrophysiology systems. Detailed signal levels, edge timing, polarity, jitter
 budget, and recording system compatibility targets are captured in
-[`sync-and-recording.md`](sync-and-recording.md).
+`[sync-and-recording.md](sync-and-recording.md)`.
 
 ## Status indicators
 
@@ -233,32 +270,38 @@ budget, and recording system compatibility targets are captured in
 
 Each module carries three LEDs (red, green, yellow):
 
-| LED | Placement | Notes |
-| --- | --------- | ----- |
-| Status LED | Upward-facing | Visible from above during experiments |
-| General LED 1 | On-board | User configurable |
-| General LED 2 | On-board | User configurable |
+
+| LED           | Placement     | Notes                                 |
+| ------------- | ------------- | ------------------------------------- |
+| Status LED    | Upward-facing | Visible from above during experiments |
+| General LED 1 | On-board      | User configurable                     |
+| General LED 2 | On-board      | User configurable                     |
+
 
 State assignments (boot, fault, active, reward, idle, etc.) are not yet finalised.
-See [`failure-modes.md`](failure-modes.md) for fault code cross-reference.
+See `[failure-modes.md](failure-modes.md)` for fault code cross-reference.
 
 ### Base station LEDs
 
-| LED | Count | Purpose |
-| --- | ----- | ------- |
-| User-configurable | 2 | General status |
-| BNC indicator | 3 | One per BNC channel — shows signal activity |
+
+| LED               | Count | Purpose                                     |
+| ----------------- | ----- | ------------------------------------------- |
+| User-configurable | 2     | General status                              |
+| BNC indicator     | 3     | One per BNC channel — shows signal activity |
+
 
 ## Power
 
-| Parameter | Value |
-| --------- | ----- |
-| Module supply voltage | 12 V |
-| Distribution | Daisy-chained through RJ45 connectors |
-| Per-module worst-case current | ~450 mA |
-| 9-module total | ~4 A |
-| Recommended supply rating | 8 A (supports up to ~16 modules) |
-| Base station supply | USB-C (independent of module rail) |
+
+| Parameter                     | Value                                 |
+| ----------------------------- | ------------------------------------- |
+| Module supply voltage         | 12 V                                  |
+| Distribution                  | Daisy-chained through RJ45 connectors |
+| Per-module worst-case current | ~450 mA                               |
+| 9-module total                | ~4 A                                  |
+| Recommended supply rating     | 8 A (supports up to ~16 modules)      |
+| Base station supply           | USB-C (independent of module rail)    |
+
 
 A single 8 A 12 V supply is the minimum recommended for a full 9-module deployment.
 Scaling to 16 modules remains within the same supply rating at this per-module budget.
@@ -318,3 +361,6 @@ flowchart TD
     PSU -->|12 V daisy-chain| M2
     PSU -->|12 V daisy-chain| MN
 ```
+
+
+
