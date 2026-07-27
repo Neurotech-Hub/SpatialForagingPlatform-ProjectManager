@@ -18,7 +18,7 @@ Power on the 12 V power supply (daisy-chained to all modules) and boot the Raspb
 | **Unassigned (no ID)** | **Continuous slow blink** | Node has no saved NVS ID; awaiting base station AEI HIGH pulse |
 | **ID assigned & online** | **Off** | Node assigned valid CAN Node ID, heartbeat active, operational |
 | **Fault** | Red blink pattern | Active sticky fault (Jam, Timeout); see [`failure-modes.md`](failure-modes.md) |
-| **Warning** | Yellow blink pattern | Non-sticky warning (e.g. PG3 dome held open > 30 s) |
+| **Warning** | Yellow blink pattern | Non-sticky warning (e.g. dome held open > 30 s) |
 
 > [!IMPORTANT]
 > If a module's status LED blinks continuously after power-on, it is waiting for ID assignment. This is normal behavior prior to the base station initiating the discovery FSM and driving the AEI line HIGH.
@@ -47,10 +47,10 @@ The base station GUI (`tools/dev_gui` or system dashboard) receives live telemet
 | GUI Node State | Description |
 | :------------- | :---------- |
 | **Idle** | Node online, in standby position; ready for dispense commands |
-| **Lowering** | Actuator (M2) lowering to home/load position until home photogate (PG2) triggers |
-| **Feeding** | Feed motor (M1) rotating until pellet drop photogate (PG1) beam-break triggers |
+| **Lowering** | Actuator (M2) lowering to home position until home position sensor (PG2) triggers |
+| **Feeding** | Feed motor (M1) rotating until pellet presence sensor confirms pellet at presentation stage |
 | **Raising** | Actuator (M2) raising pellet by target steps (`raiseSteps`, ~700 steps) to presentation port |
-| **Presented** | Pellet presented at port; node holds position awaiting next dispense or `Abort` |
+| **Presented** | Pellet presented at port; spring access sensor detects catch attempts and pellet presence sensor confirms retrieval |
 | **SeekingAway** | Actuator (M2) moving up away from home until PG2 clears (recovery/clear motion) |
 | **Fault** | Sticky error state (Jam, Timeout); requires an `Abort` command from GUI to reset |
 | **Offline** | Watchdog state: base station received no heartbeat for > 15 s (card highlighted red) |
@@ -78,23 +78,23 @@ stateDiagram-v2
     [*] --> Idle
     Idle --> Lowering : Dispense command
     Lowering --> Feeding : PG2 triggered (Home LOW)
-    Feeding --> Raising : PG1 triggered (Pellet Drop LOW) & cleared
+    Feeding --> Raising : Pellet presence detected
     Raising --> Presented : M2 target steps reached
-    Presented --> Lowering : New Dispense command
+    Presented --> Lowering : New Dispense command / Pellet retrieved
     Presented --> Idle : Abort command
     Lowering --> Fault : Lowering Timeout / Jam
-    Feeding --> Fault : Feed Timeout / PG1 Jam
+    Feeding --> Fault : Feed Timeout / Presence Sensor Fault
     Raising --> Fault : Raising Timeout / PG2 Jam
     Fault --> Idle : Abort command
 ```
 
 ### Dispense sequence phases
 
-1. **Lowering**: Base station sends `Dispense`. Actuator motor (M2) runs DOWN until **PG2 (home photogate)** is tripped (LOW).
-2. **Feeding**: Feed motor (M1) rotates to dispense a pellet. **PG1 (pellet photogate)** detects the falling pellet (trips LOW) and clears.
+1. **Lowering**: Base station sends `Dispense`. Actuator motor (M2) runs DOWN until **PG2 (home position sensor)** is tripped (LOW).
+2. **Feeding**: Feed motor (M1) rotates to advance a pellet. The **pellet presence sensor** detects and verifies pellet presence at the presentation stage.
 3. **Raising**: Actuator motor (M2) runs UP for `raiseSteps` (bench default: 700 steps) to elevate the pellet to the presentation port.
-4. **Presented**: Pellet is held at the presentation port. The node latches a `PelletPresented` CAN event (`0x300 + nodeId`) and increments its internal pellet count. **PG3 (dome/access photogate)** monitors animal port access.
-5. **Cycle completion / Next trial**: A subsequent `Dispense` command from the GUI transitions the node directly from `Presented` into `Lowering` for the next pellet, while an `Abort` command returns the node to `Idle`.
+4. **Presented**: Pellet is held at the presentation port. The node latches a `PelletPresented` CAN event (`0x300 + nodeId`) and increments its internal pellet count. The **spring-loaded access port mechanism** detects animal access and catch attempts. Upon an access attempt (spring trigger), the **pellet presence sensor** instantly evaluates pellet presence with confidence, determining whether the pellet was successfully retrieved or missed.
+5. **Cycle completion / Next trial**: A subsequent `Dispense` command or confirmed pellet retrieval transitions the node directly from `Presented` into `Lowering` for the next pellet, while an `Abort` command returns the node to `Idle`.
 
 ---
 
@@ -184,7 +184,7 @@ If a specific module fails system checks, detach the module for bench testing us
 | :----- | :--------------------- |
 | `CanBusTest.ino` | TWAI/CAN transceiver hardware, frame TX/RX, bus termination |
 | `LEDTest.ino` | Status LED, green/yellow/red LED drive patterns |
-| `PhotogateTest.ino` | PG1 (pellet), PG2 (home), PG3 (dome) beam-break sensor outputs |
+| `SensorTest.ino` | Pellet presence sensor, home position sensor (PG2), and spring access trigger outputs |
 | `StepperMotorTest.ino` | M1 (feed) and M2 (actuator) stepper motor drivers and step counts |
 
 ---
@@ -196,7 +196,7 @@ If a specific module fails system checks, detach the module for bench testing us
 | **Node Discovery** | All status LEDs turn **OFF** after ID assignment | LED continues blinking indefinitely |
 | **GUI Node State** | Live state reflects exact node FSM (`Idle`, `Lowering`, `Feeding`, `Raising`, `Presented`) | Card stuck on `Offline`, `Fault`, or state mismatch |
 | **Ping Response** | Target node fast-blinks LED; `Pong` frame logged within 2 s | No response; MAC missing in log |
-| **Dispense Sequence** | Smooth transition `Idle → Lowering → Feeding → Raising → Presented`; pellet detected by PG1 | Motor stall, PG1 timeout, or sticky `Fault` state |
+| **Dispense Sequence** | Smooth transition `Idle → Lowering → Feeding → Raising → Presented`; pellet detected by pellet presence sensor; confident retrieval verification via spring access trigger | Motor stall, pellet presence sensor timeout, or sticky `Fault` state |
 | **CAN Loopback (`test_hat.py`)** | `[PASS] Loopback TX/RX matches` | Mismatched frame data or CAN interface down |
 | **BNC Sync Pulse** | BNC OUT pulse width within ±10% of configured width | Missing pulse or incorrect pulse width |
 | **Offline Detection** | Disconnected node transitions to **Offline** in ~15 s | Node state remains `Idle` after cable disconnect |

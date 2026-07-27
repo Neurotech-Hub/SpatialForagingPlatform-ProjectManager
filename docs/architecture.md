@@ -8,7 +8,7 @@ The Spatial Foraging Platform is a modular, network-connected behavioral apparat
 consisting of a Raspberry Pi 5 base station and up to N foraging modules (reference
 deployment: 9 modules) connected over a CAN bus in a linear daisy-chain. Each
 foraging module is an independent unit housing an ESP32S3, two stepper-motor pellet
-dispensers, a beam-break and capacitive-touch sensing suite, and status LEDs. The base
+dispensers, a sensor suite comprising a pellet presence sensor, home position sensor, and spring-loaded access port trigger, and status LEDs. The base
 station orchestrates node discovery, session management, event logging, and
 synchronization with external recording systems via BNC I/O. All modules are powered
 from a single 12 V supply routed through the daisy-chain; the base station is powered
@@ -218,8 +218,9 @@ rest of the 11-bit space is free for future message types.
 | Connectivity            | RJ45 in + RJ45 out (daisy-chain); carries CAN_H, CAN_L, 12 V, GND, AEO, AEI |
 | Termination             | Automated hardware logic — resistor switches in when CAN-out is unplugged   |
 | Actuation               | 2 × stepper motor + driver (pellet dispensing)                              |
-| Dispensing verification | 3 × beam-break sensor                                                       |
-| Presence sensing        | 1 × capacitive touch sensor (presence prediction)                           |
+| Pellet sensing          | 1 × pellet presence sensor (direct verification at presentation port)       |
+| Access sensing          | 1 × pellet catch trigger (instant catch detection)      |
+| Position sensing        | 1 × home position sensor (actuator limit)                                   |
 | Status LED              | 1 × upward-facing LED (node status visibility from above)                   |
 | General-purpose LEDs    | 2 × on-board LEDs (user configurable)                                       |
 | User GPIOs              | 2 × general-purpose GPIO pins                                               |
@@ -335,8 +336,8 @@ flowchart TD
         M1ESP[ESP32S3]
         M1CAN[CAN XCVR]
         M1STEP[2x Stepper]
-        M1BB[3x Beam Break]
-        M1CAP[Cap Touch]
+        M1PRES[Pellet Presence Sensor]
+        M1ACC[Spring Access Sensor]
         M1LED[3x LED]
     end
 
