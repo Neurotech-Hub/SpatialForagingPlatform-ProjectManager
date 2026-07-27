@@ -1,134 +1,129 @@
 # Function Checks
 
-Per-module and system-level procedures to confirm the platform is healthy
-before an experiment.
+System-level bring-up and verification procedures to confirm the platform is healthy before an experiment.
+
+> [!NOTE]
+> This procedure evaluates the platform from a **whole-system perspective** (Base Station + connected VFM Node array). It assumes that the `CanNode` (VFM) firmware is already flashed to all nodes.
 
 ---
 
-## Module function check
+## 1. System power-on & LED status check
 
-Step-by-step procedure to verify a single foraging module after power-on.
-
-### 1. Status LED indication
-
-Flash the `CanNode` firmware and power the module. Observe the **Status LED**:
+Power on the 12 V power supply (daisy-chained to all modules) and boot the Raspberry Pi base station. Observe the **Status LED** on each connected module across the arena:
 
 | Phase | Status LED | Meaning |
 | :---- | :--------- | :------ |
-| Booting | Slow blink (1 s) | `begin()` executing |
-| Waiting for discovery | Slow blink (1 s) | CAN up, awaiting AEI / base station |
-| **Unassigned — no ID** | **Continuous slow blink** | Node has no saved NVS ID; base station has not yet driven AEI HIGH |
-| ID assigned & online | **Off** | Normal operation |
-| Fault | Red blink pattern | See `failure-modes.md` |
+| **Booting** | Slow blink (1 s) | `begin()` executing; hardware initializing |
+| **Waiting for discovery** | Slow blink (1 s) | CAN controller active, awaiting AEI signal from base station |
+| **Unassigned (no ID)** | **Continuous slow blink** | Node has no saved NVS ID; awaiting base station AEI HIGH pulse |
+| **ID assigned & online** | **Off** | Node assigned valid CAN Node ID, heartbeat active, operational |
+| **Fault** | Red blink pattern | Active sticky fault (Jam, Timeout); see [`failure-modes.md`](failure-modes.md) |
+| **Warning** | Yellow blink pattern | Non-sticky warning (e.g. PG3 dome held open > 30 s) |
 
 > [!IMPORTANT]
-> If the status LED **keeps blinking indefinitely**, the node has not been
-> assigned a Node ID. This is the expected state until the base station
-> drives the AEI line HIGH and completes ID assignment. It is **not** a
-> hardware fault on its own.
-
-### 2. Node discovery and ID assignment
-
-Connect the module to the base station via RJ45. The base station drives AEI
-HIGH on the first module's AEI pin, initiating discovery:
-
-1. Base station drives **AEI HIGH** on module 1.
-2. Module transitions: `WaitAEI → CheckNVS`.
-   - **First boot (NVS empty)**: transitions to `Announce`, broadcasts its
-     MAC address, waits for `AssignId` CAN command.
-   - **Subsequent boot (NVS has saved ID)**: transitions to `Rejoin` and
-     immediately propagates AEO HIGH to the next node.
-3. Once the base station sends `ASSIGN(MAC, nodeId)` and the module confirms,
-   the **status LED turns off** and the node becomes fully operational.
-4. The module begins transmitting periodic heartbeat frames (`0x200 + nodeId`)
-   every ~5 s.
-
-**Expected result**: Status LED off; node visible in base station GUI.
-
-### 3. GUI node status display
-
-Once a node's MAC address is registered and an ID is assigned, the base
-station GUI (`tools/dev_gui`) shows the live node status. Available states
-displayed in the GUI:
-
-| GUI State | Description |
-| :-------- | :---------- |
-| **Idle** | Node online, no active dispense |
-| **Loading** | Actuator (M2) lowering to home / pellet loading in progress |
-| **Presenting** | Actuator raised; pellet is presented to the animal |
-| **Fault** | Sticky fault active (Jam, Timeout) — requires Abort |
-| **Offline** | No heartbeat received within watchdog window (~15 s) |
-
-The GUI continuously monitors the `0x200 + nodeId` heartbeat. If a node
-goes offline the card turns red and the state shows **Offline**.
-
-### 4. Ping / locate node
-
-The base station GUI sends a **Ping** (`CanCmd::Ping`) command to a specific
-node or broadcast. The target node:
-
-1. Responds with a `Pong` event (`CanEvent::Pong`) containing its **MAC
-   address** in the payload — logged in the GUI event log.
-2. Executes a **fast LED blink** pattern on its status LED so you can
-   visually locate the physical module in the arena.
-
-> [!TIP]
-> Use Ping to confirm which physical box corresponds to a given Node ID
-> before an experiment, or to verify bus connectivity to an individual node
-> without sending a dispense command.
-
-### 5. Motor and dispenser verification
-
-Send a **Dispense** command from the base station GUI to cycle through a full dispense:
-
-- **PG1**: beam-break at pellet exit — should trip during feed.
-- **PG2**: home sensor for actuator (M2) — should clear when raised, block when home.
-- **PG3**: dome sensor — should open when animal accesses port.
-
-Expected dispense state sequence: `Idle → Loading → Presenting → Idle`.
-
-### 6. Individual hardware tests (bench / troubleshooting)
-
-The `examples/Troubleshooting/HardwareExamples/` directory contains
-standalone Arduino sketches for isolated hardware verification:
-
-| Sketch | What it checks |
-| :----- | :------------- |
-| `CanBusTest.ino` | CAN TWAI driver, frame TX/RX, bus termination |
-| `LEDTest.ino` | All three LEDs (red/green/yellow) cycle through states |
-| `PhotogateTest.ino` | PG1, PG2, PG3 beam-break outputs with Serial Monitor |
-| `StepperMotorTest.ino` | M1 and M2 stepper motion with configurable step count |
+> If a module's status LED blinks continuously after power-on, it is waiting for ID assignment. This is normal behavior prior to the base station initiating the discovery FSM and driving the AEI line HIGH.
 
 ---
 
-## Base station function check
+## 2. Automated node discovery & daisy-chain assignment
 
-Step-by-step procedure to verify the Raspberry Pi base station HAT.
+Connect all modules to the base station in a linear daisy-chain via RJ45 cables. When the base station software initializes:
 
-### Interactive hardware validation — `test_hat.py`
+1. Base station asserts **AEI HIGH** on Module 1.
+2. Module 1 FSM transitions: `WaitAEI → CheckNVS`.
+   - **First boot (NVS empty)**: Transitions to `Announce`, broadcasts MAC address over CAN, waits for `AssignId` command.
+   - **Rejoin boot (NVS has saved ID)**: Transitions to `Rejoin` and immediately asserts AEO HIGH to downstream module.
+3. Upon receiving `ASSIGN(MAC, nodeId)`, the module saves its Node ID to NVS, turns **off** its status LED, and propagates AEO HIGH to Module 2.
+4. The process repeats sequentially down the chain until all $N$ modules are assigned IDs and emitting CAN heartbeats (`0x200 + nodeId`) every ~5 s.
 
-The primary automated bring-up tool is located at:
+**Expected result**: All module status LEDs turn off; all connected nodes appear online in the base station GUI grid.
 
+---
+
+## 3. GUI node status monitoring
+
+The base station GUI (`tools/dev_gui` or system dashboard) receives live telemetry and heartbeats from all nodes on the bus. Each node's card displays its real-time VFM state machine status:
+
+| GUI Node State | Description |
+| :------------- | :---------- |
+| **Idle** | Node online, in standby position; ready for dispense commands |
+| **Lowering** | Actuator (M2) lowering to home/load position until home photogate (PG2) triggers |
+| **Feeding** | Feed motor (M1) rotating until pellet drop photogate (PG1) beam-break triggers |
+| **Raising** | Actuator (M2) raising pellet by target steps (`raiseSteps`, ~700 steps) to presentation port |
+| **Presented** | Pellet presented at port; node holds position awaiting next dispense or `Abort` |
+| **SeekingAway** | Actuator (M2) moving up away from home until PG2 clears (recovery/clear motion) |
+| **Fault** | Sticky error state (Jam, Timeout); requires an `Abort` command from GUI to reset |
+| **Offline** | Watchdog state: base station received no heartbeat for > 15 s (card highlighted red) |
+
+---
+
+## 4. System-wide bus ping & spatial location check
+
+From the base station GUI, issue a **Ping All** command (`CanCmd::Ping` broadcast) or target individual Node IDs:
+
+1. Every active node responds with a `Pong` event (`CanEvent::Pong`) containing its **MAC address** and **Node ID**, which populates the GUI event log.
+2. The target node executes a **fast LED blink** pattern on its status LED, allowing visual verification of physical node locations within the arena.
+
+> [!TIP]
+> Use Ping All prior to an experiment to verify full CAN bus reachability across all nodes simultaneously and confirm that Node IDs match physical cage positions.
+
+---
+
+## 5. System dispense sequence & sensor verification
+
+Trigger a dispense cycle from the base station GUI (individual module test or sequence across the array). Verify that the system executes the full VFM dispense sequence and sensor transitions:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Idle
+    Idle --> Lowering : Dispense command
+    Lowering --> Feeding : PG2 triggered (Home LOW)
+    Feeding --> Raising : PG1 triggered (Pellet Drop LOW) & cleared
+    Raising --> Presented : M2 target steps reached
+    Presented --> Lowering : New Dispense command
+    Presented --> Idle : Abort command
+    Lowering --> Fault : Lowering Timeout / Jam
+    Feeding --> Fault : Feed Timeout / PG1 Jam
+    Raising --> Fault : Raising Timeout / PG2 Jam
+    Fault --> Idle : Abort command
 ```
-tests/test_hat.py
+
+### Dispense sequence phases
+
+1. **Lowering**: Base station sends `Dispense`. Actuator motor (M2) runs DOWN until **PG2 (home photogate)** is tripped (LOW).
+2. **Feeding**: Feed motor (M1) rotates to dispense a pellet. **PG1 (pellet photogate)** detects the falling pellet (trips LOW) and clears.
+3. **Raising**: Actuator motor (M2) runs UP for `raiseSteps` (bench default: 700 steps) to elevate the pellet to the presentation port.
+4. **Presented**: Pellet is held at the presentation port. The node latches a `PelletPresented` CAN event (`0x300 + nodeId`) and increments its internal pellet count. **PG3 (dome/access photogate)** monitors animal port access.
+5. **Cycle completion / Next trial**: A subsequent `Dispense` command from the GUI transitions the node directly from `Presented` into `Lowering` for the next pellet, while an `Abort` command returns the node to `Idle`.
+
+---
+
+## 6. Base station hardware & driver validation
+
+Verify the base station hardware (Raspberry Pi 5 + CAN HAT) and host software stack:
+
+### Interactive HAT validation (`test_hat.py`)
+
+Run the automated interactive bring-up tool on the Raspberry Pi:
+
+```bash
+python tests/test_hat.py
 ```
 
-Run it **directly on the Raspberry Pi** with the HAT connected. The script is an **interactive checklist** — each section prints instructions, waits for your confirmation, then prints `[PASS]` or `[FAIL]` with a summary at the end.
+The checklist validates all base-station hardware interfaces:
 
-#### Sections covered
+| Section Flag | Hardware / Interface Validated |
+| :----------- | :----------------------------- |
+| `can` | SPI/MCP2515 interface, CAN loopback self-test, live node discovery |
+| `aeo` | AEO (GPIO27) daisy-chain enable output drive |
+| `bnc_out` | BNC OUT (GPIO6) pulse timing and idle state |
+| `bnc_in` | BNC IN 1 / BNC IN 2 (GPIO12/13) edge detection & level sensing |
+| `button` | User button (GPIO3) input |
+| `full_loop` | End-to-end loopback: BNC IN 1 → CAN broadcast dispense → BNC OUT pulse |
 
-| Section flag | What it validates |
-| :----------- | :---------------- |
-| `can` | SPI/MCP2515 interface up; loopback self-test; live node discovery |
-| `aeo` | AEO (GPIO27) daisy-chain enable output |
-| `bnc_out` | BNC OUT (GPIO6) idle/drive/pulse timing |
-| `bnc_in` | BNC IN 1 / BNC IN 2 (GPIO12/13) idle level + edge detection |
-| `button` | User button (GPIO3) |
-| `full_loop` | End-to-end: BNC IN 1 → CAN broadcast dispense → BNC OUT pulse |
+### Host software pytest suite
 
-### Automated pytest suite
-
-Run the full automated test suite (no hardware required — uses mock objects):
+Execute the unit and protocol test suite on the base station (no hardware required):
 
 ```bash
 cd tools/dev_gui
@@ -136,90 +131,81 @@ pip install pytest
 python -m pytest tests/ -v
 ```
 
-Test files and their scope:
-
-| File | Scope |
-| :--- | :---- |
+| Test File | Scope |
+| :-------- | :---- |
 | `test_app.py` | GUI application lifecycle |
-| `test_discovery_manager.py` | Node discovery FSM logic |
-| `test_hat.py` | Interactive HAT hardware validation (manual) |
-| `test_log_manager.py` | CSV event log writing |
-| `test_mac_id_registry.py` | MAC ↔ Node ID persistent registry |
-| `test_node_registry.py` | Node state machine and heartbeat watchdog |
-| `test_protocol.py` | CAN frame encode/decode |
-| `test_schedule.py` | Session scheduling logic |
-
-### CAN interface bring-up (first-time)
-
-Verify the CAN driver and interface are up and running:
-
-```bash
-ip link show can0          # should show "UP" and "mtu 16"
-```
-
-If `can0` is absent, follow the one-time setup in
-`deploy/README.md` to add the device tree overlay to
-`/boot/firmware/config.txt`.
+| `test_discovery_manager.py` | Node discovery state machine logic |
+| `test_hat.py` | Interactive HAT hardware validation |
+| `test_log_manager.py` | CSV event logging and timestamping |
+| `test_mac_id_registry.py` | Persistent MAC-to-Node ID mapping |
+| `test_node_registry.py` | Node FSM registry and heartbeat watchdog |
+| `test_protocol.py` | CAN frame encoding/decoding |
+| `test_schedule.py` | Session scheduling and task execution |
 
 ---
 
-## System function check (end-to-end)
+## 7. End-to-end system bring-up checklist
 
-Exercises the full platform with all modules attached.
+Perform this full system check before initiating an experimental session:
 
-1. **Power on** all modules and the base station.
-2. **Start the GUI** on the Raspberry Pi:
-   ```bash
-   python run.py
-   ```
-3. **Verify discovery** completes — all expected nodes appear in the GUI grid
-   with their correct Node IDs, and status LEDs turn off.
-4. **Ping all nodes** from the GUI to confirm bus reachability (`ping_all`).
-5. **Dispense check** — trigger one dispense per module and confirm the GUI
-   state sequences through `Idle → Loading → Presenting → Idle`.
-6. **BNC sync test** — assert BNC IN 1 with a test pulse; verify the GUI
-   event log records the edge and (if configured) a CAN event is broadcast.
-7. **Offline detection** — disconnect one module's RJ45; within ~15 s the GUI
-   should show that node as **Offline**.
-8. **Reconnect** — reattach the cable; the node should rejoin and return to
-   **Idle**.
+1. **Power & Bus**: Turn on 12 V power supply and boot Raspberry Pi base station.
+2. **Launch GUI**: Start the base station software (`python run.py`).
+3. **Verify Discovery**: Confirm all connected nodes complete daisy-chain assignment, appear in the GUI grid with correct Node IDs, and status LEDs turn OFF.
+4. **Bus Reachability (`Ping All`)**: Trigger `ping_all` from GUI; verify all nodes fast-blink status LEDs and emit `Pong` events.
+5. **Dispense Cycle Verification**: Trigger a dispense on each module; verify state machine sequence: `Idle → Lowering → Feeding → Raising → Presented`.
+6. **BNC Synchronization**: Send a test pulse to BNC IN 1; confirm edge is recorded in the GUI log and BNC OUT pulse is generated.
+7. **Offline Watchdog Test**: Disconnect an RJ45 cable from one module; confirm GUI updates node state to **Offline** within ~15 s.
+8. **Rejoin Verification**: Reconnect the RJ45 cable; confirm node auto-rejoins and returns to **Idle**.
 
-### Simulated system test (no hardware required)
+### Simulated system test (software-only mode)
 
-Bring up a virtual CAN interface and run the node simulator for a software-
-only end-to-end check:
+To verify host software functionality without physical hardware attached:
 
 ```bash
-# One-time per boot
+# Setup virtual CAN interface
 sudo modprobe vcan
 sudo ip link add dev vcan0 type vcan
 sudo ip link set up vcan0
 
-# Terminal 1 — simulate N nodes
+# Terminal 1 — launch node simulator (e.g. 9 nodes)
 python node_simulator.py --interface vcan0 --nodes 9
 
-# Terminal 2 — start GUI connected to vcan0
+# Terminal 2 — launch GUI connected to vcan0
 python run.py --interface vcan0 --nodes 9
 ```
 
 ---
 
-## Pass / fail criteria
+## 8. Standalone bench troubleshooting reference
 
-| Check | Pass | Fail |
-| :---- | :--- | :--- |
-| Node discovery | Status LED turns **off** after ID assignment | Blink never stops |
-| GUI node state | GUI shows live state (Idle/Loading/Presenting) | Node shows Offline or blank |
-| Ping response | LED fast-blinks; MAC logged in event pane | No response within 2 s |
-| Dispense cycle | State machine returns to Idle; pellet detected by PG1 | Fault or Timeout reported |
-| CAN loopback (`test_hat.py`) | `[PASS] Loopback TX/RX matches` | Frame mismatch or interface not UP |
-| BNC OUT pulse | Oscilloscope confirms pulse width within ±10 % | No pulse or incorrect width |
-| Offline detection | Node goes **Offline** within heatbeat x 3 s of cable removal | State never changes |
+If a specific module fails system checks, detach the module for bench testing using standalone sketches in `examples/Troubleshooting/HardwareExamples/`:
+
+| Sketch | Target Subsystem Check |
+| :----- | :--------------------- |
+| `CanBusTest.ino` | TWAI/CAN transceiver hardware, frame TX/RX, bus termination |
+| `LEDTest.ino` | Status LED, green/yellow/red LED drive patterns |
+| `PhotogateTest.ino` | PG1 (pellet), PG2 (home), PG3 (dome) beam-break sensor outputs |
+| `StepperMotorTest.ino` | M1 (feed) and M2 (actuator) stepper motor drivers and step counts |
+
+---
+
+## 9. Pass / fail criteria
+
+| Verification Step | Pass Criteria | Fail Criteria |
+| :---------------- | :------------ | :------------ |
+| **Node Discovery** | All status LEDs turn **OFF** after ID assignment | LED continues blinking indefinitely |
+| **GUI Node State** | Live state reflects exact node FSM (`Idle`, `Lowering`, `Feeding`, `Raising`, `Presented`) | Card stuck on `Offline`, `Fault`, or state mismatch |
+| **Ping Response** | Target node fast-blinks LED; `Pong` frame logged within 2 s | No response; MAC missing in log |
+| **Dispense Sequence** | Smooth transition `Idle → Lowering → Feeding → Raising → Presented`; pellet detected by PG1 | Motor stall, PG1 timeout, or sticky `Fault` state |
+| **CAN Loopback (`test_hat.py`)** | `[PASS] Loopback TX/RX matches` | Mismatched frame data or CAN interface down |
+| **BNC Sync Pulse** | BNC OUT pulse width within ±10% of configured width | Missing pulse or incorrect pulse width |
+| **Offline Detection** | Disconnected node transitions to **Offline** in ~15 s | Node state remains `Idle` after cable disconnect |
 
 ---
 
 ## Cross-references
 
-- [`failure-modes.md`](failure-modes.md) — fault catalog and LED patterns.
-- [`maintenance.md`](maintenance.md) — scheduled preventive checks.
-- [`architecture.md`](architecture.md) — CAN ID layout and discovery FSM.
+- [`failure-modes.md`](failure-modes.md) — fault catalog, sticky error codes, and LED patterns.
+- [`maintenance.md`](maintenance.md) — preventive maintenance and calibration schedules.
+- [`architecture.md`](architecture.md) — CAN ID layout, discovery protocol, and system topology.
+
