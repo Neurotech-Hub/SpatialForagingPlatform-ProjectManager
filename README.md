@@ -5,6 +5,9 @@ foraging environment for freely moving rodents. Distributed reward delivery and
 spatial cueing within a scalable, synchronized architecture enable continuous,
 ethologically grounded behavior compatible with chronic neural recordings.
 
+**[View design (Fusion 360)](https://a360.co/4dwOh8e)** — 3D model and mounting
+outline. Mounting DXF and fastener notes live in [`hardware/`](hardware/).
+
 This repository is the **planning, documentation, and manuscript hub** for the
 project. Hardware design files, firmware, host software, and analysis code all
 live in separate repositories and are linked from the [Related repositories](#related-repositories)
