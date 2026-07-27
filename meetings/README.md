@@ -7,13 +7,13 @@ every call. Full transcripts are not required.
 ## How to add a note
 
 1. Copy [`TEMPLATE.md`](TEMPLATE.md) to a new file named
-   `YYYY-MM-DD-short-topic.md` (lowercase kebab-case for the topic).
-   Example: `2026-06-14-architecture-kickoff.md`.
+   `YYYYMMDD_meeting.md`.
+   Example: `20260722_meeting.md`.
 2. Fill in attendees, agenda, decisions, and action items.
 3. Add the note to the index below.
 
 ## Index
 
-| Date       | Topic | Attendees | Notes |
-| ---------- | ----- | --------- | ----- |
-| _none yet_ |       |           |       |
+| Date       | Topic                                              | Attendees                         | Notes |
+| ---------- | -------------------------------------------------- | --------------------------------- | ----- |
+| 2026-07-22 | ABC + HLAB intro — hardware and alpha software     | NTH (Matt, Jemin), ABC, HLAB (Ravi Chopra) | [`20260722_meeting.md`](20260722_meeting.md) |

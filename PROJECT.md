@@ -29,11 +29,12 @@ firmware, software, docs, examples) under an open-source license.
 ## Current status
 
 
-| Field           | Value                                   |
-| --------------- | --------------------------------------- |
-| Phase           | Phase 0 — NTH Architectural Engineering |
-| Hardware status | Pre-alpha                               |
-| Software status | Pre-alpha                               |
+| Field           | Value                            |
+| --------------- | -------------------------------- |
+| Phase           | Phase 2 — NTH Engineering Sprint |
+| Hardware status | Alpha                            |
+| Software status | Alpha                            |
+| Week            | Week 7 (as of 2026-07-27)        |
 
 
 ## Phase timeline
@@ -46,19 +47,19 @@ gantt
   axisFormat %b %Y
 
   section NTH
-  Phase 0 Architecture        :active, p0, 2026-06-08, 7d
-  Phase 2 Engineering Sprint  :p2, 2026-07-13, 14d
+  Phase 0 Architecture        :done, p0, 2026-06-08, 7d
+  Phase 2 Engineering Sprint  :active, p2, 2026-07-13, 14d
   Phase 4 Final PCBA          :p4, 2026-08-17, 14d
   Phase 6 UI/UX Refinement    :p6, 2026-09-28, 28d
   Phase 8 Manuscript          :p8, 2027-01-04, 42d
   Phase 9 Release             :p9, 2027-02-15, 21d
 
   section ABC
-  Phase 1A UI/UX Kickoff      :p1a, 2026-06-22, 14d
+  Phase 1A UI/UX Kickoff      :done, p1a, 2026-06-22, 14d
   Phase 3A Maintainability    :p3a, 2026-08-03, 14d
 
   section HLAB
-  Phase 1B Experiment Kickoff :p1b, 2026-06-22, 14d
+  Phase 1B Experiment Kickoff :done, p1b, 2026-06-22, 14d
   Phase 3B Custom MVP         :p3b, 2026-08-03, 14d
 
   section Joint

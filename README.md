@@ -18,15 +18,16 @@ for the funded proposal.
 
 | Field           | Value                                                        |
 | --------------- | ------------------------------------------------------------ |
-| Phase           | Phase 0 — NTH Architectural Engineering                      |
-| Hardware status | Pre-alpha                                                    |
-| Software status | Pre-alpha                                                    |
-| Week            | Week 0 (anchored 2026-06-08; see [`PROJECT.md`](PROJECT.md)) |
+| Phase           | Phase 2 — NTH Engineering Sprint                             |
+| Hardware status | Alpha                                                        |
+| Software status | Alpha                                                        |
+| Week            | Week 7 (anchored 2026-06-08; see [`PROJECT.md`](PROJECT.md)) |
 
 ## Quick links
 
 - [`PROJECT.md`](PROJECT.md) — master roadmap: phases, milestones, exit criteria, checkbox tasks
 - [`docs/`](docs/) — design + requirements documents (architecture, sync, UI/UX, calibration, etc.)
+- [`hardware/`](hardware/) — hardware design artifacts (e.g. 3D / DXF)
 - [`meetings/`](meetings/) — meeting notes
 - [`bom/`](bom/) — budget tracking against the $40k grant
 - [`references/`](references/) — grant proposal and source planning documents

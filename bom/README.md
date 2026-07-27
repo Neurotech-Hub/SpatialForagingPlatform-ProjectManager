@@ -1,9 +1,7 @@
 # Budget and BOM Tracking
 
 This folder tracks the project budget against the McDonnell NRP award and
-points to the canonical Bills of Materials (BOMs), which live in the
-hardware-electronics sub-repository (linked from the
-[main README](../README.md#related-repositories)).
+holds the primary Bill of Materials (BOM).
 
 This file is for planning visibility, not engineering: it should answer "are
 we on budget?" at a glance.
@@ -29,15 +27,9 @@ we on budget?" at a glance.
 
 ## Canonical BOMs
 
-The engineering BOMs themselves (per-component part numbers, vendors,
-quantities, prices) live in the hardware sub-repositories and are linked
-here once those repos exist.
-
-| BOM                | Canonical location                | Last reviewed |
-| ------------------ | --------------------------------- | ------------- |
-| Module BOM         | TBD (link to hardware-electronics) | —             |
-| Base station BOM   | TBD (link to hardware-electronics) | —             |
-| Support-tool BOM   | TBD (link to hardware-electronics) | —             |
+| BOM         | Location                              | Notes        |
+| ----------- | ------------------------------------- | ------------ |
+| Primary BOM | [`BOM_SpatialForagingModule.xlsx`](BOM_SpatialForagingModule.xlsx) | Module bill of materials |
 
 ## Unit economics
 
