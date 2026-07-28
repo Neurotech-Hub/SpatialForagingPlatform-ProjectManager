@@ -15,7 +15,7 @@ Catalog of how the platform can fail, how each failure is detected, and how it i
 
 ## Detection Categories
 
-- **Automatically detected by firmware**: The VFM node checks local sensors (pellet presence sensor, home position sensor, spring access port sensor) and stepper motor position step-counters and timeouts locally, updating its internal FSM and immediately broadcasting events.
+- **Automatically detected by firmware**: The VFM node checks local sensors (pellet presence sensor, home position sensor, catch attempt sensor) and stepper motor position step-counters and timeouts locally, updating its internal FSM and immediately broadcasting events.
 - **Detectable from base station / host software**: Base station registers node presence, tracks response times, and monitors missing heartbeats on the CAN bus.
 - **Requires manual inspection**: Physical damage, loose RJ45 connectors, or stepper driver heating issues.
 
@@ -35,6 +35,7 @@ The base station uses a watchdog mechanism based on CAN communication to determi
 
 ## Cross-references
 
+- [`dispense-cycle.md`](dispense-cycle.md) — dispense cycle logic, CAN event definitions, and fault causes.
 - [`function-checks.md`](function-checks.md) — procedures to confirm a module is healthy.
 - [`maintenance.md`](maintenance.md) — preventive measures and scheduled inspections.
 - [`architecture.md`](architecture.md) — network topology and CAN message class details.

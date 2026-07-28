@@ -29,7 +29,8 @@ for the funded proposal.
 ## Quick links
 
 - [`PROJECT.md`](PROJECT.md) — master roadmap: phases, milestones, exit criteria, checkbox tasks
-- [`docs/`](docs/) — design + requirements documents (architecture, sync, UI/UX, calibration, etc.)
+- [`docs/`](docs/) — design + requirements documents (architecture, dispense cycle, sync, UI/UX, calibration, etc.)
+- [`docs/dispense-cycle.md`](docs/dispense-cycle.md) — dispense cycle flowchart, sensor pinouts, CAN events, and heartbeat snapshot
 - [`hardware/`](hardware/) — hardware design artifacts (e.g. 3D / DXF)
 - [`meetings/`](meetings/) — meeting notes
 - [`bom/`](bom/) — budget tracking against the $40k grant

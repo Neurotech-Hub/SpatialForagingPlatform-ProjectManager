@@ -205,6 +205,7 @@ If a specific module fails system checks, detach the module for bench testing us
 
 ## Cross-references
 
+- [`dispense-cycle.md`](dispense-cycle.md) — dispense cycle flowchart, CAN event codes, sensor pinouts, and FSM logic.
 - [`failure-modes.md`](failure-modes.md) — fault catalog, sticky error codes, and LED patterns.
 - [`maintenance.md`](maintenance.md) — preventive maintenance and calibration schedules.
 - [`architecture.md`](architecture.md) — CAN ID layout, discovery protocol, and system topology.
