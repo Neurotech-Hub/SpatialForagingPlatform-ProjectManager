@@ -19,6 +19,7 @@ for the funded proposal.
 
 ## Current status
 
+
 | Field           | Value                                                        |
 | --------------- | ------------------------------------------------------------ |
 | Phase           | Phase 2 — NTH Engineering Sprint                             |
@@ -26,11 +27,15 @@ for the funded proposal.
 | Software status | Alpha                                                        |
 | Week            | Week 7 (anchored 2026-06-08; see [`PROJECT.md`](PROJECT.md)) |
 
+
+
+
 ## Quick links
 
 - [`PROJECT.md`](PROJECT.md) — master roadmap: phases, milestones, exit criteria, checkbox tasks
 - [`docs/`](docs/) — design + requirements documents (architecture, dispense cycle, sync, UI/UX, calibration, etc.)
 - [`docs/dispense-cycle.md`](docs/dispense-cycle.md) — dispense cycle flowchart, sensor pinouts, CAN events, and heartbeat snapshot
+- [`docs/user-api.md`](docs/user-api.md) — experiment API, session CSV schema, and behavior reports
 - [`hardware/`](hardware/) — hardware design artifacts (e.g. 3D / DXF)
 - [`meetings/`](meetings/) — meeting notes
 - [`bom/`](bom/) — budget tracking against the $40k grant
@@ -38,7 +43,10 @@ for the funded proposal.
 - [`manuscript/`](manuscript/) — manuscript drafting (Phase 8+)
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) — how to contribute
 
+
+
 ## Collaborators
+
 
 | Lab                        | Role                                                                                       | Lead         | GitHub |
 | -------------------------- | ------------------------------------------------------------------------------------------ | ------------ | ------ |
@@ -46,22 +54,55 @@ for the funded proposal.
 | Animal Behavior Core (ABC) | UI/UX feedback, common task structures, behavioral benchmarking, animal metrics report     | TBD          | TBD    |
 | Hengen Lab (HLAB)          | Custom experiment authoring, in vivo electrophysiology validation, recording sync          | Keith Hengen | TBD    |
 
+
+
+
 ## Related repositories
 
 The repositories below hold the actual artifacts produced by this project. This
 planning repo links to them; it does not contain their source.
 
-| Domain                  | Repository | Owner      | Status |
-| ----------------------- | ---------- | ---------- | ------ |
-| Mechanical / CAD        | TBD        | NTH        | TBD    |
-| Electronics / PCB       | TBD        | NTH        | TBD    |
-| Module firmware         | TBD        | NTH        | TBD    |
-| Base station / host UI  | TBD        | NTH        | TBD    |
-| Experiment API examples | TBD        | HLAB       | TBD    |
-| Analysis examples       | TBD        | NTH / HLAB | TBD    |
+
+| Domain                  | Repository                                                                                            | Owner      | Status                              |
+| ----------------------- | ----------------------------------------------------------------------------------------------------- | ---------- | ----------------------------------- |
+| Mechanical / CAD        | TBD                                                                                                   | NTH        | TBD                                 |
+| Electronics / PCB       | TBD                                                                                                   | NTH        | TBD                                 |
+| Module firmware         | [Neurotech-Hub/VFM](https://github.com/Neurotech-Hub/VFM)                                             | NTH        | Active — Node library               |
+| Base station / host UI  | [Neurotech-Hub/VFM](https://github.com/Neurotech-Hub/VFM/tree/main/tools/dev_gui) (`tools/dev_gui`)   | NTH        | Active — alpha GUI + experiment API |
+| Experiment API examples | [VFM templates](https://github.com/Neurotech-Hub/VFM/tree/main/tools/dev_gui/base_station/experiment) | NTH / HLAB | Built-in templates; HLAB custom TBD |
+| Analysis / reports      | [VFM `run_report.py`](https://github.com/Neurotech-Hub/VFM/blob/main/tools/dev_gui/run_report.py)     | NTH / ABC  | Active — session CSV → HTML reports |
+
 
 When a sub-repo comes online, replace `TBD` with the URL and update the status
 column.
+
+## Behavior reports
+
+The base station writes a unified session CSV. [`run_report.py`](https://github.com/Neurotech-Hub/VFM/blob/main/tools/dev_gui/run_report.py)
+turns that log into a self-contained, printable HTML report (inline SVG; stdlib
+only). Design is picked from the session’s experiment name; unknown templates
+fall back to a generic report. Details: [`docs/user-api.md`](docs/user-api.md).
+
+```bash
+cd tools/dev_gui
+python run_report.py --list
+python run_report.py EXP-Test-02 --open
+python run_report.py "cohortA_*" --combine -o /tmp/cohortA.html
+```
+
+
+| Design                 | When it applies                         | Extra sections                                      |
+| ---------------------- | --------------------------------------- | --------------------------------------------------- |
+| `default`              | Any session (fallback)                  | Pellet accounting, latency, presence, funnel, faults |
+| `free_feeding`         | `free_feeding` template                 | Intake rate, reload delays                          |
+| `fixed_and_random`     | `fixed_and_random` template             | Per-node role (off / fixed / random)                |
+| `probability_delivery` | `probability_delivery` template         | Delivery-site distribution                          |
+| `two_armed_bandit`     | `two_armed_bandit` template             | Choice, block/reversal curves, WSLS                 |
+
+
+`--combine` builds a comparative report (cohort table, learning curve, quality
+matrix). Time alignment: `relative` (default), `wall`, `trial`, or `event:<name>`.
+JSON export is planned (`--json`); metrics are already computed separately from HTML.
 
 ## How to read this repo
 
@@ -72,11 +113,14 @@ If you are new here, read in this order:
 3. [`docs/architecture.md`](docs/architecture.md) — system architecture once it exists.
 4. The relevant `docs/*.md` for your role (e.g. ABC: `ui-ux.md`, `maintenance.md`; HLAB: `user-api.md`, `sync-and-recording.md`).
 
+
+
 ## Abbreviations
 
 Abbreviations used throughout this repository.
 
 ### Collaborators
+
 
 | Abbreviation | Expansion            |
 | ------------ | -------------------- |
@@ -84,7 +128,11 @@ Abbreviations used throughout this repository.
 | HLAB         | Hengen Lab           |
 | NTH          | Neurotech Hub        |
 
+
+
+
 ### Project / process
+
 
 | Abbreviation | Expansion               |
 | ------------ | ----------------------- |
@@ -93,7 +141,11 @@ Abbreviations used throughout this repository.
 | MVP          | Minimum Viable Product  |
 | SW           | Software (status field) |
 
+
+
+
 ### Hardware / electronics
+
 
 | Abbreviation | Expansion                                               |
 | ------------ | ------------------------------------------------------- |
@@ -105,7 +157,11 @@ Abbreviations used throughout this repository.
 | PCBA         | Printed Circuit Board Assembly                          |
 | TTL          | Transistor-Transistor Logic (digital sync signal level) |
 
+
+
+
 ### Software / interfaces
+
 
 | Abbreviation | Expansion                         |
 | ------------ | --------------------------------- |
@@ -114,11 +170,18 @@ Abbreviations used throughout this repository.
 | UI           | User Interface                    |
 | UX           | User Experience                   |
 
+
+
+
 ### External references
+
 
 | Abbreviation | Expansion                                                                 |
 | ------------ | ------------------------------------------------------------------------- |
 | FED3         | Feeding Experimentation Device 3 (open-source rodent feeder, Kravitz lab) |
+
+
+
 
 ## License
 

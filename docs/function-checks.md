@@ -140,6 +140,7 @@ python -m pytest tests/ -v
 | `test_mac_id_registry.py` | Persistent MAC-to-Node ID mapping |
 | `test_node_registry.py` | Node FSM registry and heartbeat watchdog |
 | `test_protocol.py` | CAN frame encoding/decoding |
+| `test_report_*.py` | HTML behavior reports (`run_report.py`: loader, metrics, designs, render) |
 | `test_schedule.py` | Session scheduling and task execution |
 
 ---
@@ -154,8 +155,9 @@ Perform this full system check before initiating an experimental session:
 4. **Bus Reachability (`Ping All`)**: Trigger `ping_all` from GUI; verify all nodes fast-blink status LEDs and emit `Pong` events.
 5. **Dispense Cycle Verification**: Trigger a dispense on each module; verify state machine sequence: `Idle → Lowering → Feeding → Raising → Presented`.
 6. **BNC Synchronization**: Send a test pulse to BNC IN 1; confirm edge is recorded in the GUI log and BNC OUT pulse is generated.
-7. **Offline Watchdog Test**: Disconnect an RJ45 cable from one module; confirm GUI updates node state to **Offline** within ~15 s.
-8. **Rejoin Verification**: Reconnect the RJ45 cable; confirm node auto-rejoins and returns to **Idle**.
+7. **Camera sync flash**: Start a session; every online node’s upward-facing status LED stays solid ON for ~500 ms and BNC OUT pulses at the same moment (see [`sync-and-recording.md`](sync-and-recording.md)). Faulted nodes skip the flash.
+8. **Offline Watchdog Test**: Disconnect an RJ45 cable from one module; confirm GUI updates node state to **Offline** within ~15 s.
+9. **Rejoin Verification**: Reconnect the RJ45 cable; confirm node auto-rejoins and returns to **Idle**.
 
 ### Simulated system test (software-only mode)
 
@@ -199,6 +201,7 @@ If a specific module fails system checks, detach the module for bench testing us
 | **Dispense Sequence** | Smooth transition `Idle → Lowering → Feeding → Raising → Presented`; pellet detected by pellet presence sensor; confident retrieval verification via spring access trigger | Motor stall, pellet presence sensor timeout, or sticky `Fault` state |
 | **CAN Loopback (`test_hat.py`)** | `[PASS] Loopback TX/RX matches` | Mismatched frame data or CAN interface down |
 | **BNC Sync Pulse** | BNC OUT pulse width within ±10% of configured width | Missing pulse or incorrect pulse width |
+| **Camera sync flash** | All online nodes hold status LED solid ~500 ms at session start; BNC OUT pulses; `SYNC` row in log | No flash, missing BNC OUT, or faulted nodes flashing |
 | **Offline Detection** | Disconnected node transitions to **Offline** in ~15 s | Node state remains `Idle` after cable disconnect |
 
 ---
@@ -209,4 +212,6 @@ If a specific module fails system checks, detach the module for bench testing us
 - [`failure-modes.md`](failure-modes.md) — fault catalog, sticky error codes, and LED patterns.
 - [`maintenance.md`](maintenance.md) — preventive maintenance and calibration schedules.
 - [`architecture.md`](architecture.md) — CAN ID layout, discovery protocol, and system topology.
+- [`sync-and-recording.md`](sync-and-recording.md) — session-start LED flash, BNC I/O, planned TTL start/stop.
+- [`user-api.md`](user-api.md) — session CSV schema and HTML behavior reports.
 

@@ -48,6 +48,12 @@ analysis scripts live._
 
 ## Statistical and reporting plan
 
-_Pre-registered metrics, n, expected effect sizes, success thresholds._
+Session CSVs are the source of truth. HTML behavior reports
+([`run_report.py`](https://github.com/Neurotech-Hub/VFM/blob/main/tools/dev_gui/run_report.py))
+are the operator-facing summary for ABC/HLAB: pellet accounting, retrieval
+latency, presence, interaction funnel, faults, plus task-specific metrics
+(bandit choice / WSLS / reversal). Combined reports support cohort tables and
+learning curves. Pre-registered n, effect sizes, and success thresholds for
+the manuscript are still open.
 
 ## Open questions

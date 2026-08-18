@@ -9,8 +9,9 @@ consisting of a Raspberry Pi 5 base station and up to N foraging modules (refere
 deployment: 9 modules) connected over a CAN bus in a linear daisy-chain. Each
 foraging module is an independent unit housing an ESP32S3, two stepper-motor pellet
 dispensers, a sensor suite comprising a pellet presence sensor, home position sensor, and spring-loaded access port trigger, and status LEDs. The base
-station orchestrates node discovery, session management, event logging, and
-synchronization with external recording systems via BNC I/O. All modules are powered
+station orchestrates node discovery, session management, event logging, HTML
+behavior reports from those logs, and synchronization with external recording
+systems via BNC I/O. All modules are powered
 from a single 12 V supply routed through the daisy-chain; the base station is powered
 separately via USB-C.
 
@@ -249,9 +250,15 @@ LED colors available: **red**, **green**, **yellow**. Specific state assignments
 
 ## Synchronization strategy
 
-Synchronization is owned by the base station. The three BNC connectors handle all
-timing I/O between the platform and external recording systems:
+Synchronization is owned by the base station. On session start the base broadcasts
+`CanCmd::SyncFlash`: every node holds its upward-facing status LED solid ON for
+**500 ms** so overhead cameras can mark the same instant. A coincident **BNC OUT**
+pulse goes to recording systems.
 
+The three BNC connectors handle TTL I/O. **BNC OUT** is in use today (session-start
+pulse, optional pulse on a chosen CAN event). **BNC IN 1 / IN 2** log edges and can
+drive experiment callbacks; using them to **start and stop the experiment from an
+external TTL** is planned — see [`sync-and-recording.md`](sync-and-recording.md).
 
 | Connector | Direction               | Purpose                          |
 | --------- | ----------------------- | -------------------------------- |
@@ -261,9 +268,7 @@ timing I/O between the platform and external recording systems:
 
 
 BNC signals run on an isolated 5 V rail to minimise ground loops and noise coupling to
-electrophysiology systems. Detailed signal levels, edge timing, polarity, jitter
-budget, and recording system compatibility targets are captured in
-`[sync-and-recording.md](sync-and-recording.md)`.
+electrophysiology systems.
 
 ## Status indicators
 
@@ -274,7 +279,7 @@ Each module carries three LEDs (red, green, yellow):
 
 | LED           | Placement     | Notes                                 |
 | ------------- | ------------- | ------------------------------------- |
-| Status LED    | Upward-facing | Visible from above during experiments |
+| Status LED    | Upward-facing | Visible from above; 500 ms solid ON at session start (camera sync) |
 | General LED 1 | On-board      | User configurable                     |
 | General LED 2 | On-board      | User configurable                     |
 
@@ -306,6 +311,14 @@ See `[failure-modes.md](failure-modes.md)` for fault code cross-reference.
 
 A single 8 A 12 V supply is the minimum recommended for a full 9-module deployment.
 Scaling to 16 modules remains within the same supply rating at this per-module budget.
+
+## Logging and reports
+
+The base station appends every CAN frame, heartbeat, BNC edge, and experiment
+row to one session CSV. [`run_report.py`](https://github.com/Neurotech-Hub/VFM/blob/main/tools/dev_gui/run_report.py)
+renders that CSV as printable HTML (generic metrics plus per-template designs:
+free feeding, fixed/random, probability delivery, two-armed bandit). Schema and
+CLI: [`user-api.md`](user-api.md).
 
 ## Architecture diagram
 
