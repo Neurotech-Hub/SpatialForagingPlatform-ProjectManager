@@ -22,7 +22,7 @@ for the funded proposal.
 
 | Field           | Value                                                                        |
 | --------------- | ---------------------------------------------------------------------------- |
-| Phase           | Phase 3A — ABC UI/UX Feedback + Maintainability                              |
+| Phase           | Phase 3A — Experimental + UI/UX Feedback                                     |
 | Hardware status | Alpha                                                                        |
 | Software status | Beta                                                                         |
 | Week            | Week 10 (see [`PROJECT.md`](PROJECT.md))                    |
