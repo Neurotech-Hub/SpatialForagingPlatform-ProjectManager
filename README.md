@@ -20,12 +20,12 @@ for the funded proposal.
 ## Current status
 
 
-| Field           | Value                                                        |
-| --------------- | ------------------------------------------------------------ |
-| Phase           | Phase 2 — NTH Engineering Sprint                             |
-| Hardware status | Alpha                                                        |
-| Software status | Alpha                                                        |
-| Week            | Week 7 (anchored 2026-06-08; see [`PROJECT.md`](PROJECT.md)) |
+| Field           | Value                                                                        |
+| --------------- | ---------------------------------------------------------------------------- |
+| Phase           | Phase 3A — ABC UI/UX Feedback + Maintainability                              |
+| Hardware status | Alpha                                                                        |
+| Software status | Beta                                                                         |
+| Week            | Week 10 (see [`PROJECT.md`](PROJECT.md))                    |
 
 
 
