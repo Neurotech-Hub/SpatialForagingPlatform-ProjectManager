@@ -51,9 +51,9 @@ for the funded proposal.
 
 | Lab                        | Role                                                                                       | Lead         | GitHub |
 | -------------------------- | ------------------------------------------------------------------------------------------ | ------------ | ------ |
-| Neurotech Hub (NTH)        | Engineering lead — electronics, firmware, host UI, fabrication, integration, dissemination | Matt Gaidica | TBD    |
-| Animal Behavior Core (ABC) | UI/UX feedback, common task structures, behavioral benchmarking, animal metrics report     | TBD          | TBD    |
-| Hengen Lab (HLAB)          | Custom experiment authoring, in vivo electrophysiology validation, recording sync          | Keith Hengen | TBD    |
+| Neurotech Hub (NTH)        | Engineering lead — electronics, firmware, host UI, fabrication, integration, dissemination | Matt Gaidica, PhD | TBD    |
+| Animal Behavior Core (ABC) | UI/UX feedback, common task structures, behavioral benchmarking, animal metrics report     | Susan Maloney, PhD         | TBD    |
+| Hengen Lab (HLAB)          | Custom experiment authoring, in vivo electrophysiology validation, recording sync          | Keith Hengen, PhD | TBD    |
 
 
 
