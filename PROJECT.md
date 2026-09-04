@@ -29,43 +29,56 @@ firmware, software, docs, examples) under an open-source license.
 ## Current status
 
 
-| Field           | Value                            |
-| --------------- | -------------------------------- |
-| Phase           | Phase 2 — NTH Engineering Sprint |
-| Hardware status | Alpha                            |
-| Software status | Alpha                            |
-| Week            | Week 7 (as of 2026-07-27)        |
+| Field           | Value                                     |
+| --------------- | ----------------------------------------- |
+| Phase           | Phase 5 — HLAB Field Test & ABC test prep |
+| Hardware status | Alpha                                     |
+| Software status | Alpha                                     |
+| Week            | Week 12 (as of 2026-09-04)                |
 
 
 ## Phase timeline
 
 ```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': {'textColor': '#ffffff', 'titleColor': '#ffffff', 'taskTextColor': '#ffffff', 'taskTextLightColor': '#ffffff', 'taskTextDarkColor': '#ffffff', 'taskTextOutsideColor': '#ffffff'}} }%%
-gantt
-  title Spatial Foraging Platform Phase Timeline
-  dateFormat YYYY-MM-DD
-  axisFormat %b %Y
+flowchart TB
+  subgraph nth [NTH]
+    p0["Phase 0 Architecture - Jun 2026 - done"]
+    p2["Phase 2 Engineering Sprint - Jul 2026 - done"]
+    p4["Phase 4 Final PCBA - Aug 2026 - done"]
+    p6["Phase 6 UI and UX Refinement - Sep 2026"]
+    p8["Phase 8 Manuscript - Jan 2027"]
+    p9["Phase 9 Release - Feb 2027"]
+    p0 --> p2 --> p4 --> p6 --> p8 --> p9
+  end
 
-  section NTH
-  Phase 0 Architecture        :done, p0, 2026-06-08, 7d
-  Phase 2 Engineering Sprint  :active, p2, 2026-07-13, 14d
-  Phase 4 Final PCBA          :p4, 2026-08-17, 14d
-  Phase 6 UI/UX Refinement    :p6, 2026-09-28, 28d
-  Phase 8 Manuscript          :p8, 2027-01-04, 42d
-  Phase 9 Release             :p9, 2027-02-15, 21d
+  subgraph abc [ABC]
+    p1a["Phase 1A UI and UX Kickoff - Jun 2026 - done"]
+    p3a["Phase 3A Maintainability - Aug 2026 - done"]
+    p1a --> p3a
+  end
 
-  section ABC
-  Phase 1A UI/UX Kickoff      :done, p1a, 2026-06-22, 14d
-  Phase 3A Maintainability    :p3a, 2026-08-03, 14d
+  subgraph hlab [HLAB]
+    p1b["Phase 1B Experiment Kickoff - Jun 2026 - done"]
+    p3b["Phase 3B Custom MVP - Aug 2026 - done"]
+    p1b --> p3b
+  end
 
-  section HLAB
-  Phase 1B Experiment Kickoff :done, p1b, 2026-06-22, 14d
-  Phase 3B Custom MVP         :p3b, 2026-08-03, 14d
+  subgraph joint [Joint]
+    p5["Phase 5 Field Tests - Aug 2026 - active"]
+    p7["Phase 7 User Independence - Oct 2026"]
+    p5 --> p7
+  end
 
-  section Joint
-  Phase 5 Field Tests         :p5, 2026-08-31, 28d
-  Phase 7 User Independence   :p7, 2026-10-26, 70d
+  p1a --> p2
+  p1b --> p2
+  p3a --> p4
+  p3b --> p4
+  p4 --> p5
+  p5 --> p6
+  p6 --> p7
+  p7 --> p8
 ```
+
 
 
 ## Phase 0 — NTH Architectural Engineering
@@ -132,8 +145,9 @@ PCBAs are submitted for assembly and the production-intent BOM is locked.
 
 Run an n=9 module open-field test and evaluate mechanical reliability, sensing
 reliability, output quality, and analysis readiness. Remaining UI and API
-issues are catalogued, and a simplified analysis workflow is published in the
-analysis sub-repository.
+issues are catalogued, and a simplified analysis workflow is published as
+`[sfm-analysis](https://github.com/Neurotech-Hub/SFM/tree/main/packages/sfm-analysis)`
+(`pip install sfm-analysis`).
 
 ## Phase 6 — NTH UI/UX Refinement
 

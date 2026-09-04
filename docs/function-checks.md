@@ -3,7 +3,7 @@
 System-level bring-up and verification procedures to confirm the platform is healthy before an experiment.
 
 > [!NOTE]
-> This procedure evaluates the platform from a **whole-system perspective** (Base Station + connected VFM Node array). It assumes that the `CanNode` (VFM) firmware is already flashed to all nodes.
+> This procedure evaluates the platform from a **whole-system perspective** (Base Station + connected SFM node array). It assumes that the `SFM` Arduino library is already flashed to all nodes.
 
 ---
 
@@ -42,7 +42,7 @@ Connect all modules to the base station in a linear daisy-chain via RJ45 cables.
 
 ## 3. GUI node status monitoring
 
-The base station GUI (`tools/dev_gui` or system dashboard) receives live telemetry and heartbeats from all nodes on the bus. Each node's card displays its real-time VFM state machine status:
+The base station GUI (`packages/dev_gui`) receives live telemetry and heartbeats from all nodes on the bus. Each node's card displays its real-time SFM state machine status:
 
 | GUI Node State | Description |
 | :------------- | :---------- |
@@ -71,7 +71,7 @@ From the base station GUI, issue a **Ping All** command (`CanCmd::Ping` broadcas
 
 ## 5. System dispense sequence & sensor verification
 
-Trigger a dispense cycle from the base station GUI (individual module test or sequence across the array). Verify that the system executes the full VFM dispense sequence and sensor transitions:
+Trigger a dispense cycle from the base station GUI (individual module test or sequence across the array). Verify that the system executes the full SFM dispense sequence and sensor transitions:
 
 ```mermaid
 stateDiagram-v2
@@ -107,6 +107,7 @@ Verify the base station hardware (Raspberry Pi 5 + CAN HAT) and host software st
 Run the automated interactive bring-up tool on the Raspberry Pi:
 
 ```bash
+cd packages/dev_gui
 python tests/test_hat.py
 ```
 
@@ -123,25 +124,34 @@ The checklist validates all base-station hardware interfaces:
 
 ### Host software pytest suite
 
-Execute the unit and protocol test suite on the base station (no hardware required):
+Base-station tests (GUI, CAN, experiments, discovery, node registry) and
+report/analysis tests are two separate suites now that reporting lives in
+`sfm-analysis`:
 
 ```bash
-cd tools/dev_gui
-pip install pytest
+# Base station (from the SFM repo)
+cd packages/dev_gui
+pip install -r requirements.txt   # includes -e ../sfm-analysis
 python -m pytest tests/ -v
+
+# Report / analysis SDK
+cd packages/sfm-analysis
+pip install -e ".[dev]"
+pytest
 ```
 
 | Test File | Scope |
 | :-------- | :---- |
 | `test_app.py` | GUI application lifecycle |
 | `test_discovery_manager.py` | Node discovery state machine logic |
-| `test_hat.py` | Interactive HAT hardware validation |
+| `test_hat.py` | Interactive HAT hardware validation (not pytest) |
 | `test_log_manager.py` | CSV event logging and timestamping |
 | `test_mac_id_registry.py` | Persistent MAC-to-Node ID mapping |
 | `test_node_registry.py` | Node FSM registry and heartbeat watchdog |
 | `test_protocol.py` | CAN frame encoding/decoding |
-| `test_report_*.py` | HTML behavior reports (`run_report.py`: loader, metrics, designs, render) |
+| `test_run_report_shim.py` | `run_report.py` wrapper around `sfm-report` |
 | `test_schedule.py` | Session scheduling and task execution |
+| `packages/sfm-analysis` pytest | HTML behavior reports (loader, metrics, designs, render) |
 
 ---
 
@@ -150,7 +160,7 @@ python -m pytest tests/ -v
 Perform this full system check before initiating an experimental session:
 
 1. **Power & Bus**: Turn on 12 V power supply and boot Raspberry Pi base station.
-2. **Launch GUI**: Start the base station software (`python run.py`).
+2. **Launch GUI**: From `packages/dev_gui`, start the base station software (`python run.py`).
 3. **Verify Discovery**: Confirm all connected nodes complete daisy-chain assignment, appear in the GUI grid with correct Node IDs, and status LEDs turn OFF.
 4. **Bus Reachability (`Ping All`)**: Trigger `ping_all` from GUI; verify all nodes fast-blink status LEDs and emit `Pong` events.
 5. **Dispense Cycle Verification**: Trigger a dispense on each module; verify state machine sequence: `Idle → Lowering → Feeding → Raising → Presented`.
@@ -164,6 +174,8 @@ Perform this full system check before initiating an experimental session:
 To verify host software functionality without physical hardware attached:
 
 ```bash
+cd packages/dev_gui
+
 # Setup virtual CAN interface
 sudo modprobe vcan
 sudo ip link add dev vcan0 type vcan
@@ -180,7 +192,7 @@ python run.py --interface vcan0 --nodes 9
 
 ## 8. Standalone bench troubleshooting reference
 
-If a specific module fails system checks, detach the module for bench testing using standalone sketches in `examples/Troubleshooting/HardwareExamples/`:
+If a specific module fails system checks, detach the module for bench testing using standalone sketches in `firmware/examples/`:
 
 | Sketch | Target Subsystem Check |
 | :----- | :--------------------- |
@@ -213,5 +225,5 @@ If a specific module fails system checks, detach the module for bench testing us
 - [`maintenance.md`](maintenance.md) — preventive maintenance and calibration schedules.
 - [`architecture.md`](architecture.md) — CAN ID layout, discovery protocol, and system topology.
 - [`sync-and-recording.md`](sync-and-recording.md) — session-start LED flash, BNC I/O, planned TTL start/stop.
-- [`user-api.md`](user-api.md) — session CSV schema and HTML behavior reports.
+- [`user-api.md`](user-api.md) — experiment API, session CSV schema, and HTML behavior reports.
 

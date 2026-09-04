@@ -1,6 +1,6 @@
 # Dispense cycle
 
-How a VFM node delivers a pellet, how it knows the pellet was taken, and what it reports along the way.
+How an SFM node delivers a pellet, how it knows the pellet was taken, and what it reports along the way.
 
 
 ## Sensors

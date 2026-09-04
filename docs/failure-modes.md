@@ -15,12 +15,12 @@ Catalog of how the platform can fail, how each failure is detected, and how it i
 
 ## Detection Categories
 
-- **Automatically detected by firmware**: The VFM node checks local sensors (pellet presence sensor, home position sensor, catch attempt sensor) and stepper motor position step-counters and timeouts locally, updating its internal FSM and immediately broadcasting events.
+- **Automatically detected by firmware**: The SFM node checks local sensors (pellet presence sensor, home position sensor, catch attempt sensor) and stepper motor position step-counters and timeouts locally, updating its internal FSM and immediately broadcasting events.
 - **Detectable from base station / host software**: Base station registers node presence, tracks response times, and monitors missing heartbeats on the CAN bus.
 - **Requires manual inspection**: Physical damage, loose RJ45 connectors, or stepper driver heating issues.
 
 ## Reporting Paths
-1. **Local Indication**: When a fault is declared, the VFM node switches the local status LED.
+1. **Local Indication**: When a fault is declared, the SFM node switches the local status LED.
 2. **Network Event Broadcast**: The module sends a `CanEvent::Fault` message (ID `0x300 + nodeId`) over the CAN bus containing the exact `ServiceStatus` code.
 3. **Heartbeat Updates**: The module packs its current FSM state (byte 0) and the sticky fault/warning code (byte 5) into its periodic `0x200 + nodeId` heartbeat packet.
 4. **Base Station Host UI**: The Raspberry Pi base station monitors the CAN bus, logs incoming event frames, updates the node state registry, and notifies the supervisor software/user interface.

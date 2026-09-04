@@ -2,8 +2,17 @@
 
 This repository holds planning, design documentation, and (eventually) the
 manuscript for the Spatial Foraging Platform. It does **not** hold hardware
-design files, firmware, host software, or analysis code — those live in
-separate repositories linked from the [README](README.md#related-repositories).
+design files, firmware, host software, or analysis code.
+
+Firmware, the base-station GUI, and analysis live in
+[Neurotech-Hub/SFM](https://github.com/Neurotech-Hub/SFM):
+
+- `firmware/` — Arduino library `SFM` (ESP32-S3-MINI-1)
+- `packages/dev_gui/` — Raspberry Pi developer GUI and CAN tooling
+- `packages/sfm-analysis/` — cross-platform analysis SDK (`pip install sfm-analysis`)
+
+CAD and PCB repos, when they exist, are linked from the
+[README](README.md#related-repositories).
 
 ## What belongs here
 

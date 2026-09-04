@@ -21,7 +21,8 @@ _One custom experiment running end-to-end with at least one animal._
 
 ## Field-test validation (Phase 5)
 
-_n=9 module open-field arrangement, longitudinal behavior test._
+Phase 5 (weeks 12–16, started 2026-08-31) is the active field-test window:
+n=9 module open-field arrangement, longitudinal behavior test.
 
 ### Reliability metrics
 
@@ -43,13 +44,18 @@ DOI plan._
 
 ## Analysis examples
 
-_Pointer to the analysis sub-repository (link from README) where reference
-analysis scripts live._
+Session analysis and printable HTML reports live in
+[`packages/sfm-analysis`](https://github.com/Neurotech-Hub/SFM/tree/main/packages/sfm-analysis)
+(`pip install sfm-analysis`, CLI `sfm-report`). Domain vocabulary, log columns,
+and derived metrics:
+[ANALYSIS_GUIDE.md](https://github.com/Neurotech-Hub/SFM/blob/main/packages/sfm-analysis/docs/ANALYSIS_GUIDE.md).
+Operator commands: [README — Operations](../README.md#operations).
 
 ## Statistical and reporting plan
 
 Session CSVs are the source of truth. HTML behavior reports
-([`run_report.py`](https://github.com/Neurotech-Hub/VFM/blob/main/tools/dev_gui/run_report.py))
+([`sfm-report`](https://github.com/Neurotech-Hub/SFM/tree/main/packages/sfm-analysis);
+Pi wrapper [`run_report.py`](https://github.com/Neurotech-Hub/SFM/blob/main/packages/dev_gui/run_report.py))
 are the operator-facing summary for ABC/HLAB: pellet accounting, retrieval
 latency, presence, interaction funnel, faults, plus task-specific metrics
 (bandit choice / WSLS / reversal). Combined reports support cohort tables and

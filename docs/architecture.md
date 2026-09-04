@@ -75,6 +75,8 @@ frames, and bus-off detection without requiring application-layer redundancy.
 - **Peer-to-peer broadcasting** — any node can broadcast events to all other nodes and
 to the base station simultaneously.
 
+Bitrate is **250 kbps** (firmware TWAI and GUI `--bitrate` default).
+
 ## CAN bus topology
 
 ### Physical topology
@@ -184,7 +186,7 @@ NVS falls back to first-boot behaviour on the next power cycle.
 
 ### CAN identifier layout
 
-VFM uses **11-bit standard CAN identifiers** (`0x000`–`0x7FF`, 2048 IDs) with software
+SFM uses **11-bit standard CAN identifiers** (`0x000`–`0x7FF`, 2048 IDs) with software
 filtering. The identifier carries **message class and target node** only; opcodes, event
 types, and payload (dispense state, pellet counts, etc.) live in the separate 0–8 byte
 data field.
@@ -315,10 +317,12 @@ Scaling to 16 modules remains within the same supply rating at this per-module b
 ## Logging and reports
 
 The base station appends every CAN frame, heartbeat, BNC edge, and experiment
-row to one session CSV. [`run_report.py`](https://github.com/Neurotech-Hub/VFM/blob/main/tools/dev_gui/run_report.py)
-renders that CSV as printable HTML (generic metrics plus per-template designs:
-free feeding, fixed/random, probability delivery, two-armed bandit). Schema and
-CLI: [`user-api.md`](user-api.md).
+row to one session CSV. [`sfm-analysis`](https://github.com/Neurotech-Hub/SFM/tree/main/packages/sfm-analysis)
+(`pip install sfm-analysis`, CLI `sfm-report`) renders that CSV as printable
+HTML (generic metrics plus per-template designs: free feeding, fixed/random,
+probability delivery, two-armed bandit). On the Pi,
+[`run_report.py`](https://github.com/Neurotech-Hub/SFM/blob/main/packages/dev_gui/run_report.py)
+is a thin wrapper around the same CLI. Schema and commands: [`user-api.md`](user-api.md).
 
 ## Architecture diagram
 
