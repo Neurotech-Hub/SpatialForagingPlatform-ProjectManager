@@ -19,6 +19,7 @@ CAD and PCB repos, when they exist, are linked from the
 - The master plan: [`PROJECT.md`](PROJECT.md).
 - Live design documents: [`docs/`](docs/).
 - Meeting notes: [`meetings/`](meetings/).
+- Weekly pulse: [`pulse/`](pulse/).
 - Budget tracking and BOM summaries: [`bom/`](bom/).
 - Source/reference PDFs: [`references/`](references/).
 - Manuscript drafts (Phase 8+): [`manuscript/`](manuscript/).
@@ -38,8 +39,10 @@ README.
 
 - Documentation files: lowercase kebab-case, `.md` extension. Example:
   `sync-and-recording.md`.
-- Meeting notes: `YYYY-MM-DD-short-topic.md`. Example:
-  `2026-06-14-architecture-kickoff.md`.
+- Meeting notes: `YYYYMMDD_meeting.md` in [`meetings/`](meetings/). Example:
+  `20260721_meeting.md`.
+- Weekly pulse: one dated heading per project week in
+  [`pulse/log.md`](pulse/log.md). Week 0 = 2026-06-08.
 - ADRs: `NNNN-short-title.md` where `NNNN` is the next available
   zero-padded sequence number. Example: `0007-can-bus-topology.md`.
 
@@ -62,12 +65,17 @@ README.
   an ADR.
 - When a phase or gate is crossed, update the **Current status** table in both
   [`README.md`](README.md) and [`PROJECT.md`](PROJECT.md).
+- Each Monday, add a week entry at the top of [`pulse/log.md`](pulse/log.md)
+  using [`pulse/TEMPLATE.md`](pulse/TEMPLATE.md). Link any meetings from that
+  week. See [`pulse/README.md`](pulse/README.md).
 
 ## Recording meetings
 
-After cross-lab meetings, drop a note in [`meetings/`](meetings/) using
-[`meetings/TEMPLATE.md`](meetings/TEMPLATE.md). Capture decisions and action
-items at minimum; full transcripts are not required.
+After cross-lab meetings or major site events (delivery, lab tour), drop a
+note in [`meetings/`](meetings/) using [`meetings/TEMPLATE.md`](meetings/TEMPLATE.md).
+Capture decisions and action items at minimum; full transcripts are not
+required. Add the file to the index in [`meetings/README.md`](meetings/README.md)
+and link it from that week's pulse entry.
 
 ## Style
 

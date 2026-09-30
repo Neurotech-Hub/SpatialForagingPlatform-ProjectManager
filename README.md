@@ -22,10 +22,10 @@ for the funded proposal.
 
 | Field           | Value                                                        |
 | --------------- | ------------------------------------------------------------ |
-| Phase           | Phase 5 — ABC + HLAB Field Tests                             |
-| Hardware status | Alpha                                                        |
+| Phase           | Phase 3A starts Week 15 — ABC two-node behavior box          |
+| Hardware status | Alpha (HLAB 2-module live; ABC 2-node due next week)         |
 | Software status | Alpha                                                        |
-| Week            | Week 12 (as of 2026-09-04; see [`PROJECT.md`](PROJECT.md))   |
+| Week            | Week 14 (as of 2026-09-16; see [`PROJECT.md`](PROJECT.md))   |
 
 
 
@@ -38,7 +38,8 @@ for the funded proposal.
 - [`docs/user-api.md`](docs/user-api.md) — experiment API, session CSV schema, and behavior reports
 - [`docs/function-checks.md`](docs/function-checks.md) — pre-session bring-up checklist
 - [`hardware/`](hardware/) — hardware design artifacts (e.g. 3D / DXF)
-- [`meetings/`](meetings/) — meeting notes
+- [`meetings/`](meetings/) — cross-lab meeting notes
+- [`pulse/`](pulse/) — weekly progress (shipped / in progress / blocked)
 - [`bom/`](bom/) — budget tracking against the $40k grant
 - [`references/`](references/) — grant proposal and source planning documents
 - [`manuscript/`](manuscript/) — manuscript drafting (Phase 8+)
@@ -199,8 +200,9 @@ If you are new here, read in this order:
 
 1. This README — what we are building, where artifacts live, and how to operate.
 2. [`PROJECT.md`](PROJECT.md) — current phase, what is in flight, what is next.
-3. [`docs/architecture.md`](docs/architecture.md) — system architecture.
-4. The relevant `docs/*.md` for your role (e.g. ABC: `ui-ux.md`, `maintenance.md`; HLAB: `user-api.md`, `sync-and-recording.md`).
+3. [`pulse/log.md`](pulse/log.md) — weekly shipped / in progress / blocked.
+4. [`docs/architecture.md`](docs/architecture.md) — system architecture.
+5. The relevant `docs/*.md` for your role (e.g. ABC: `ui-ux.md`, `maintenance.md`; HLAB: `user-api.md`, `sync-and-recording.md`).
 
 
 

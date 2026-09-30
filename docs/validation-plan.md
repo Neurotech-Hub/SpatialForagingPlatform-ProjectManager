@@ -21,8 +21,10 @@ _One custom experiment running end-to-end with at least one animal._
 
 ## Field-test validation (Phase 5)
 
-Phase 5 (weeks 12–16, started 2026-08-31) is the active field-test window:
-n=9 module open-field arrangement, longitudinal behavior test.
+Phase 5 is planned for weeks 25–28 (2026-11-30 to 2026-12-27), after the
+9-node PCBA and enclosure platform in Phase 4. It is **not** the current
+window: ABC’s first two-node behavior box is due Week 15; n=9 field tests
+follow once those boards and the enclosure are in hand.
 
 ### Reliability metrics
 
