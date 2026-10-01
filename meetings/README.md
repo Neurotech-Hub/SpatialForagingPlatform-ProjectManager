@@ -22,3 +22,4 @@ here.
 | 2026-07-21 | Initial discussion with ABC and Hengen Lab — implementation plan, pellet presence, experiment tasks | NTH (Matt, Jemin), ABC, HLAB (Ravi Chopra) | [`20260721_meeting.md`](20260721_meeting.md) |
 | 2026-08-14 | First SFM delivery to Hengen Lab — two-module two-armed bandit; analysis SDK | NTH, HLAB (Ravi Chopra)           | [`20260814_meeting.md`](20260814_meeting.md) |
 | 2026-08-31 | ABC site tour — behavior-box fit, cleaning, replicate HLAB assembly | NTH, ABC                          | [`20260831_meeting.md`](20260831_meeting.md) |
+| 2026-09-30 | ABC monthly — behavior-box setup and Katie training | NTH (Matt, Jemin), ABC (Katie)    | [`20260930_meeting.md`](20260930_meeting.md) |

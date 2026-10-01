@@ -22,10 +22,10 @@ for the funded proposal.
 
 | Field           | Value                                                        |
 | --------------- | ------------------------------------------------------------ |
-| Phase           | Phase 3A starts Week 15 — ABC two-node behavior box          |
-| Hardware status | Alpha (HLAB 2-module live; ABC 2-node due next week)         |
-| Software status | Alpha                                                        |
-| Week            | Week 14 (as of 2026-09-16; see [`PROJECT.md`](PROJECT.md))   |
+| Phase           | Phase 3A — ABC box installed; experiments wait on protocol   |
+| Hardware status | Alpha (HLAB 2-module live; ABC 2-node set up 2026-09-30)     |
+| Software status | Alpha (sensors, logging, and reports behaving at ABC)        |
+| Week            | Week 16 (as of 2026-09-30; see [`PROJECT.md`](PROJECT.md))   |
 
 
 

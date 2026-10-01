@@ -6,6 +6,74 @@ where memory is better than the paper trail.
 
 ---
 
+# Week 16 — 2026-09-28 to 2026-10-04
+
+- **Phase:** Phase 3A — ABC + HLAB feedback and maintainability
+- **HW / SW:** Alpha / Alpha
+- **Meetings this week:**
+  [2026-09-30 ABC monthly — box setup and Katie training](../meetings/20260930_meeting.md)
+
+## Shipped
+
+- ABC two-node behavior box set up on site (2026-09-30).
+- Katie (ABC) trained on basic operations and system handling.
+- Matt walked the monthly ABC meeting through updates since the last ABC
+  meeting: sensors, logging, and the reporting tool are behaving.
+
+## In progress
+
+- Susan Maloney (ABC) protocol approval. Clarification question is in;
+  hope is approval by Friday 2026-10-02.
+- HLAB remains on the Aug 14 two-module setup.
+
+## Blocked / risks
+
+- ABC animal experiments cannot start until the behavior protocol is
+  approved.
+
+## Next week
+
+- If approval lands, Katie leads the first ABC experiments (week of
+  2026-10-05).
+- NTH supports those first runs.
+
+## Notes
+
+- Phase 3A window is weeks 15–17 (through 2026-10-11).
+
+---
+
+# Week 15 — 2026-09-21 to 2026-09-27
+
+- **Phase:** Phase 3A — ABC + HLAB feedback and maintainability
+- **HW / SW:** Alpha / Alpha
+- **Meetings this week:** none recorded
+
+## Shipped
+
+- No meeting recorded. ABC box was not yet installed (setup landed
+  2026-09-30).
+
+## In progress
+
+- ABC two-node behavior box, carried from the Week 15 delivery target
+  into the Week 16 install.
+
+## Blocked / risks
+
+-
+
+## Next week
+
+- Install the box at ABC and train an operator.
+
+## Notes
+
+- Rebaseline had targeted Week 15 for delivery. Install and training
+  happened at the start of Week 16.
+
+---
+
 # Week 14 — 2026-09-14 to 2026-09-20
 
 - **Phase:** Alpha deployments closing; Phase 3A starts Week 15

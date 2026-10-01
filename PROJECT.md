@@ -28,19 +28,19 @@ firmware, software, docs, examples) under an open-source license.
 
 **Rebaseline (2026-09-16):** Phases 3A–9 slipped. HLAB has been on a
 two-module alpha setup since 2026-08-14; ABC’s matching two-node behavior
-box is due Week 15. Production 9-node PCBAs and joint field tests have
-**not** started. Week numbers for Phase 3A onward below replace the original
-Aug 2026 field-test plan.
+box was then due Week 15 and was set up on 2026-09-30. Production 9-node
+PCBAs and joint field tests have **not** started. Week numbers for Phase 3A
+onward below replace the original Aug 2026 field-test plan.
 
 ## Current status
 
 
 | Field           | Value                                                                  |
 | --------------- | ---------------------------------------------------------------------- |
-| Phase           | Phase 3A starts Week 15 — ABC two-node behavior box                    |
-| Hardware status | Alpha (HLAB 2-module live; ABC 2-node due next week)                   |
-| Software status | Alpha                                                                  |
-| Week            | Week 14 (as of 2026-09-16)                                             |
+| Phase           | Phase 3A — ABC box installed; experiments wait on protocol             |
+| Hardware status | Alpha (HLAB 2-module live; ABC 2-node set up 2026-09-30)               |
+| Software status | Alpha (sensors, logging, and reports behaving at ABC)                  |
+| Week            | Week 16 (as of 2026-09-30)                                             |
 
 
 Weekly shipped / blocked / next: [`pulse/log.md`](pulse/log.md). Cross-lab
@@ -173,7 +173,9 @@ experiment-task support into that plan.
 **Weeks 8–14 (alpha deployments, not a numbered phase).** HLAB received a
 two-module two-armed-bandit setup on 2026-08-14; the analysis SDK followed
 about a week later. ABC toured on 2026-08-31 and chose to replicate the
-Hengen Lab behavior-box assembly. ABC’s first two-node box is due Week 15.
+Hengen Lab behavior-box assembly. ABC’s first two-node box was set up
+on 2026-09-30; Katie (ABC) was trained that day. Animal experiments wait
+on Susan Maloney’s protocol approval.
 
 ## Phase 3A — ABC + HLAB Feedback + Maintainability
 
