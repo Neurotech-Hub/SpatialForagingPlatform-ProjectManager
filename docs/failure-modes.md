@@ -1,41 +1,198 @@
 # Failure Modes
 
-Catalog of how the platform can fail, how each failure is detected, and how it is reported to the user.
+What can go wrong on a foraging module, in plain language.
 
-## Failure Mode Catalog
+Two kinds of problem show up:
 
-| ID | Failure Mode | Detection | User Signal | Recovery |
-| :--- | :--- | :--- | :--- | :--- |
-| **F-001** | **Pellet Feeder Jam** | Pellet presence sensor fails to detect a pellet within 30s (`kDefaultFeedTimeoutMs`) / 4096 steps (`kDefaultFeedMaxSteps`) during feeding, or sensor remains continuously obstructed. | Status LED blinks red; reports `ServiceStatus::Jam` or `ServiceStatus::Timeout` in CAN heartbeat/event; base station dashboard alert. | Clear hopper/dispenser obstruction. Send CAN `Abort` command to clear the sticky fault state and return to Idle. |
-| **F-002** | **Actuator Lowering Failure** | Actuator motor (M2) lowers to seek home, but PG2 (home sensor) fails to trigger within 8s (`kDefaultLowerTimeoutMs`) or 2048 steps (`kDefaultLowerSteps`). | Status LED blinks red; reports `ServiceStatus::Timeout` in CAN heartbeat/event; base station dashboard alert. | Inspect actuator path for mechanical blocks, verify PG2 alignment, and send CAN `Abort` command. |
-| **F-003** | **Actuator Raising / Home Clearance Failure** | Actuator motor (M2) raises pellet, but PG2 fails to clear within 5s (`kPg2ClearOnRaiseMs`) of starting or the raise motion fails to complete within 8s (`kDefaultRaiseTimeoutMs`). | Status LED blinks red; reports `ServiceStatus::Jam` or `ServiceStatus::Timeout` in CAN heartbeat/event; base station alert. | Clear obstruction, check sensor wiring, and send CAN `Abort` command. |
-| **F-004** | **Access Port Open Warning (Extended Access)** | Spring access port sensor remains open continuously for >30s (`kAccessPortOpenWarnMs`). | Module status LED flashes yellow (warning); reports open access port state in CAN heartbeat; base station UI alert. | Inspect spring mechanism or remove any physical obstructions. Clears automatically when spring access port returns to resting state (non-sticky). |
-| **F-005** | **Node Offline (CAN Communication Failure)** | Base station fails to receive CAN heartbeats (`0x200 + nodeId`) or general CAN messages from an active node for longer than the timeout period (typically 2-3x the heartbeat interval, e.g., 10-15s). | Base station UI marks node as "Offline" (red indicator); logs network event. | Verify RJ45 bus cabling, check the 12 V power supply distribution, and confirm that the 120 Ω CAN termination resistor is active on the last node. |
-| **F-006** | **Node Initialization Failure** | Identity/NVS loading fails (`identity.begin() != Ok`) or CAN transceiver hardware/TWAI driver fails to start (`can.begin() != Ok`). | Status LED blinks fast during boot; node fails to participate in CAN discovery; remains unassigned. | Check MCU board, re-flash firmware, or format NVS storage to force fresh ID discovery. |
+- **The module stops.** Both motors turn off, the status light on top stays
+solid on, and the screen shows a fault. It will not deliver another pellet
+until someone presses **Recover**. Recover only clears the error. It does
+not move the plate back to a home position.
+- **The module keeps going.** It tells you something looks off (a dome left
+open, a calibration that did not take, a module that never checked in).
+Nothing is stuck, and Recover is not required.
 
-## Detection Categories
+The name in parentheses is the label in the software, so you can match what
+you read here to what the screen says.
 
-- **Automatically detected by firmware**: The SFM node checks local sensors (pellet presence sensor, home position sensor, catch attempt sensor) and stepper motor position step-counters and timeouts locally, updating its internal FSM and immediately broadcasting events.
-- **Detectable from base station / host software**: Base station registers node presence, tracks response times, and monitors missing heartbeats on the CAN bus.
-- **Requires manual inspection**: Physical damage, loose RJ45 connectors, or stepper driver heating issues.
+## Errors that stop the module
 
-## Reporting Paths
-1. **Local Indication**: When a fault is declared, the SFM node switches the local status LED.
-2. **Network Event Broadcast**: The module sends a `CanEvent::Fault` message (ID `0x300 + nodeId`) over the CAN bus containing the exact `ServiceStatus` code.
-3. **Heartbeat Updates**: The module packs its current FSM state (byte 0) and the sticky fault/warning code (byte 5) into its periodic `0x200 + nodeId` heartbeat packet.
-4. **Base Station Host UI**: The Raspberry Pi base station monitors the CAN bus, logs incoming event frames, updates the node state registry, and notifies the supervisor software/user interface.
+### Out of pellets (`FeedTimeout`)
 
-## Base Station Presence & Offline Detection
+The wheel turned for **30 seconds** and no pellet settled on the plate.
 
-The base station uses a watchdog mechanism based on CAN communication to determine if a node is online:
+A pellet has to sit in the sensor for about **2 seconds** before it counts.
+A crumb that flashes through the beam is ignored, and the wheel keeps trying
+inside that same 30 seconds.
 
-- **Periodic Heartbeats**: Active nodes transmit a status heartbeat frame (`0x200 + nodeId`) periodically. The default interval is **5 seconds** (`kDefaultHeartbeatIntervalMs`), which can be configured at runtime via `CanCmd::SetConfig`.
-- **Offline Classification**: The base station tracks the timestamp of the last message received from each registered Node ID. If no packet is received for **15 seconds** (3x the default heartbeat interval), the base station classifies the node as **offline**.
-- **Rejoin Processing**: If a node goes offline but then broadcasts a message (e.g., standard heartbeat or rejoin discovery frame), the base station processes the message, checks if the MAC address matches the registered configuration, and marks the node back as **online**.
+**Usual cause.** The hopper is empty, a pellet is stuck in the wheel, or the
+pellet sensor is unplugged.
+
+**What to do.** Refill or clear the wheel, check that the pellet sensor sees
+a pellet, then press Recover.
+
+### Plate jammed on the way up (`Jam`)
+
+The plate started to rise and, **5 seconds** later, it was still sitting on
+the lower position sensor. It never got clear of that sensor.
+
+This is not an empty hopper. An empty hopper is “Out of pellets.”
+
+**Usual cause.** Something is blocking the plate, the lift motor is not
+moving, or the lower sensor is stuck “on.”
+
+**What to do.** Clear the path, make sure the plate can move up, then press
+Recover.
+
+### Pellet fell off on the way up (`PelletLost`)
+
+A pellet was on the plate, the plate started to rise, and the pellet sensor
+went empty for **half a second**. The module refuses to offer an empty plate
+as if it still had a reward.
+
+This check runs only when a pellet was actually loaded. An empty-plate trial
+(no pellet on purpose) does not raise this error.
+
+**Usual cause.** The pellet rolled off, the animal touched it during travel,
+or the sensor cable is loose.
+
+**What to do.** Look at the plate. Do not count this cycle as a pellet that
+was offered. Press Recover, then dispense again.
+
+### Plate did not finish its move (`ActuatorTimeout`)
+
+The lift motor was given about **8 seconds** for one part of the move and
+did not finish. The screen uses one name for all of these. The line just
+before the fault tells you which part it was:
+
+
+| What it was doing                  | What went wrong                                                                                                                                                                              |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Moving up off the lower sensor     | It did not get clear in time.                                                                                                                                                                |
+| Moving down to pick up a pellet    | It never found the lower sensor. It tries once more only if it already knows the plate is below that sensor. A second miss stops the module, so it does not drive upward into the hard stop. |
+| Dropping a little past that sensor | It found the sensor, then did not finish the short extra drop where the pellet lands.                                                                                                        |
+| Lifting the plate to the animal    | It did not reach the top in time. If it never even leaves the lower sensor, you will usually see **Plate jammed** first.                                                                     |
+
+
+**Usual cause.** The lift motor is stalled, unplugged, or blocked, or the
+lower sensor never sees the plate.
+
+**What to do.** Free the plate, check the lift motor and the lower sensor,
+then press Recover.
+
+### Waiting for the other module (not an error)
+
+On a trial where this module is not supposed to give a pellet, it lowers,
+then waits until the other module starts to rise, and rises with it. There
+is no timer. If the other module never rises, this plate simply stays down
+until someone presses Recover. The screen does not call this a fault.
+
+## Messages that do not stop the module
+
+### Dome left open (`DomeOpenWarning`)
+
+The dome has been open for **30 seconds**. The module says so once, then
+keeps working. Closing the dome and opening it again allows a new warning.
+
+The top status light does not change. The small onboard light follows the
+dome: lit means open.
+
+**What to do.** Close the dome. If it will not close on its own, check the
+spring and that nothing is holding it up.
+
+### Module never appeared (`NotInitialized`)
+
+The module could not start its network connection, so the base station never
+hears from it. There is no fault message to clear, because the module is not
+on the network. The status light stays in its fast boot blink.
+
+**What to do.** Power-cycle the module. If it still never appears, the
+network hardware on that board needs a look, or the firmware needs to be
+loaded again.
+
+### Odd fault code (`InvalidData`)
+
+The software knows this name, but current modules never send it. If a log
+shows it, that message did not come from this firmware.
+
+### Presence calibration did not take
+
+Calibrating the “is an animal here?” pad takes about **5 seconds** with an
+empty cage. If it does not collect enough quiet readings, it fails and keeps
+the old setting. The confirm blink does not play.
+
+Starting a second calibration while one is already running does nothing. It
+is not a failure.
+
+**What to do.** Make sure the cage is empty and still, then calibrate again.
+
+### A setting was rejected
+
+If the base station sends a setting the module cannot use (for example a
+blank or nonsense presence sensitivity), the module answers “not applied”
+and keeps the old value. The module does not stop. A heartbeat that is set
+too fast is slowed to a safe rate and still counts as applied.
+
+### Module never got an ID
+
+The status light blinks slowly (about once a second). The module is on, but
+it is waiting for the base station to claim it. It will keep asking. It does
+not call this a fault, and it will not pass power down the chain to the next
+module until it is claimed.
+
+**What to do.** Check that the first cable from the base station is seated,
+and that the modules are chained in order. Holding the module button for
+about **3 seconds** forgets its saved ID so it can be claimed again.
+
+### A message was missed
+
+If the network is briefly too busy, one update can be dropped. The module
+does not stop. The next regular status update fills in the gap: whether it
+is faulted, how many pellets it has offered, and how many were taken.
+
+### Dispense did nothing
+
+A dispense is ignored while the module is already moving, waiting, or
+stopped on a fault. It does not announce the ignore. Press Recover if it is
+faulted, then dispense again.
+
+A pellet already sitting on the plate is not an error. The module skips
+loading another one and offers the one that is already there.
+
+## What you see
+
+
+| What you see                                  | What it means                                                     |
+| --------------------------------------------- | ----------------------------------------------------------------- |
+| Small light blinking quickly                  | The module is turning on.                                         |
+| Top light blinking slowly                     | It is on and waiting to be given an ID.                           |
+| Top light off                                 | It is ready. Not faulted.                                         |
+| Top light solid on                            | It has stopped on a fault. Press Recover after you fix the cause. |
+| Top light blinks fast for a couple of seconds | Someone pinged this module, so you can see which box it is.       |
+| Screen: “Out of pellets…”                     | The wheel never delivered a pellet.                               |
+| Screen: “Jam — load sensor still blocked…”    | The plate did not get off the lower sensor.                       |
+| Screen: “Pellet lost…”                        | The pellet left the plate while it was rising.                    |
+| Screen: “Actuator fault…”                     | The lift did not finish its move.                                 |
+
+
+## Module looks offline
+
+The module does not decide this itself. The base station marks it offline
+when it has been silent for about **three times** its usual check-in.
+
+In normal use that check-in is every minute, so a module looks offline after
+about **3 minutes** of silence. Right after power-up, before the base station
+has set that pace, the window is shorter (about 15 seconds).
+
+**What to do.** Check the network cable, that the module has power, and that
+the end of the chain is terminated. A module that never started its network
+connection (see above) will stay silent until it is power-cycled or reloaded.
+When it speaks again, the base station marks it online.
 
 ## Cross-references
 
-- [`dispense-cycle.md`](dispense-cycle.md) — dispense cycle logic, CAN event definitions, and fault causes.
-- [`function-checks.md`](function-checks.md) — procedures to confirm a module is healthy.
-- [`maintenance.md`](maintenance.md) — preventive measures and scheduled inspections.
-- [`architecture.md`](architecture.md) — network topology and CAN message class details.
+- `[dispense-cycle.md](dispense-cycle.md)` — how a normal pellet delivery works.
+- `[function-checks.md](function-checks.md)` — how to confirm a module is healthy.
+- `[maintenance.md](maintenance.md)` — checks that prevent these failures.
+- Technical constants and message layouts live in the [SFM](https://github.com/Neurotech-Hub/SFM) firmware docs (`firmware/docs/`).
+
