@@ -36,4 +36,5 @@ status heartbeat so anyone can see progress without reading every commit.
 | 13   | 2026-09-07 – 09-13  | ABC two-node box in build     | [log](log.md#week-13--2026-09-07-to-2026-09-13) |
 | 14   | 2026-09-14 – 09-20  | Rebaseline; 3A next           | [log](log.md#week-14--2026-09-14-to-2026-09-20) |
 | 15   | 2026-09-21 – 09-27  | 3A Feedback + maintainability | [log](log.md#week-15--2026-09-21-to-2026-09-27) |
-| 16   | 2026-09-28 – 10-04  | 3A ABC box + training (current) | [log](log.md#week-16--2026-09-28-to-2026-10-04) |
+| 16   | 2026-09-28 – 10-04  | 3A ABC box + training         | [log](log.md#week-16--2026-09-28-to-2026-10-04) |
+| 17   | 2026-10-05 – 10-11  | 3A first runs (current)       | [log](log.md#week-17--2026-10-05-to-2026-10-11) |

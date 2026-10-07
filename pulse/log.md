@@ -6,6 +6,49 @@ where memory is better than the paper trail.
 
 ---
 
+# Week 17 — 2026-10-05 to 2026-10-11
+
+- **Phase:** Phase 3A — ABC + HLAB feedback and maintainability
+- **HW / SW:** Alpha / Alpha
+- **Meetings this week:**
+  [2026-10-05 ABC weekly with Katie](../meetings/20261005_abc_meeting.md),
+  [2026-10-05 HLAB with Ravi](../meetings/20261005_hlab_meeting.md)
+
+## Shipped
+
+- First ABC experiment startup with Katie (2026-10-05). Pre-run procedures
+  and system operation walked through on the box.
+- HLAB two-arm analysis: mice bias to the rich arm, and after a shift they
+  relearn in a few trials.
+
+## In progress
+
+- ABC requests: overnight runs, a feeding path if a session is paused, a
+  second option if mice have not found food in about 24 hours, and pellet
+  counts on the GUI.
+- Whether FED4 shares the ABC box with SFM is still undecided.
+- HLAB: one node does not raise all the way to the top.
+- Touch factor 80 is Ravi’s suggested calibration default; not adopted yet.
+
+## Blocked / risks
+
+- `PelletLost` during raise at HLAB is mice grabbing the pellet while the
+  plate is still coming up, not a pellet falling off. No safeguard yet.
+
+## Next week
+
+- Firmware: if the dome is open, keep the pellet at the load position; if
+  the dome opens mid-raise, lower immediately.
+- GUI pellet count for ABC.
+- Identify the HLAB node that does not finish the raise.
+
+## Notes
+
+- Phase 3A runs through 2026-10-11. Phase 3B (HLAB custom MVP) is the
+  following window.
+
+---
+
 # Week 16 — 2026-09-28 to 2026-10-04
 
 - **Phase:** Phase 3A — ABC + HLAB feedback and maintainability

@@ -22,10 +22,10 @@ for the funded proposal.
 
 | Field           | Value                                                        |
 | --------------- | ------------------------------------------------------------ |
-| Phase           | Phase 3A — ABC box installed; experiments wait on protocol   |
-| Hardware status | Alpha (HLAB 2-module live; ABC 2-node set up 2026-09-30)     |
-| Software status | Alpha (sensors, logging, and reports behaving at ABC)        |
-| Week            | Week 16 (as of 2026-09-30; see [`PROJECT.md`](PROJECT.md))   |
+| Phase           | Phase 3A — first ABC startup; HLAB bandit learning confirmed |
+| Hardware status | Alpha (ABC 2-node in first runs; one HLAB node does not fully raise) |
+| Software status | Alpha (open: GUI pellet count; dome-open raise safeguard)    |
+| Week            | Week 17 (as of 2026-10-07; see [`PROJECT.md`](PROJECT.md))   |
 
 
 

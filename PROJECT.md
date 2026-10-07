@@ -37,10 +37,10 @@ onward below replace the original Aug 2026 field-test plan.
 
 | Field           | Value                                                                  |
 | --------------- | ---------------------------------------------------------------------- |
-| Phase           | Phase 3A — ABC box installed; experiments wait on protocol             |
-| Hardware status | Alpha (HLAB 2-module live; ABC 2-node set up 2026-09-30)               |
-| Software status | Alpha (sensors, logging, and reports behaving at ABC)                  |
-| Week            | Week 16 (as of 2026-09-30)                                             |
+| Phase           | Phase 3A — first ABC startup; HLAB bandit learning confirmed           |
+| Hardware status | Alpha (ABC 2-node in first runs; one HLAB node does not fully raise)   |
+| Software status | Alpha (open: GUI pellet count; dome-open raise safeguard)              |
+| Week            | Week 17 (as of 2026-10-07)                                             |
 
 
 Weekly shipped / blocked / next: [`pulse/log.md`](pulse/log.md). Cross-lab
@@ -174,8 +174,8 @@ experiment-task support into that plan.
 two-module two-armed-bandit setup on 2026-08-14; the analysis SDK followed
 about a week later. ABC toured on 2026-08-31 and chose to replicate the
 Hengen Lab behavior-box assembly. ABC’s first two-node box was set up
-on 2026-09-30; Katie (ABC) was trained that day. Animal experiments wait
-on Susan Maloney’s protocol approval.
+on 2026-09-30; Katie (ABC) was trained that day. The first ABC experiment
+startup was 2026-10-05.
 
 ## Phase 3A — ABC + HLAB Feedback + Maintainability
 

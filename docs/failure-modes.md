@@ -56,6 +56,15 @@ This check runs only when a pellet was actually loaded. An empty-plate trial
 **Usual cause.** The pellet rolled off, the animal touched it during travel,
 or the sensor cable is loose.
 
+**Seen at Hengen Lab (2026-10-05).** A mouse waiting at an open dome can
+grab the pellet while the plate is still rising. The sensor goes empty and
+the module reports this fault. That is a taken pellet, not one that fell
+off. See [the HLAB note](../meetings/20261005_hlab_meeting.md).
+
+**Not built yet.** If the dome is already open, leave the pellet at the
+loading position. If the dome opens during the rise, lower the plate
+immediately so the animal cannot take the pellet early.
+
 **What to do.** Look at the plate. Do not count this cycle as a pellet that
 was offered. Press Recover, then dispense again.
 
@@ -76,6 +85,10 @@ before the fault tells you which part it was:
 
 **Usual cause.** The lift motor is stalled, unplugged, or blocked, or the
 lower sensor never sees the plate.
+
+**Seen at Hengen Lab (2026-10-05).** One node does not raise all the way to
+the top. The cause is still open. See
+[the HLAB note](../meetings/20261005_hlab_meeting.md).
 
 **What to do.** Free the plate, check the lift motor and the lower sensor,
 then press Recover.
