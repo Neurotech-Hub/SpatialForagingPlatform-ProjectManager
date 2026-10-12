@@ -22,10 +22,10 @@ for the funded proposal.
 
 | Field           | Value                                                        |
 | --------------- | ------------------------------------------------------------ |
-| Phase           | Phase 3A — first ABC startup; HLAB bandit learning confirmed |
-| Hardware status | Alpha (ABC 2-node in first runs; one HLAB node does not fully raise) |
-| Software status | Alpha (open: GUI pellet count; dome-open raise safeguard)    |
-| Week            | Week 17 (as of 2026-10-07; see [`PROJECT.md`](PROJECT.md))   |
+| Phase           | ABC 48-hour runs ready (dome open, two FEDs in the box)      |
+| Hardware status | Alpha (ABC firmware upgraded 2026-10-12; one HLAB node does not fully raise) |
+| Software status | Alpha (ABC GUI pellet counts and auto-recover; jam and low pellets still manual) |
+| Week            | Week 18 (as of 2026-10-12; see [`PROJECT.md`](PROJECT.md))   |
 
 
 

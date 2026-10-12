@@ -17,6 +17,11 @@ you read here to what the screen says.
 
 ## Errors that stop the module
 
+On Katie’s ABC box (firmware and GUI upgraded 2026-10-12), the base station
+auto-recovers faults such as `PelletLost` and starts another dispense. A
+person still has to step in for a **motor jam** and for a **very low pellet
+store**. See [the 2026-10-12 note](../meetings/20261012_abc_meeting.md).
+
 ### Out of pellets (`FeedTimeout`)
 
 The wheel turned for **30 seconds** and no pellet settled on the plate.
@@ -44,29 +49,40 @@ moving, or the lower sensor is stuck “on.”
 **What to do.** Clear the path, make sure the plate can move up, then press
 Recover.
 
-### Pellet fell off on the way up (`PelletLost`)
+### Pellet missing after reloads (`PelletLost`)
 
-A pellet was on the plate, the plate started to rise, and the pellet sensor
-went empty for **half a second**. The module refuses to offer an empty plate
-as if it still had a reward.
+A pellet left the plate during the raise, and this dispense already reloaded
+**3 times**. The next miss stops the module.
 
-This check runs only when a pellet was actually loaded. An empty-plate trial
-(no pellet on purpose) does not raise this error.
+Before that fault, the firmware keeps the pellet out of reach:
 
-**Usual cause.** The pellet rolled off, the animal touched it during travel,
-or the sensor cable is loose.
+- Dome already open: the plate stays at the loading position (`DomeHold`,
+  motors off) until the dome has been closed for **500 ms**.
+- Dome opens before the plate is **80%** of the way up: the plate lowers
+  back to the loading position, then waits the same way.
+- Pellet sensor empty for **500 ms** before that 80% point, or after it
+  while the dome is still closed: reload and try again (up to 3).
+- Pellet sensor empty for 500 ms after 80%, with the dome open: that is a
+  take. The plate finishes the rise and counts `Loaded` then `PelletTaken`.
+  It is not `PelletLost`.
 
-**Seen at Hengen Lab (2026-10-05).** A mouse waiting at an open dome can
-grab the pellet while the plate is still rising. The sensor goes empty and
-the module reports this fault. That is a taken pellet, not one that fell
-off. See [the HLAB note](../meetings/20261005_hlab_meeting.md).
+An empty-plate trial (no pellet on purpose) does not run the pellet check.
+It does follow the same dome hold and retract.
 
-**Not built yet.** If the dome is already open, leave the pellet at the
-loading position. If the dome opens during the rise, lower the plate
-immediately so the animal cannot take the pellet early.
+**Usual cause of the fault.** The pellet rolled off and the reloads also
+missed, the hopper ran out mid-cycle, or the sensor cable is loose.
 
-**What to do.** Look at the plate. Do not count this cycle as a pellet that
-was offered. Press Recover, then dispense again.
+**Seen at Hengen Lab (2026-10-05).** A mouse at an open dome was grabbing
+the pellet while the plate was still rising, and the old firmware called
+that `PelletLost`. The hold / retract / early-take rules above are the
+fix. See [the HLAB note](../meetings/20261005_hlab_meeting.md).
+
+**What the base station does.** It presses Recover and dispenses again, and
+writes a warning. After **three losses in a row on the same module** it
+pauses the session so someone can look.
+
+**What to do.** If the session paused, check the plate and the hopper.
+Press Recover, then continue.
 
 ### Plate did not finish its move (`ActuatorTimeout`)
 
@@ -184,7 +200,7 @@ loading another one and offers the one that is already there.
 | Top light blinks fast for a couple of seconds | Someone pinged this module, so you can see which box it is.       |
 | Screen: “Out of pellets…”                     | The wheel never delivered a pellet.                               |
 | Screen: “Jam — load sensor still blocked…”    | The plate did not get off the lower sensor.                       |
-| Screen: “Pellet lost…”                        | The pellet left the plate while it was rising.                    |
+| Screen: “Pellet lost…”                        | Three reloads in one dispense still had no pellet. The session may pause after three in a row. |
 | Screen: “Actuator fault…”                     | The lift did not finish its move.                                 |
 
 

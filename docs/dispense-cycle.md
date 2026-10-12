@@ -35,13 +35,16 @@ always knows whether the plate is occupied — before a dispense, during travel,
                               │                            │
                          presence asserts                  │
                               │                            │
-                         PelletLoaded ─────────────────────┤
+                         OnPlate ──────────────────────────┤
                                                            ▼
                                                         Raising
                                                            │
-                               pellet sensor clears ─► Fault (PelletLost)
+                         dome open before start ─► DomeHold (motors off)
+                         dome opens before 80% ──► Retracting ─► DomeHold
+                         pellet leaves early ────► reload (up to 3), then Fault (PelletLost)
+                         pellet leaves after 80% with dome open ─► early take
                                                            │
-                                                     PelletPresented
+                                                          Loaded
                                                            │
                        ┌─ dome lifts ──────► DomeOpened ───┤
                        │                                   │
@@ -59,13 +62,26 @@ first moves clear, then approaches until the load position sensor asserts. Both 
 `kDefaultLowerSteps` and `kDefaultLowerTimeoutMs`.
 
 **Feeding.** M1 turns the pellet wheel until the pellet sensor asserts, which confirms a pellet has arrived on
-the plate. The node halts M1, reports `PelletLoaded`, and begins the raise in the same tick. If no pellet
-arrives within `kDefaultFeedTimeoutMs` — an empty hopper or a wheel jam — the node faults with `Timeout`.
+the plate. The node halts M1, reports `OnPlate`, and begins the raise in the same tick. If no pellet
+arrives within `kDefaultFeedTimeoutMs` — an empty hopper or a wheel jam — the node faults with `FeedTimeout`.
 
-**Raising.** M2 lifts the plate by `kDefaultRaiseSteps` from the load position. Two checks run during travel:
-the load position sensor must clear within `kLoadClearOnRaiseMs` (otherwise `Jam`), and the pellet sensor must
-stay asserted. A pellet that falls off in transit clears the sensor for `kPelletLostMs` and faults with
-`PelletLost`, so an empty plate is never presented as if it held a pellet.
+**Raising.** M2 lifts the plate by `kDefaultRaiseSteps` from the load position. The raise does not start
+while the dome is open. The node waits in `DomeHold` (motors off) until the dome has stayed closed for
+`kDomeCloseSettleMs` (500 ms). `DomeOpenWarning` can still fire at 30 s during that wait.
+
+The commit point is **80%** of the raise (`kRaiseCommitPct`). During travel the load-position sensor must
+clear within `kLoadClearOnRaiseMs` (otherwise `Jam`), and on a fed cycle the pellet sensor is watched:
+
+- Dome opens before 80% (fed or empty-plate): `Retracting`. The plate returns to the drop position, then
+  `DomeHold` again. The pellet sensor and the dome are ignored on the way down.
+- Pellet sensor stays clear for `kPelletLostMs` (500 ms) before 80%, or at/after 80% with the dome closed:
+  same retract, logged as a reload (`PelletReload`, reason lost-during-raise). Up to `kMaxPelletReloads`
+  (3) reloads in one dispense. The next miss faults `PelletLost`.
+- Pellet sensor stays clear for 500 ms at/after 80% with the dome open: the animal took it. The plate
+  finishes the raise, then the node emits `Loaded` and `PelletTaken` and returns to `Idle`.
+
+A no-feed (empty-plate) cycle follows the same dome hold and retract. It does not reload, because there
+was no pellet to lose.
 
 **Presented.** The pellet is available to the animal. The node stays here, watching two things:
 
@@ -87,8 +103,8 @@ Node → base on CAN ID `0x300 + nodeId`. Byte 0 is the event code.
 
 | Code | Event | Extra payload | Meaning |
 | ---- | ----- | ------------- | ------- |
-| `0x01` | `PelletLoaded` | count LE16 | A pellet is confirmed on the plate; the raise is starting |
-| `0x02` | `PelletPresented` | count LE16 | The plate reached the top; the pellet is available |
+| `0x01` | `OnPlate` | count LE16 | The pellet sensor confirmed during loading; the raise is starting |
+| `0x02` | `Loaded` | count LE16 | The plate reached the top; the pellet is ready |
 | `0x03` | `DomeOpened` | count LE16, pellet present | The dome was lifted while a pellet was presented |
 | `0x04` | `Fault` | `ServiceStatus` | Motion or delivery failure; sticky until `Abort` |
 | `0x05` | `Pong` | — | Reply to `Ping` |
@@ -99,8 +115,13 @@ Node → base on CAN ID `0x300 + nodeId`. Byte 0 is the event code.
 | `0x0A` | `DomeOpenWarning` | count LE16 | The dome has been open for `kDomeOpenWarnMs` |
 | `0x0B` | `PelletTaken` | count LE16, dome open | The pellet left the plate; retrieval confirmed |
 | `0x0C` | `FeedSkipped` | count LE16 | A dispense arrived with the plate occupied; feed and lower were skipped |
+| `0x12` | `DomeHold` | count LE16 | At the drop position, waiting for the dome to stay closed |
+| `0x13` | `Retracting` | count LE16 | Plate returning to the drop position |
+| `0x14` | `PelletReload` | count LE16, reason, attempt | Pellet missing; the wheel is loading again. Reason 1 = lost during raise, 2 = missing after retract. `attempt` is 1-based and stops at 3 |
 
-`count` is the running total of pellets presented by that node.
+`count` on these frames is the node's power-on total of `Loaded` milestones. Firmware zeroes it at boot
+and does not clear it on Recover or on a new experiment. The number operators and reports use is the
+**session** total, owned by the base station. See [Session pellet counts](#session-pellet-counts).
 
 The context byte on dome and take events separates intent from accident. `DomeOpened` carries whether a
 pellet was on the plate at the moment of the lift, so an opening with an empty plate is recognizable as
@@ -114,13 +135,13 @@ immediately; heartbeats are the periodic recovery snapshot.
 ## Faults
 
 A fault halts both motors, latches a status code, lights the status LED solid, and holds the node in `Fault`
-until it receives `Abort`.
+until it receives `Recover`.
 
 | Code | Cause |
 | ---- | ----- |
-| `Timeout` | A motion phase exceeded its budget — no pellet loaded, or the actuator never reached its target |
+| `Timeout` | A motion phase exceeded its budget — no pellet loaded (`FeedTimeout`), or the actuator never reached its target (`ActuatorTimeout`) |
 | `Jam` | The load position sensor did not clear after the raise started; the plate is obstructed |
-| `PelletLost` | The pellet left the plate during the raise |
+| `PelletLost` | The pellet was missing and this dispense already used its 3 reloads. The base station auto-recovers and dispenses again. A motor jam or a very low pellet store does not auto-recover |
 
 ## Heartbeat snapshot
 
@@ -137,17 +158,36 @@ Node → base on CAN ID `0x200 + nodeId`, sent every `kDefaultHeartbeatIntervalM
 | 6–7 | Pellets taken (LE16) |
 
 Carrying both counts means a node that reconnects mid-session reports delivery and consumption together, with
-no need to replay the event log.
+no need to replay the event log. Those bytes are the node's power-on counters. The session totals below are
+what the GUI and the CSV call a pellet.
+
+## Session pellet counts
+
+The base station keeps a per-node ledger for the open session (`pellet_ledger.py`):
+
+- **Presented** advances on `Loaded`.
+- **Taken** advances on `PelletTaken`.
+
+Each CAN frame and heartbeat is a witness of the node's counter. The session total moves by the **delta**,
+so a dropped `Loaded` is filled in by the next frame or heartbeat that still carries the count. A backward
+jump (node power-cycled) re-baselines and leaves the session total where it was.
+
+The GUI shows both numbers on the experiment panel (`presented · taken`) and on each node tile
+(`presented / taken`).
+
+Restarting the GUI and starting the **same session name** continues those totals, and the trial counter,
+from the existing CSV. The new run logs `session_resumed` with the offsets it carried in. A different
+session name starts at zero. The node's own counter still runs from power-on either way.
 
 ## What the base station can conclude
 
 The pellet sensor turns several inferences into measurements:
 
-- **Consumption, not delivery.** `PelletPresented` counts what the hardware offered; `PelletTaken` counts what
+- **Consumption, not delivery.** `Loaded` counts what the hardware offered; `PelletTaken` counts what
   the animal actually took. The gap between the two counts is the untouched pellets.
 - **Unrewarded openings.** A dome bout that closes with the pellet sensor still asserted is an access that did
   not end in retrieval — a distinct behavioral event from a successful one.
-- **Retrieval latency.** The interval from `PelletPresented` to `PelletTaken` is a per-pellet measure of how
+- **Retrieval latency.** The interval from `Loaded` to `PelletTaken` is a per-pellet measure of how
   quickly the animal engaged.
 - **Consumption-paced reloading.** An experiment can wait for `PelletTaken` before dispensing again, so the
   session follows the animal rather than a fixed schedule. The built-in free-feeding template works this way.

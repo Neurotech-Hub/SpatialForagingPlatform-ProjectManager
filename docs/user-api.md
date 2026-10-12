@@ -127,6 +127,28 @@ starter from `packages/dev_gui/examples/templates/` into `templates/` +
 `packages/sfm-analysis/examples/report_design/`. Tests can use
 `exp.make_runner(); runner.inject(...); runner.step(now)` with no CAN.
 
+## Session pellet counts
+
+The GUI shows **presented** and **taken** for the open session: one line on
+the experiment panel, and `presented / taken` on each node tile. Those are
+the base station’s session ledger, built from the delta of the node’s
+power-on counter so a dropped CAN frame is recovered by the next heartbeat.
+
+Restarting the GUI and starting the **same session name** continues the
+pellet totals and the trial counter from that session’s CSV. The new run
+appends, increments `run_id`, and logs `session_resumed` with the offsets.
+A new session name starts both counters at zero. This is the behavior Ravi
+asked for after a GUI restart was zeroing an in-progress session, and it is
+what Katie reads on the tile instead of the event log.
+
+`end_after(pellets=…)` uses the same session pellet counter, including the
+offset carried in on resume. A cap already met at resume ends the session
+immediately (`pellet_cap_reached_on_resume`).
+
+Node firmware still counts from power-on and does not reset on Recover.
+`fields_json` keeps `session_pellets` / `session_taken` for analysis and
+`node_pellets` / `node_taken` as the power-on witness.
+
 ## Output format
 
 The base station writes one **unified 15-column session CSV**

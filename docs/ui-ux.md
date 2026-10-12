@@ -42,4 +42,14 @@ go/no-go feedback in Phase 3A._
 _Numbered, named, prioritized. Each maps to a primary persona (e.g. ABC
 technician, HLAB experimenter)._
 
+## Pellet counts
+
+Each node tile and the experiment panel show how many pellets that session
+has **presented** and how many were **taken**. Operators read the count on
+the tile. The event log is the audit trail, not the place to add it up.
+
+Closing the GUI and starting the same session name again keeps those
+numbers. The next pellet is one past the last run. A new session name
+starts at zero.
+
 ## Open questions

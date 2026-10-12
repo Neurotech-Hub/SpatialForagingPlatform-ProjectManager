@@ -6,6 +6,55 @@ where memory is better than the paper trail.
 
 ---
 
+# Week 18 — 2026-10-12 to 2026-10-18
+
+- **Phase:** Phase 3A — ABC 48-hour runs ready
+- **HW / SW:** Alpha / Alpha (ABC firmware and GUI upgraded 2026-10-12)
+- **Meetings this week:**
+  [2026-10-12 ABC with Katie](../meetings/20261012_abc_meeting.md)
+
+## Shipped
+
+- Installed the new firmware and GUI on Katie’s box. GUI errors that were
+  blocking a run are cleared. The box is ready for the next experiment.
+- GUI pellet counts are on that build (experiment panel and each node tile).
+- Auto-recover for faults such as `PelletLost`. A person is still required
+  for a motor jam or a very low pellet store.
+- Dome-open raise safeguard in firmware (hold at load, retract before 80%
+  of the raise, reload up to 3 times, count a take past 80% with the dome
+  open).
+- Same session name after a GUI restart continues pellet totals and the
+  trial counter from the CSV.
+
+## In progress
+
+- ABC protocol: clamshell dome left open for training, two FED devices in
+  the same box, **48 hours** per experiment, **8–10 adults**, split evenly
+  male and female.
+- Katie’s procedure is up for review:
+  [Google Doc](https://docs.google.com/document/d/1izdzfEGDUeT35xuk4L2V7V4M0QKjw6MNcU3AjcuHySA/edit?tab=t.3mnl8xp5jlwk).
+- HLAB: one node does not raise all the way to the top.
+- Touch factor 80 is Ravi’s suggested calibration default; not adopted yet.
+
+## Blocked / risks
+
+- A motor jam or a very low pellet store still stops a module. Those will
+  not auto-recover during a 48-hour run.
+
+## Next week
+
+- Katie starts the 48-hour experiment.
+- NTH reviews the procedure doc.
+- Identify the HLAB node that does not finish the raise.
+
+## Notes
+
+- Docs: [`docs/dispense-cycle.md`](../docs/dispense-cycle.md),
+  [`docs/failure-modes.md`](../docs/failure-modes.md),
+  [`docs/user-api.md`](../docs/user-api.md).
+
+---
+
 # Week 17 — 2026-10-05 to 2026-10-11
 
 - **Phase:** Phase 3A — ABC + HLAB feedback and maintainability

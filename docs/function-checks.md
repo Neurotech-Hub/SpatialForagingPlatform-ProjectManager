@@ -49,11 +49,13 @@ The base station GUI (`packages/dev_gui`) receives live telemetry and heartbeats
 | **Idle** | Node online, in standby position; ready for dispense commands |
 | **Lowering** | Actuator (M2) lowering to home position until home position sensor (PG2) triggers |
 | **Feeding** | Feed motor (M1) rotating until pellet presence sensor confirms pellet at presentation stage |
-| **Raising** | Actuator (M2) raising pellet by target steps (`raiseSteps`, ~700 steps) to presentation port |
-| **Presented** | Pellet presented at port; spring access sensor detects catch attempts and pellet presence sensor confirms retrieval |
+| **Raising** | Actuator (M2) lifting the plate. Holds (`DomeHold`) while the dome is open; retracts if the dome opens before 80% of the raise |
+| **Presented** | Pellet at the port (`Loaded`); taken count steps when the pellet sensor clears |
 | **SeekingAway** | Actuator (M2) moving up away from home until PG2 clears (recovery/clear motion) |
-| **Fault** | Sticky error state (Jam, Timeout); requires an `Abort` command from GUI to reset |
+| **Fault** | Sticky error (jam, timeout, `PelletLost` after 3 reloads). **Recover** clears it |
 | **Offline** | Watchdog state: base station received no heartbeat for > 15 s (card highlighted red) |
+
+While an experiment is running (and after it stops, until the next one starts), each tile also shows that node’s **session** pellet count: `presented / taken`. The experiment panel shows the same pair summed across nodes. Restart the GUI and start the **same session name**: the counts continue from the existing CSV, and the log has a `session_resumed` row. A new session name shows zeros until the first `Loaded`.
 
 ---
 
@@ -76,24 +78,26 @@ Trigger a dispense cycle from the base station GUI (individual module test or se
 ```mermaid
 stateDiagram-v2
     [*] --> Idle
-    Idle --> Lowering : Dispense command
-    Lowering --> Feeding : PG2 triggered (Home LOW)
-    Feeding --> Raising : Pellet presence detected
-    Raising --> Presented : M2 target steps reached
-    Presented --> Lowering : New Dispense command / Pellet retrieved
-    Presented --> Idle : Abort command
-    Lowering --> Fault : Lowering Timeout / Jam
-    Feeding --> Fault : Feed Timeout / Presence Sensor Fault
-    Raising --> Fault : Raising Timeout / PG2 Jam
-    Fault --> Idle : Abort command
+    Idle --> Lowering : Dispense
+    Lowering --> Feeding : At load position
+    Feeding --> DomeHold : Pellet confirmed, dome open
+    Feeding --> Raising : Pellet confirmed, dome closed
+    DomeHold --> Raising : Dome closed 500 ms
+    Raising --> Retracting : Dome opens before 80%
+    Retracting --> DomeHold : Back at load
+    Raising --> Presented : Plate at top
+    Presented --> Idle : Pellet taken
+    Raising --> Fault : Three reloads, jam, or timeout
+    Feeding --> Fault : Feed timeout
+    Fault --> Idle : Recover
 ```
 
 ### Dispense sequence phases
 
 1. **Lowering**: Base station sends `Dispense`. Actuator motor (M2) runs DOWN until **PG2 (home position sensor)** is tripped (LOW).
 2. **Feeding**: Feed motor (M1) rotates to advance a pellet. The **pellet presence sensor** detects and verifies pellet presence at the presentation stage.
-3. **Raising**: Actuator motor (M2) runs UP for `raiseSteps` (bench default: 700 steps) to elevate the pellet to the presentation port.
-4. **Presented**: Pellet is held at the presentation port. The node latches a `PelletPresented` CAN event (`0x300 + nodeId`) and increments its internal pellet count. The **spring-loaded access port mechanism** detects animal access and catch attempts. Upon an access attempt (spring trigger), the **pellet presence sensor** instantly evaluates pellet presence with confidence, determining whether the pellet was successfully retrieved or missed.
+3. **Raising**: Actuator motor (M2) runs UP for `raiseSteps` (bench default: 1480 steps from the drop position) to elevate the pellet to the presentation port. The plate waits (`DomeHold`) if the dome is open, and lowers (`Retracting`) if the dome opens before 80% of the raise. A pellet that leaves before that point is reloaded (up to 3 times). Leaving after 80% with the dome open counts as a take.
+4. **Presented**: Pellet is held at the presentation port. The node latches `Loaded` and the GUI tile’s presented count steps by one. The **spring-loaded access port mechanism** detects animal access. When the pellet sensor clears, the node reports `PelletTaken` and the tile’s taken count steps by one.
 5. **Cycle completion / Next trial**: A subsequent `Dispense` command or confirmed pellet retrieval transitions the node directly from `Presented` into `Lowering` for the next pellet, while an `Abort` command returns the node to `Idle`.
 
 ---
@@ -163,7 +167,7 @@ Perform this full system check before initiating an experimental session:
 2. **Launch GUI**: From `packages/dev_gui`, start the base station software (`python run.py`).
 3. **Verify Discovery**: Confirm all connected nodes complete daisy-chain assignment, appear in the GUI grid with correct Node IDs, and status LEDs turn OFF.
 4. **Bus Reachability (`Ping All`)**: Trigger `ping_all` from GUI; verify all nodes fast-blink status LEDs and emit `Pong` events.
-5. **Dispense Cycle Verification**: Trigger a dispense on each module; verify state machine sequence: `Idle → Lowering → Feeding → Raising → Presented`.
+5. **Dispense Cycle Verification**: Trigger a dispense on each module; verify `Idle → Lowering → Feeding → Raising → Presented`, and that an open dome holds the plate in `DomeHold` instead of rising.
 6. **BNC Synchronization**: Send a test pulse to BNC IN 1; confirm edge is recorded in the GUI log and BNC OUT pulse is generated.
 7. **Camera sync flash**: Start a session; every online node’s upward-facing status LED stays solid ON for ~500 ms and BNC OUT pulses at the same moment (see [`sync-and-recording.md`](sync-and-recording.md)). Faulted nodes skip the flash.
 8. **Offline Watchdog Test**: Disconnect an RJ45 cable from one module; confirm GUI updates node state to **Offline** within ~15 s.
@@ -210,10 +214,12 @@ If a specific module fails system checks, detach the module for bench testing us
 | **Node Discovery** | All status LEDs turn **OFF** after ID assignment | LED continues blinking indefinitely |
 | **GUI Node State** | Live state reflects exact node FSM (`Idle`, `Lowering`, `Feeding`, `Raising`, `Presented`) | Card stuck on `Offline`, `Fault`, or state mismatch |
 | **Ping Response** | Target node fast-blinks LED; `Pong` frame logged within 2 s | No response; MAC missing in log |
-| **Dispense Sequence** | Smooth transition `Idle → Lowering → Feeding → Raising → Presented`; pellet detected by pellet presence sensor; confident retrieval verification via spring access trigger | Motor stall, pellet presence sensor timeout, or sticky `Fault` state |
+| **Dispense Sequence** | `Idle → Lowering → Feeding → Raising → Presented` with the dome closed; open dome holds in `DomeHold`; GUI presented/taken counts step on `Loaded` / `PelletTaken` | Plate rises into an open dome, motor stall, or sticky `Fault` after a single miss |
 | **CAN Loopback (`test_hat.py`)** | `[PASS] Loopback TX/RX matches` | Mismatched frame data or CAN interface down |
 | **BNC Sync Pulse** | BNC OUT pulse width within ±10% of configured width | Missing pulse or incorrect pulse width |
 | **Camera sync flash** | All online nodes hold status LED solid ~500 ms at session start; BNC OUT pulses; `SYNC` row in log | No flash, missing BNC OUT, or faulted nodes flashing |
+| **Pellet counts** | Tile and experiment panel show session presented / taken; same session name after a GUI restart continues the totals (`session_resumed`) | Counts stuck at the node’s power-on total, or a resumed session starts again at 0 |
+| **Dome-open raise** | Open dome holds the plate down; opening the dome before 80% of the raise brings the plate back down | Plate rises into an already-open dome, or a mid-raise grab is logged as `PelletLost` |
 | **Offline Detection** | Disconnected node transitions to **Offline** in ~15 s | Node state remains `Idle` after cable disconnect |
 
 ---

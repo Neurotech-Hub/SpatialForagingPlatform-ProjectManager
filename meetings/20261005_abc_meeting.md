@@ -54,3 +54,6 @@
   [Phase 3A — ABC + HLAB Feedback + Maintainability](../PROJECT.md#phase-3a--abc--hlab-feedback--maintainability)
 - Prior ABC setup:
   [2026-09-30](20260930_meeting.md)
+- Follow-up (2026-10-12): pellet counts are on the GUI, two FED devices
+  share the box, and runs are 48 hours with the clamshell dome left open.
+  [Note](20261012_abc_meeting.md).

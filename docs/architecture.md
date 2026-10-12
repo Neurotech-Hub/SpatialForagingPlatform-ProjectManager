@@ -317,12 +317,18 @@ Scaling to 16 modules remains within the same supply rating at this per-module b
 ## Logging and reports
 
 The base station appends every CAN frame, heartbeat, BNC edge, and experiment
-row to one session CSV. [`sfm-analysis`](https://github.com/Neurotech-Hub/SFM/tree/main/packages/sfm-analysis)
+row to one session CSV. Pellet totals on the GUI, and the CSV fields
+`session_pellets` / `session_taken`, are session counts. Restarting the GUI
+under the same session name continues them. Node heartbeats still carry the
+module’s power-on counters as the witness for a dropped frame.
+
+[`sfm-analysis`](https://github.com/Neurotech-Hub/SFM/tree/main/packages/sfm-analysis)
 (`pip install sfm-analysis`, CLI `sfm-report`) renders that CSV as printable
 HTML (generic metrics plus per-template designs: free feeding, fixed/random,
 probability delivery, two-armed bandit). On the Pi,
 [`run_report.py`](https://github.com/Neurotech-Hub/SFM/blob/main/packages/dev_gui/run_report.py)
-is a thin wrapper around the same CLI. Schema and commands: [`user-api.md`](user-api.md).
+is a thin wrapper around the same CLI. Schema and commands:
+[`dispense-cycle.md`](dispense-cycle.md), [`user-api.md`](user-api.md).
 
 ## Architecture diagram
 
