@@ -49,6 +49,13 @@ moving, or the lower sensor is stuck “on.”
 **What to do.** Clear the path, make sure the plate can move up, then press
 Recover.
 
+### Two pellets in the nozzle
+
+**Seen at ABC (2026-10-19).** Two pellets tried to enter the nozzle
+together and jammed. This is not the plate-jam fault above. Clear the
+nozzle by hand. Cause is still open. See
+[the ABC note](../meetings/20261019_abc_meeting.md).
+
 ### Pellet missing after reloads (`PelletLost`)
 
 A pellet left the plate during the raise, and this dispense already reloaded

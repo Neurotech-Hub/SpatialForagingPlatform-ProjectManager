@@ -22,10 +22,10 @@ for the funded proposal.
 
 | Field           | Value                                                        |
 | --------------- | ------------------------------------------------------------ |
-| Phase           | ABC 48-hour runs ready (dome open, two FEDs in the box)      |
-| Hardware status | Alpha (ABC firmware upgraded 2026-10-12; one HLAB node does not fully raise) |
-| Software status | Alpha (ABC GUI pellet counts and auto-recover; jam and low pellets still manual) |
-| Week            | Week 18 (as of 2026-10-12; see [`PROJECT.md`](PROJECT.md))   |
+| Phase           | ABC first run reviewed — free-feeding pause bug fixed        |
+| Hardware status | Alpha (nozzle double-feed jam seen; one HLAB node does not fully raise) |
+| Software status | Alpha (GUI log omits heartbeats; presence calibration required before a run) |
+| Week            | Week 19 (as of 2026-10-19; see [`PROJECT.md`](PROJECT.md))   |
 
 
 

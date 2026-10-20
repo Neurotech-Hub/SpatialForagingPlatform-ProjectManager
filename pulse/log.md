@@ -6,40 +6,84 @@ where memory is better than the paper trail.
 
 ---
 
+# Week 19 — 2026-10-19 to 2026-10-25
+
+- **Phase:** Phase 3A — ABC first-run findings
+- **HW / SW:** Alpha / Alpha
+- **Meetings this week:**
+[2026-10-19 ABC with Katie](../meetings/20261019_abc_meeting.md)
+
+## Shipped
+
+- Fixed `free_feeding` so a pause of the whole experiment still loads the
+next pellet. Before the fix, a node could sit idle and never feed again.
+- GUI event log no longer shows heartbeats. Heartbeats still go to the
+SD card log, so the on-screen log stays lighter on a multi-day run.
+
+## In progress
+
+- Last week’s ABC log has no presence data. Calibrate before the next run.
+- Two pellets entered one nozzle together and jammed. Cause still open.
+- One mouse took 195 pellets from the FED and 17 from SFM. The arm
+retracted twice because the dome opened before delivery.
+- In-cage training dome: a printed clamshell without auto-close, filled
+with pellets. Not printed yet. PLA chewing is a known risk.
+- Raise-retract can be made optional later if a run still needs that.
+- HLAB: one node does not raise all the way to the top.
+- Touch factor 80 is still only a suggested calibration default.
+
+## Blocked / risks
+
+- A multi-day GUI freeze (seen after about 2–3 days) was blamed on the  
+event log on GUI with filter processing filling RAM. The lighter log is in place; the next long run is the check.
+- Nozzle double-feed will not auto-recover.
+
+## Next week
+
+- Calibrate presence, then start the next ABC experiment.
+- Print the training clamshell if Katie still wants it in the cage.
+
+## Notes
+
+- Findings are from the experiment that followed the
+[2026-10-12 upgrade](../meetings/20261012_abc_meeting.md).
+
+---
+
 # Week 18 — 2026-10-12 to 2026-10-18
 
 - **Phase:** Phase 3A — ABC 48-hour runs ready
 - **HW / SW:** Alpha / Alpha (ABC firmware and GUI upgraded 2026-10-12)
 - **Meetings this week:**
-  [2026-10-12 ABC with Katie](../meetings/20261012_abc_meeting.md)
+[2026-10-12 ABC with Katie](../meetings/20261012_abc_meeting.md)
 
 ## Shipped
 
 - Installed the new firmware and GUI on Katie’s box. GUI errors that were
-  blocking a run are cleared. The box is ready for the next experiment.
+blocking a run are cleared. The box is ready for the next experiment.
 - GUI pellet counts are on that build (experiment panel and each node tile).
 - Auto-recover for faults such as `PelletLost`. A person is still required
-  for a motor jam or a very low pellet store.
+for a motor jam or a very low pellet store.
 - Dome-open raise safeguard in firmware (hold at load, retract before 80%
-  of the raise, reload up to 3 times, count a take past 80% with the dome
-  open).
+of the raise, reload up to 3 times, count a take past 80% with the dome
+open).
 - Same session name after a GUI restart continues pellet totals and the
-  trial counter from the CSV.
+trial counter from the CSV.
 
 ## In progress
 
 - ABC protocol: clamshell dome left open for training, two FED devices in
-  the same box, **48 hours** per experiment, **8–10 adults**, split evenly
-  male and female.
+the same box, **48 hours** per experiment, **8–10 adults**, split evenly
+male and female.
 - Katie’s procedure is up for review:
-  [Google Doc](https://docs.google.com/document/d/1izdzfEGDUeT35xuk4L2V7V4M0QKjw6MNcU3AjcuHySA/edit?tab=t.3mnl8xp5jlwk).
+[Google Doc](https://docs.google.com/document/d/1izdzfEGDUeT35xuk4L2V7V4M0QKjw6MNcU3AjcuHySA/edit?tab=t.3mnl8xp5jlwk).
 - HLAB: one node does not raise all the way to the top.
 - Touch factor 80 is Ravi’s suggested calibration default; not adopted yet.
 
 ## Blocked / risks
 
 - A motor jam or a very low pellet store still stops a module. Those will
-  not auto-recover during a 48-hour run.
+not auto-recover during a 48-hour run.
 
 ## Next week
 
@@ -50,8 +94,10 @@ where memory is better than the paper trail.
 ## Notes
 
 - Docs: [`docs/dispense-cycle.md`](../docs/dispense-cycle.md),
-  [`docs/failure-modes.md`](../docs/failure-modes.md),
-  [`docs/user-api.md`](../docs/user-api.md).
+[`docs/failure-modes.md`](../docs/failure-modes.md),
+[`docs/user-api.md`](../docs/user-api.md).
+- The run’s findings are in Week 19
+([2026-10-19](../meetings/20261019_abc_meeting.md)).
 
 ---
 
@@ -60,21 +106,21 @@ where memory is better than the paper trail.
 - **Phase:** Phase 3A — ABC + HLAB feedback and maintainability
 - **HW / SW:** Alpha / Alpha
 - **Meetings this week:**
-  [2026-10-05 ABC weekly with Katie](../meetings/20261005_abc_meeting.md),
-  [2026-10-05 HLAB with Ravi](../meetings/20261005_hlab_meeting.md)
+[2026-10-05 ABC weekly with Katie](../meetings/20261005_abc_meeting.md),
+[2026-10-05 HLAB with Ravi](../meetings/20261005_hlab_meeting.md)
 
 ## Shipped
 
 - First ABC experiment startup with Katie (2026-10-05). Pre-run procedures
-  and system operation walked through on the box.
+and system operation walked through on the box.
 - HLAB two-arm analysis: mice bias to the rich arm, and after a shift they
-  relearn in a few trials.
+relearn in a few trials.
 
 ## In progress
 
 - ABC requests: overnight runs, a feeding path if a session is paused, a
-  second option if mice have not found food in about 24 hours, and pellet
-  counts on the GUI.
+second option if mice have not found food in about 24 hours, and pellet
+counts on the GUI.
 - Whether FED4 shares the ABC box with SFM is still undecided.
 - HLAB: one node does not raise all the way to the top.
 - Touch factor 80 is Ravi’s suggested calibration default; not adopted yet.
@@ -82,19 +128,19 @@ where memory is better than the paper trail.
 ## Blocked / risks
 
 - `PelletLost` during raise at HLAB is mice grabbing the pellet while the
-  plate is still coming up, not a pellet falling off. No safeguard yet.
+plate is still coming up, not a pellet falling off. No safeguard yet.
 
 ## Next week
 
 - Firmware: if the dome is open, keep the pellet at the load position; if
-  the dome opens mid-raise, lower immediately.
+the dome opens mid-raise, lower immediately.
 - GUI pellet count for ABC.
 - Identify the HLAB node that does not finish the raise.
 
 ## Notes
 
 - Phase 3A runs through 2026-10-11. Phase 3B (HLAB custom MVP) is the
-  following window.
+following window.
 
 ---
 
@@ -103,30 +149,30 @@ where memory is better than the paper trail.
 - **Phase:** Phase 3A — ABC + HLAB feedback and maintainability
 - **HW / SW:** Alpha / Alpha
 - **Meetings this week:**
-  [2026-09-30 ABC monthly — box setup and Katie training](../meetings/20260930_meeting.md)
+[2026-09-30 ABC monthly — box setup and Katie training](../meetings/20260930_meeting.md)
 
 ## Shipped
 
 - ABC two-node behavior box set up on site (2026-09-30).
 - Katie (ABC) trained on basic operations and system handling.
 - Matt walked the monthly ABC meeting through updates since the last ABC
-  meeting: sensors, logging, and the reporting tool are behaving.
+meeting: sensors, logging, and the reporting tool are behaving.
 
 ## In progress
 
 - Susan Maloney (ABC) protocol approval. Clarification question is in;
-  hope is approval by Friday 2026-10-02.
+hope is approval by Friday 2026-10-02.
 - HLAB remains on the Aug 14 two-module setup.
 
 ## Blocked / risks
 
 - ABC animal experiments cannot start until the behavior protocol is
-  approved.
+approved.
 
 ## Next week
 
 - If approval lands, Katie leads the first ABC experiments (week of
-  2026-10-05).
+2026-10-05).
 - NTH supports those first runs.
 
 ## Notes
@@ -144,12 +190,12 @@ where memory is better than the paper trail.
 ## Shipped
 
 - No meeting recorded. ABC box was not yet installed (setup landed
-  2026-09-30).
+2026-09-30).
 
 ## In progress
 
 - ABC two-node behavior box, carried from the Week 15 delivery target
-  into the Week 16 install.
+into the Week 16 install.
 
 ## Blocked / risks
 
@@ -162,7 +208,7 @@ where memory is better than the paper trail.
 ## Notes
 
 - Rebaseline had targeted Week 15 for delivery. Install and training
-  happened at the start of Week 16.
+happened at the start of Week 16.
 
 ---
 
@@ -181,14 +227,10 @@ where memory is better than the paper trail.
 - Rebaselined `[PROJECT.md](../PROJECT.md)`: Phases 3A–9 no longer treated
 as done/active. Production PCBA and n=9 field tests have not started.
 
-
-
 ## In progress
 
 - ABC first two-node behavior box (HLAB assembly recipe), due next week.
 - HLAB continues on the Aug 14 two-module two-armed-bandit setup.
-
-
 
 ## Blocked / risks
 
@@ -196,15 +238,11 @@ as done/active. Production PCBA and n=9 field tests have not started.
 platform exist (Phase 4, Nov 2026). Calling this week “Phase 5” was
 the old plan, not the bench.
 
-
-
 ## Next week
 
 - Deliver ABC two-node behavior box (Week 15).
 - Start Phase 3A: customize experiments; collect ABC + HLAB feedback and
 maintainability notes.
-
-
 
 ## Notes
 
@@ -213,8 +251,6 @@ maintainability notes.
 PCBA + enclosure, 3–4 week fab) → 5 (field tests).
 
 ---
-
-
 
 # Week 13 — 2026-09-07 to 2026-09-13
 
@@ -231,8 +267,6 @@ PCBA + enclosure, 3–4 week fab) → 5 (field tests).
 
 - Finish ABC two-node box for Week 15 delivery.
 
-
-
 ## Notes
 
 - Later rebaseline (Week 14): n=9 field tests are Phase 5 (Nov–Dec), not
@@ -240,16 +274,12 @@ this window.
 
 ---
 
-
-
 # Week 12 — 2026-08-31 to 2026-09-06
 
 - **Phase:** Alpha deployment — ABC install path
 - **HW / SW:** Alpha / Alpha
 - **Meetings this week:**
 [2026-08-31 ABC site tour](../meetings/20260831_meeting.md)
-
-
 
 ## Shipped
 
@@ -259,19 +289,14 @@ recipe.
 - Planning hub brought in line with Neurotech-Hub/SFM (VFM→SFM rename,
 operator workflow, `sfm-analysis`).
 
-
-
 ## In progress
 
 - ABC two-node behavior box build (not n=9 field test).
-- HLAB continues on the Aug 14 two-module setup.  
-
+- HLAB continues on the Aug 14 two-module setup.
 
 ## Next week
 
 - Continue ABC two-node box; HLAB remains on delivered hardware.
-
-
 
 ## Notes
 
@@ -280,35 +305,25 @@ is n=9 field tests after the 9-node PCBA and enclosure (weeks 25–28).
 
 ---
 
-
-
 # Week 11 — 2026-08-24 to 2026-08-30
 
 - **Phase:** Alpha deployment
 - **HW / SW:** Alpha / Alpha
 - **Meetings this week:** none recorded
 
-
-
 ## Shipped
 
 - Software repo renamed VFM → SFM (2026-08-27) on GitHub
 ([Neurotech-Hub/SFM](https://github.com/Neurotech-Hub/SFM)).
-
-
 
 ## In progress
 
 - ABC tour prep (Week 12).
 - HLAB continues on the two-module setup.
 
-
-
 ## Next week
 
 - ABC tour; decide retrofit vs replicate HLAB behavior-box assembly.
-
-
 
 ## Notes
 
@@ -317,15 +332,11 @@ is n=9 field tests after the 9-node PCBA and enclosure (weeks 25–28).
 
 ---
 
-
-
 # Week 10 — 2026-08-17 to 2026-08-23
 
 - **Phase:** Alpha deployment — analysis SDK
 - **HW / SW:** Alpha / Alpha
 - **Meetings this week:** none recorded (SDK follow-up from Aug 14)
-
-
 
 ## Shipped
 
@@ -334,28 +345,20 @@ HLAB handover: `sfm-analysis` / `sfm-report`.
 - Reporting and sync documentation.
 - Bandit test HTML report (`docs/Bandit_test_01_report.html`).
 
-
-
 ## In progress
 
 - HLAB two-module two-armed bandit on delivered hardware.
 - ABC still without a box (tour scheduled Week 12).
 
-
-
 ## Next week
 
 - VFM→SFM alignment; prep ABC tour.
-
-
 
 ## Notes
 
 - Production 9-node PCBA is Phase 4 (Nov), not this week.
 
 ---
-
-
 
 # Week 9 — 2026-08-10 to 2026-08-16
 
@@ -364,28 +367,20 @@ HLAB handover: `sfm-analysis` / `sfm-report`.
 - **Meetings this week:**
 [2026-08-14 first SFM delivery to HLAB](../meetings/20260814_meeting.md)
 
-
-
 ## Shipped
 
 - First SFM delivery to Hengen Lab (Ravi Chopra), 2026-08-14: two-module
 setup with two-armed bandit.
-
-
 
 ## In progress
 
 - HLAB bring-up on the two-module pair.
 - Analysis report SDK discussed at handover; due about a week later.
 
-
-
 ## Next week
 
 - Deliver `sfm-analysis` / `sfm-report` (~2026-08-21).
 - Support HLAB bench use.
-
-
 
 ## Notes
 
@@ -394,34 +389,24 @@ setup with two-armed bandit.
 
 ---
 
-
-
 # Week 8 — 2026-08-03 to 2026-08-09
 
 - **Phase:** Alpha deployment prep
 - **HW / SW:** Alpha / Alpha
 - **Meetings this week:** none recorded
 
-
-
 ## Shipped
 
 - BOM part-number correction and M2 screw updates.
-
-
 
 ## In progress
 
 - First HLAB two-module delivery scheduled for the following week.
 - Production-intent 9-node electronics still open (Phase 4, later).
 
-
-
 ## Next week
 
 - First HLAB hardware delivery (two-module two-armed bandit).
-
-
 
 ## Notes
 
@@ -429,15 +414,11 @@ setup with two-armed bandit.
 
 ---
 
-
-
 # Week 7 — 2026-07-27 to 2026-08-02
 
 - **Phase:** Phase 2 — Engineering sprint (close)
 - **HW / SW:** Alpha / Alpha
 - **Meetings this week:** none recorded
-
-
 
 ## Shipped
 
@@ -447,34 +428,24 @@ setup with two-armed bandit.
 - Dispense logic for pellet-presence sensing.
 - Motor-screw and BOM spreadsheet updates.
 
-
-
 ## In progress
 
 - Week 8 rollout to ABC/HLAB (from July 21 discussion).
 - Bedding offset and pellet-detector priority from that meeting.
 
-
-
 ## Blocked / risks
 
 - IACUC protocol amendment still outstanding (Matt brief).
 
-
-
 ## Next week
 
 - HLAB two-module delivery; ABC box still later.
-
-
 
 ## Notes
 
 - 
 
 ---
-
-
 
 # Week 6 — 2026-07-20 to 2026-07-26
 
@@ -483,14 +454,10 @@ setup with two-armed bandit.
 - **Meetings this week:**
 [2026-07-21 initial ABC + HLAB discussion](../meetings/20260721_meeting.md)
 
-
-
 ## Shipped
 
 - Cross-lab intro: implementation plan; pellet-presence sensing; experiment
 tasks. Hardware (Matt) and alpha software (Jemin).
-
-
 
 ## In progress
 
@@ -498,19 +465,13 @@ tasks. Hardware (Matt) and alpha software (Jemin).
 - 3D design finalization; build week and beta distribution prep.
 - Home-cage bedding offset; pellet detector brought forward.
 
-
-
 ## Blocked / risks
 
 - IACUC amendment needed for home-cage intent.
 
-
-
 ## Next week
 
 - Sensor PCB arrival; lock mechanical design; document mounting.
-
-
 
 ## Notes
 
@@ -519,42 +480,30 @@ amendment.
 
 ---
 
-
-
 # Week 5 — 2026-07-13 to 2026-07-19
 
 - **Phase:** Phase 2 — Engineering sprint
 - **HW / SW:** Alpha / Alpha
 - **Meetings this week:** none recorded
 
-
-
 ## Shipped
 
 - `docs/failure-modes.md` and `docs/function-checks.md`.
-
-
 
 ## In progress
 
 - Engineering sprint: bring-up, communications, command/event/sync paths,  
 UI mockup for ABC.
 
-
-
 ## Next week
 
 - ABC + HLAB intro meeting.
-
-
 
 ## Notes
 
 - 
 
 ---
-
-
 
 # Week 4 — 2026-07-06 to 2026-07-12
 
@@ -562,33 +511,23 @@ UI mockup for ABC.
 - **HW / SW:** Alpha / Alpha
 - **Meetings this week:** none recorded
 
-
-
 ## Shipped
 
 - No commits in this planning repo.
-
-
 
 ## In progress
 
 - ABC UI/UX kickoff and HLAB experiment-kickoff requirements feeding Phase 2.
 
-
-
 ## Next week
 
 - Phase 2 engineering sprint.
-
-
 
 ## Notes
 
 - 
 
 ---
-
-
 
 # Week 3 — 2026-06-29 to 2026-07-05
 
@@ -596,34 +535,24 @@ UI mockup for ABC.
 - **HW / SW:** Architecture frozen; alpha in fab / not yet
 - **Meetings this week:** none recorded
 
-
-
 ## Shipped
 
 - No commits in this planning repo.
-
-
 
 ## In progress
 
 - User stories / task templates (ABC) and experiment API / sync / MVP spec  
 (HLAB).
 
-
-
 ## Next week
 
 - Close kickoff phases; start engineering sprint.
-
-
 
 ## Notes
 
 - 
 
 ---
-
-
 
 # Week 2 — 2026-06-22 to 2026-06-28
 
@@ -631,33 +560,23 @@ UI mockup for ABC.
 - **HW / SW:** Architecture documented / not yet
 - **Meetings this week:** none recorded
 
-
-
 ## Shipped
 
 - Architecture document: CAN topology, identifier layout, module hardware.
-
-
 
 ## In progress
 
 - ABC UI/UX kickoff and HLAB implementation kickoff (parallel).
 
-
-
 ## Next week
 
 - Continue kickoff requirements for the engineering sprint.
-
-
 
 ## Notes
 
 - 
 
 ---
-
-
 
 # Week 1 — 2026-06-15 to 2026-06-21
 
@@ -665,26 +584,18 @@ UI mockup for ABC.
 - **HW / SW:** Architecture / not yet
 - **Meetings this week:** none recorded
 
-
-
 ## Shipped
 
 - No commits in this planning repo.
-
-
 
 ## In progress
 
 - Hardware, communication, sync, and diagnostic architecture.
 - Initial BOM and alpha prototype (n=3 + base station) to fab.
 
-
-
 ## Next week
 
 - Publish architecture doc; start ABC/HLAB kickoffs.
-
-
 
 ## Notes
 
@@ -692,15 +603,11 @@ UI mockup for ABC.
 
 ---
 
-
-
 # Week 0 — 2026-06-08 to 2026-06-14
 
 - **Phase:** Phase 0 — Architecture
 - **HW / SW:** Planning / planning
 - **Meetings this week:** none recorded
-
-
 
 ## Shipped
 
@@ -708,19 +615,13 @@ UI mockup for ABC.
 - `PROJECT.md` timeline anchored: Week 0 = 2026-06-08.
 - Collaborator abbreviations and phase structure.
 
-
-
 ## In progress
 
 - Architectural engineering before user-facing design.
 
-
-
 ## Next week
 
 - Close architecture decisions into `docs/`.
-
-
 
 ## Notes
 

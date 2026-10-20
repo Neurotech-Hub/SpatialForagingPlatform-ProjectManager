@@ -89,7 +89,7 @@ At session activate the GUI broadcasts `CanCmd.SyncFlash` (status LED solid
 
 | Name | Behavior |
 | ---- | -------- |
-| `free_feeding` | Dispense all nodes at start; after each pellet taken, wait (`fixed_delay` or `presence_clear`) and re-dispense; end on duration and/or pellet cap |
+| `free_feeding` | Dispense all nodes at start; after each pellet taken, wait (`fixed_delay` or `presence_clear`) and re-dispense; end on duration and/or pellet cap. After an experiment-wide pause, the template must still load the next pellet (fixed 2026-10-19; a node otherwise stayed idle). |
 | `fixed_and_random` | Per-node role (off / fixed / random); advance by fixed delay, presence-clear, or BNC |
 | `probability_delivery` | Each cycle delivers on one node, chosen by weighted random draw |
 | `two_armed_bandit` | Both arms move each trial, only one delivers; reward probability flips every `block_size` trials |

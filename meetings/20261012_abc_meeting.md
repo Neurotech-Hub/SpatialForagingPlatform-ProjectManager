@@ -59,3 +59,6 @@
   [Phase 3A — ABC + HLAB Feedback + Maintainability](../PROJECT.md#phase-3a--abc--hlab-feedback--maintainability)
 - Prior ABC startup:
   [2026-10-05](20261005_abc_meeting.md)
+- Follow-up (2026-10-19): first-run findings, including the nozzle jam
+  and the free-feeding pause bug.
+  [Note](20261019_abc_meeting.md).
