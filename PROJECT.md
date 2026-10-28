@@ -37,10 +37,10 @@ onward below replace the original Aug 2026 field-test plan.
 
 | Field           | Value                                                                  |
 | --------------- | ---------------------------------------------------------------------- |
-| Phase           | ABC first run reviewed — free-feeding pause bug fixed                  |
-| Hardware status | Alpha (nozzle double-feed jam seen; one HLAB node does not fully raise) |
-| Software status | Alpha (GUI log omits heartbeats; presence calibration required before a run) |
-| Week            | Week 19 (as of 2026-10-19)                                             |
+| Phase           | ABC 44 h run reviewed — next is a matched FED3 and SFM bandit          |
+| Hardware status | Alpha (presence still missing detections; hopper issue in Katie’s report) |
+| Software status | Alpha (free-feeding pause bug fixed; presence cause still open)        |
+| Week            | Week 20 (as of 2026-10-28)                                             |
 
 
 Weekly shipped / blocked / next: [`pulse/log.md`](pulse/log.md). Cross-lab

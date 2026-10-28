@@ -61,3 +61,5 @@
   [`docs/calibration.md`](../docs/calibration.md)
 - Prior upgrade:
   [2026-10-12](20261012_abc_meeting.md)
+- Follow-up (2026-10-28): presence still missing after the 44-hour run.
+  [Note](20261028_abc_meeting.md).

@@ -29,3 +29,4 @@ here.
 | 2026-10-05 | HLAB — two-arm learning, `PelletLost` on raise, incomplete lift | NTH (Jemin), HLAB (Ravi Chopra)   | [`20261005_hlab_meeting.md`](20261005_hlab_meeting.md) |
 | 2026-10-12 | ABC — firmware and GUI upgrade, 48-hour plan | NTH (Jemin), ABC (Katie)          | [`20261012_abc_meeting.md`](20261012_abc_meeting.md) |
 | 2026-10-19 | ABC — first-run findings and failure points | NTH (Jemin), ABC (Katie)          | [`20261019_abc_meeting.md`](20261019_abc_meeting.md) |
+| 2026-10-28 | ABC monthly — 44-hour FED3 bandit and SFM free feed | NTH (Matt, Jemin), ABC (Katie, Carla) | [`20261028_abc_meeting.md`](20261028_abc_meeting.md) |

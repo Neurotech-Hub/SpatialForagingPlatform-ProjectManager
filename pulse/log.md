@@ -6,6 +6,45 @@ where memory is better than the paper trail.
 
 ---
 
+# Week 20 — 2026-10-26 to 2026-11-01
+
+- **Phase:** Phase 3A — ABC 44-hour run reviewed
+- **HW / SW:** Alpha / Alpha
+- **Meetings this week:**
+  [2026-10-28 ABC monthly](../meetings/20261028_abc_meeting.md)
+
+## Shipped
+
+- 44-hour ABC run reviewed. FED3 was a 20/80 two-armed bandit. SFM was
+  free feeding. After about 5 hours the mouse took SFM pellets more often.
+
+## In progress
+
+- Next experiment: two-armed bandit on both FED3 and SFM, same trained mouse.
+- Katie is sending an issue report (errors during the run, including the hopper).
+- Presence is still missing detections. Next diagnosis is the 24-hour camera
+  recording lined up with dome-status timestamps.
+- Nozzle double-feed from the prior run is still unexplained.
+- HLAB: one node does not raise all the way to the top.
+- Touch factor 80 is still only a suggested calibration default.
+
+## Blocked / risks
+
+- Presence data from this run cannot be trusted until the camera check
+  explains the misses.
+
+## Next week
+
+- Receive Katie’s issue report and triage the hopper with the other errors.
+- Start the camera-to-dome presence check.
+- Set up the matched FED3 and SFM bandit.
+
+## Notes
+
+- Attendees: Matt Gaidica, Jemin, Katie, Carla.
+
+---
+
 # Week 19 — 2026-10-19 to 2026-10-25
 
 - **Phase:** Phase 3A — ABC first-run findings
@@ -47,6 +86,8 @@ event log on GUI with filter processing filling RAM. The lighter log is in place
 
 - Findings are from the experiment that followed the
 [2026-10-12 upgrade](../meetings/20261012_abc_meeting.md).
+- The 44-hour result is in Week 20
+  ([2026-10-28](../meetings/20261028_abc_meeting.md)).
 
 ---
 

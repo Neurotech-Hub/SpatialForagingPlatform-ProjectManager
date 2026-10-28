@@ -162,6 +162,11 @@ is not a failure.
 
 **What to do.** Make sure the cage is empty and still, then calibrate again.
 
+**Seen at ABC (2026-10-28).** After the 44-hour run, presence detections
+are still missing. Calibrating again is not the next step. Line the
+24-hour camera recording up with dome status and see what the misses
+correspond to. See [the ABC note](../meetings/20261028_abc_meeting.md).
+
 ### A setting was rejected
 
 If the base station sends a setting the module cannot use (for example a
