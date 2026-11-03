@@ -53,3 +53,6 @@ animal sitting where the pad does not see it.
 [`docs/user-api.md`](../docs/user-api.md)
 - Prior findings (no presence in the log):
 [2026-10-19](20261019_abc_meeting.md)
+- Follow-up (meeting 2026-11-02; plate and base done 2026-11-03): next
+  run is an 80/20 bandit with FED3 and SFM in the same cage.
+  [Note](20261102_abc_meeting.md).

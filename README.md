@@ -22,10 +22,10 @@ for the funded proposal.
 
 | Field           | Value                                                        |
 | --------------- | ------------------------------------------------------------ |
-| Phase           | ABC 44 h run reviewed — next is a matched FED3 and SFM bandit |
-| Hardware status | Alpha (presence still missing detections; hopper issue in Katie’s report) |
-| Software status | Alpha (free-feeding pause bug fixed; presence cause still open) |
-| Week            | Week 20 (as of 2026-10-28; see [`PROJECT.md`](PROJECT.md))   |
+| Phase           | ABC next run — 80/20 bandit, FED3 and SFM in the same cage   |
+| Hardware status | Alpha (pellet jam addressed 2026-11-03 by plate position; presence still open) |
+| Software status | Alpha (presence cause still open; hopper report not yet in) |
+| Week            | Week 21 (as of 2026-11-03; see [`PROJECT.md`](PROJECT.md))   |
 
 
 

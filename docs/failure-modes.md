@@ -53,8 +53,10 @@ Recover.
 
 **Seen at ABC (2026-10-19).** Two pellets tried to enter the nozzle
 together and jammed. This is not the plate-jam fault above. Clear the
-nozzle by hand. Cause is still open. See
-[the ABC note](../meetings/20261019_abc_meeting.md).
+nozzle by hand.
+
+**Addressed (2026-11-03).** Plate position was adjusted, with minor design
+updates. See [the ABC note](../meetings/20261102_abc_meeting.md).
 
 ### Pellet missing after reloads (`PelletLost`)
 

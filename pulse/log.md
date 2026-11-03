@@ -6,6 +6,45 @@ where memory is better than the paper trail.
 
 ---
 
+# Week 21 — 2026-11-02 to 2026-11-08
+
+- **Phase:** Phase 3A — ABC 80/20 bandit next
+- **HW / SW:** Alpha / Alpha
+- **Meetings this week:**
+  [2026-11-02 ABC weekly with Katie](../meetings/20261102_abc_meeting.md)
+
+## Shipped
+
+- Meeting on 2026-11-02. Finished 2026-11-03: plate position adjusted for
+  pellet jamming, and the behavior-box base replaced with one that has a
+  shock absorber.
+
+## In progress
+
+- Next experiment: two-armed bandit at **80/20**, FED3 and SFM in the same cage.
+- Katie’s issue report, including the hopper, is still outstanding.
+- Presence misses: 24-hour camera recording still needs to be lined up
+  with dome status.
+- HLAB: one node does not raise all the way to the top.
+- Touch factor 80 is still only a suggested calibration default.
+
+## Blocked / risks
+
+- Presence data still cannot be trusted until the camera check explains
+  the misses.
+
+## Next week
+
+- Run the 80/20 bandit with FED3 and SFM in one cage.
+- Take Katie’s error report when it arrives.
+
+## Notes
+
+- The previous run (Week 20) was FED3 at 20/80 and SFM on free feeding.
+  This run puts the bandit on both, at 80/20.
+
+---
+
 # Week 20 — 2026-10-26 to 2026-11-01
 
 - **Phase:** Phase 3A — ABC 44-hour run reviewed
@@ -42,6 +81,8 @@ where memory is better than the paper trail.
 ## Notes
 
 - Attendees: Matt Gaidica, Jemin, Katie, Carla.
+- Plate adjustment and the 80/20 same-cage plan are in Week 21
+  ([2026-11-02](../meetings/20261102_abc_meeting.md)).
 
 ---
 
