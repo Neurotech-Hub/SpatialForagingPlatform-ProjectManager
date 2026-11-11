@@ -22,10 +22,10 @@ for the funded proposal.
 
 | Field           | Value                                                        |
 | --------------- | ------------------------------------------------------------ |
-| Phase           | ABC next run — 80/20 bandit, FED3 and SFM in the same cage   |
-| Hardware status | Alpha (pellet jam addressed 2026-11-03 by plate position; presence still open) |
-| Software status | Alpha (presence cause still open; hopper report not yet in) |
-| Week            | Week 21 (as of 2026-11-03; see [`PROJECT.md`](PROJECT.md))   |
+| Phase           | ABC last November run this week; resumes in December         |
+| Hardware status | Alpha (pellet jam still on a node left on older firmware)    |
+| Software status | Alpha (fixed-delay run can go idle; mobile error alert not built) |
+| Week            | Week 22 (as of 2026-11-09; see [`PROJECT.md`](PROJECT.md))   |
 
 
 
@@ -98,7 +98,7 @@ flowchart LR
 ```
 
 All commands below assume a clone of [Neurotech-Hub/SFM](https://github.com/Neurotech-Hub/SFM).
-CAN bitrate is **250 kbps**. Pre-session checks:
+CAN bitrate supports up to **1 Mbps**; the default is **250 kbps**. Pre-session checks:
 [`docs/function-checks.md`](docs/function-checks.md).
 
 ### Firmware

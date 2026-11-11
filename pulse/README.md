@@ -41,4 +41,5 @@ status heartbeat so anyone can see progress without reading every commit.
 | 18   | 2026-10-12 – 10-18  | ABC 48 h runs ready           | [log](log.md#week-18--2026-10-12-to-2026-10-18) |
 | 19   | 2026-10-19 – 10-25  | ABC first-run findings        | [log](log.md#week-19--2026-10-19-to-2026-10-25) |
 | 20   | 2026-10-26 – 11-01  | ABC 44 h run reviewed         | [log](log.md#week-20--2026-10-26-to-2026-11-01) |
-| 21   | 2026-11-02 – 11-08  | ABC 80/20 bandit next (current) | [log](log.md#week-21--2026-11-02-to-2026-11-08) |
+| 21   | 2026-11-02 – 11-08  | ABC 80/20 bandit next         | [log](log.md#week-21--2026-11-02-to-2026-11-08) |
+| 22   | 2026-11-09 – 11-15  | Last ABC run of November (current) | [log](log.md#week-22--2026-11-09-to-2026-11-15) |

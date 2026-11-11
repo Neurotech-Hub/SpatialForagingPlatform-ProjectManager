@@ -89,7 +89,7 @@ At session activate the GUI broadcasts `CanCmd.SyncFlash` (status LED solid
 
 | Name | Behavior |
 | ---- | -------- |
-| `free_feeding` | Dispense all nodes at start; after each pellet taken, wait (`fixed_delay` or `presence_clear`) and re-dispense; end on duration and/or pellet cap. After an experiment-wide pause, the template must still load the next pellet (fixed 2026-10-19; a node otherwise stayed idle). |
+| `free_feeding` | Dispense all nodes at start; after each pellet taken, wait (`fixed_delay` or `presence_clear`) and re-dispense; end on duration and/or pellet cap. After an experiment-wide pause, the template must still load the next pellet (fixed 2026-10-19; a node otherwise stayed idle). Fixed delay can still miss the CAN trigger at the cutoff and leave the run idle (seen at ABC 2026-11-09; HLAB presence-clearance did not hit it). Firmware flag not added yet. |
 | `fixed_and_random` | Per-node role (off / fixed / random); advance by fixed delay, presence-clear, or BNC |
 | `probability_delivery` | Each cycle delivers on one node, chosen by weighted random draw |
 | `two_armed_bandit` | Both arms move each trial, only one delivers; reward probability flips every `block_size` trials |
@@ -110,7 +110,7 @@ At session activate the GUI broadcasts `CanCmd.SyncFlash` (status LED solid
 
 | Item | Role |
 | ---- | ---- |
-| Raspberry Pi 5 + custom CAN HAT | Base station; SocketCAN `can0` at 250 kbps |
+| Raspberry Pi 5 + custom CAN HAT | Base station; SocketCAN `can0`, up to 1 Mbps, default 250 kbps |
 | 12 V supply (8 A recommended) | Daisy-chained module power |
 | RJ45 patch cables | CAN + addressing GPIOs between nodes |
 | BNC cables | Sync I/O to cameras / ephys DAQs |

@@ -48,3 +48,6 @@
   [2026-10-19](20261019_abc_meeting.md)
 - Prior next-step (matched bandit):
   [2026-10-28](20261028_abc_meeting.md)
+- Follow-up (2026-11-09): jam still occurred on a node left on older
+  firmware. Fixed-delay runs can go idle.
+  [Note](20261109_abc_meeting.md).

@@ -56,7 +56,11 @@ together and jammed. This is not the plate-jam fault above. Clear the
 nozzle by hand.
 
 **Addressed (2026-11-03).** Plate position was adjusted, with minor design
-updates. See [the ABC note](../meetings/20261102_abc_meeting.md).
+updates.
+
+**Still seen (2026-11-09).** One ABC node was still on older firmware, and
+that node jammed. Update every node before calling the plate change
+sufficient. See [the ABC note](../meetings/20261109_abc_meeting.md).
 
 ### Pellet missing after reloads (`PelletLost`)
 

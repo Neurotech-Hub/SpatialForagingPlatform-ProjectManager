@@ -6,6 +6,48 @@ where memory is better than the paper trail.
 
 ---
 
+# Week 22 — 2026-11-09 to 2026-11-15
+
+- **Phase:** Phase 3A — last ABC run of November
+- **HW / SW:** Alpha / Alpha
+- **Meetings this week:**
+  [2026-11-09 ABC weekly with Katie](../meetings/20261109_abc_meeting.md)
+
+## Shipped
+
+- Cause of the remaining pellet jam: one node was still on older firmware.
+  The 2026-11-03 plate change did not cover it.
+
+## In progress
+
+- Flash that node to the current firmware before the next run.
+- Firmware flag so a fixed-delay run does not miss the CAN trigger at the
+  cutoff and go idle. HLAB presence-clearance runs did not hit this.
+- Mobile error alert. Not built. Jemin to implement.
+- This week is ABC’s last experiment of November. Katie starts again in
+  December.
+- Katie’s issue report, including the hopper, is still outstanding.
+- Presence misses: 24-hour camera recording still needs to be lined up
+  with dome status.
+- HLAB: one node does not raise all the way to the top.
+- Touch factor 80 is still only a suggested calibration default.
+
+## Blocked / risks
+
+- A fixed-delay run can go idle when the CAN trigger is missed at the cutoff.
+- A node left on old firmware can still jam pellets.
+
+## Next week
+
+- No ABC animal run until December, after this week’s experiment.
+- Firmware flag for the fixed-delay cutoff, and the mobile alert.
+
+## Notes
+
+- Idle-after-pause (2026-10-19) was a different bug and is already fixed.
+
+---
+
 # Week 21 — 2026-11-02 to 2026-11-08
 
 - **Phase:** Phase 3A — ABC 80/20 bandit next
@@ -42,6 +84,8 @@ where memory is better than the paper trail.
 
 - The previous run (Week 20) was FED3 at 20/80 and SFM on free feeding.
   This run puts the bandit on both, at 80/20.
+- The jam came back on old firmware, and the fixed-delay idle bug, in
+  Week 22 ([2026-11-09](../meetings/20261109_abc_meeting.md)).
 
 ---
 

@@ -31,3 +31,4 @@ here.
 | 2026-10-19 | ABC — first-run findings and failure points | NTH (Jemin), ABC (Katie)          | [`20261019_abc_meeting.md`](20261019_abc_meeting.md) |
 | 2026-10-28 | ABC monthly — 44-hour FED3 bandit and SFM free feed | NTH (Matt, Jemin), ABC (Katie, Carla) | [`20261028_abc_meeting.md`](20261028_abc_meeting.md) |
 | 2026-11-02 | ABC weekly — pellet jam and base; next run is 80/20 bandit, FED3 and SFM same cage | NTH (Jemin), ABC (Katie) | [`20261102_abc_meeting.md`](20261102_abc_meeting.md) |
+| 2026-11-09 | ABC weekly — old-firmware jam; fixed-delay idle; mobile alerts | NTH (Jemin), ABC (Katie) | [`20261109_abc_meeting.md`](20261109_abc_meeting.md) |

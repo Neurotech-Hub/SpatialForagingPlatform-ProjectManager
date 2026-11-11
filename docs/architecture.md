@@ -75,7 +75,7 @@ frames, and bus-off detection without requiring application-layer redundancy.
 - **Peer-to-peer broadcasting** — any node can broadcast events to all other nodes and
 to the base station simultaneously.
 
-Bitrate is **250 kbps** (firmware TWAI and GUI `--bitrate` default).
+The bus supports bitrates up to **1 Mbps**. The default is **250 kbps** (firmware TWAI and GUI `--bitrate`).
 
 ## CAN bus topology
 
